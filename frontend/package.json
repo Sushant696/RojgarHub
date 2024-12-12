@@ -14,6 +14,8 @@
     "@emotion/styled": "^11.13.5",
     "@mui/material": "^6.1.10",
     "@tanstack/react-router": "^1.86.1",
+    "aos": "^2.3.4",
+    "formik": "^2.4.6",
     "iconsax-react": "^0.0.8",
     "motion": "^11.13.1",
     "react": "^18.3.1",
