@@ -1,11 +1,7 @@
-import { ApiError } from '../utils/ApiError';
+import { ApiError } from "../utils/apiError.js";
 
-// Error handling middleware
-export const errorHandler = (
-  err,
-  _,
-  res,
-) => {
+
+export const errorHandler = (err, _, res, next) => {
   if (err instanceof ApiError) {
     res.status(err.statusCode).json({
       success: false,
@@ -22,5 +18,4 @@ export const errorHandler = (
     });
   }
 };
-
 

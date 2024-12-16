@@ -4,10 +4,15 @@ import { useState } from "react";
 import Login from "../pages/login";
 import Register from "../pages/register";
 import { motion } from "motion/react";
+import { useEffect } from "react";
 
 function SlidingForms() {
   const location = useLocation();
   const [activeForm, setActiveForm] = useState(location.pathname.slice(1));
+
+  useEffect(() => {
+    setActiveForm(location.pathname.slice(1));
+  }, location.pathname);
 
   return (
     <div>

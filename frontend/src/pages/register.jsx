@@ -22,8 +22,11 @@ function Register({ onSwitch }) {
       confirmPassword: "",
     },
     onSubmit: (values) => {
+      fetch("", {
+        method: "POST",
+      });
       //May be toast with success message with login
-      //post req will be done here
+      // perform post request here...
 
       console.log(values);
       alert(JSON.stringify(values, null, 2));
@@ -47,66 +50,6 @@ function Register({ onSwitch }) {
       <div className="w-full flex items-center justify-center">
         <div className="w-full px-4">
           <div className="flex flex-col lg:flex-row w-full bg-white rounded-xl shadow-lg overflow-hidden">
-            <div className="lg:w-1/2 bg-indigo-600  flex flex-col justify-between text-white py-24 lg:py-10 px-10">
-              <div>
-                <h2 className="subtitle-text font-bold mb-6">
-                  Welcome to rojgarHub!
-                </h2>
-                <p className="regular-text text-indigo-100 mb-8">
-                  Log in to access your dashboard and continue your journey with
-                  us.
-                </p>
-
-                {/* Feature List */}
-                <div className="space-y-6 mb-8">
-                  <div className="flex items-center space-x-4">
-                    <div className="bg-indigo-500 p-3 rounded-lg">
-                      <FaChartLine className="text-xl" />
-                    </div>
-                    <p className="text-lg">Real-time Job Tracking</p>
-                  </div>
-                  <div className="flex items-center space-x-4">
-                    <div className="bg-indigo-500 p-3 rounded-lg">
-                      <FaShieldAlt className="text-xl" />
-                    </div>
-                    <p className="text-lg">Secure Application Process</p>
-                  </div>
-                  <div className="flex items-center space-x-4">
-                    <div className="bg-indigo-500 p-3 rounded-lg">
-                      <FaSync className="text-xl" />
-                    </div>
-                    <p className="text-lg">Automatic Profile Updates</p>
-                  </div>
-                </div>
-              </div>
-
-              <div className="bg-indigo-700 p-6 rounded-xl">
-                <p className="italic text-indigo-100 mb-4">
-                  "Rojgar hub is a great platform it helped me find my dream
-                  job."
-                </p>
-
-                <div className="mt-4 flex items-center">
-                  <div className="w-10 h-10 bg-indigo-500 rounded-full flex items-center justify-center">
-                    <FaUser className="text-lg" />
-                  </div>
-                  <div className="ml-4">
-                    <p className="font-semibold">Bibek Pandey</p>
-                    <p className="text-sm text-indigo-200">
-                      Full stack developer
-                    </p>
-                  </div>
-                </div>
-              </div>
-
-              <div className="flex justify-center gap-4 mt-8">
-                <div className="p-1 bg-blue-300 rounded-xl w-6 h-[2px]"></div>
-                <div className="p-1 bg-white rounded-xl w-6 h-[2px]"></div>
-                <div className="p-1 bg-white rounded-xl w-6 h-[2px]"></div>
-                <div className="p-1 bg-white rounded-xl w-6 h-[2px]"></div>
-              </div>
-            </div>
-
             {/* form part*/}
 
             <div className="lg:w-1/2 p-8 lg:p-8">
@@ -247,6 +190,65 @@ function Register({ onSwitch }) {
                     </button>
                   </div>
                 </div>
+              </div>
+            </div>
+            <div className="lg:w-1/2 bg-indigo-600  flex flex-col justify-between text-white py-24 lg:py-10 px-10">
+              <div>
+                <h2 className="subtitle-text font-bold mb-6">
+                  Welcome to rojgarHub!
+                </h2>
+                <p className="regular-text text-indigo-100 mb-8">
+                  Log in to access your dashboard and continue your journey with
+                  us.
+                </p>
+
+                {/* Feature List */}
+                <div className="space-y-6 mb-8">
+                  <div className="flex items-center space-x-4">
+                    <div className="bg-indigo-500 p-3 rounded-lg">
+                      <FaChartLine className="text-xl" />
+                    </div>
+                    <p className="text-lg">Real-time Job Tracking</p>
+                  </div>
+                  <div className="flex items-center space-x-4">
+                    <div className="bg-indigo-500 p-3 rounded-lg">
+                      <FaShieldAlt className="text-xl" />
+                    </div>
+                    <p className="text-lg">Secure Application Process</p>
+                  </div>
+                  <div className="flex items-center space-x-4">
+                    <div className="bg-indigo-500 p-3 rounded-lg">
+                      <FaSync className="text-xl" />
+                    </div>
+                    <p className="text-lg">Automatic Profile Updates</p>
+                  </div>
+                </div>
+              </div>
+
+              <div className="bg-indigo-700 p-6 rounded-xl">
+                <p className="italic text-indigo-100 mb-4">
+                  "Rojgar hub is a great platform it helped me find my dream
+                  job."
+                </p>
+
+                <div className="mt-4 flex items-center">
+                  <div className="w-10 h-10 bg-indigo-500 rounded-full flex items-center justify-center">
+                    <FaUser className="text-lg" />
+                  </div>
+                  <div className="ml-4">
+                    <p className="font-semibold">Bibek Pandey</p>
+                    <p className="text-sm text-indigo-200">
+                      Full stack developer
+                    </p>
+                  </div>
+                </div>
+              </div>
+
+              <div className="flex justify-center gap-4 mt-8">
+                <div className="p-1 bg-blue-300 rounded-xl w-6 h-[2px]"></div>
+                <div className="p-1 bg-white rounded-xl w-6 h-[2px]"></div>
+                <div className="p-1 bg-white rounded-xl w-6 h-[2px]"></div>
+                <div className="p-1 bg-white rounded-xl w-6 h-[2px]"></div>
               </div>
             </div>
           </div>
