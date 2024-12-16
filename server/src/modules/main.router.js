@@ -7,7 +7,7 @@ import employerRouter from "./employer/employer.routes.js"
 const mainRouter = Router();
 
 mainRouter.use("/user", userRouter)
-mainRouter.use("/user", employerRouter)
+mainRouter.use("/employer", employerRouter)
 
 export default mainRouter;
 

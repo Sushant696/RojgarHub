@@ -10,8 +10,41 @@ import {
   FaSync,
 } from "react-icons/fa";
 import { RiLockPasswordFill } from "react-icons/ri";
+import { useFormik } from "formik";
+import { userApi } from "../api/user";
+import { useMutation } from "@tanstack/react-query";
+// import showNotification from "../utils/toastify";
+import { toast } from "react-toastify";
 
 function Login({ onSwitch }) {
+  const { mutate, isLoading, isError } = useMutation({
+    mutationKey: ["login"],
+    mutationFn: userApi.Login,
+    onSuccess: () => {
+      toast.success("Login successful, Welcome to the dashboard!");
+    },
+    onError: (error) => {
+      toast.error(error.message || "Sometime went wrong.");
+    },
+  });
+
+  if (isLoading) {
+    return <h1>Loading..</h1>;
+  }
+
+  const formik = useFormik({
+    initialValues: {
+      phoneNo: "",
+      password: "",
+    },
+    onSubmit: (values) => {
+      console.log(values);
+      formik.resetForm();
+      mutate(values);
+      // perform your post request here...
+    },
+  });
+
   return (
     <div className="flex">
       <div className="justify-self-start flex-grow flex items-center justify-center ">
@@ -89,10 +122,10 @@ function Login({ onSwitch }) {
                   </p>
                 </div>
 
-                <form className="space-y-6">
+                <form onSubmit={formik.handleSubmit} className="space-y-6">
                   <div>
                     <label
-                      htmlFor="username"
+                      htmlFor="phoneNo"
                       className="block small-text font-medium text-gray-700 mb-2"
                     >
                       Username
@@ -103,7 +136,9 @@ function Login({ onSwitch }) {
                       </div>
                       <input
                         type="text"
-                        id="username"
+                        id="phoneNo"
+                        onChange={formik.handleChange}
+                        value={formik.values.phoneNo}
                         className="block w-full pl-10 pr-3 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-600 focus:border-transparent"
                         placeholder="Enter your username"
                       />
@@ -127,6 +162,8 @@ function Login({ onSwitch }) {
                       <input
                         type="password"
                         id="password"
+                        onChange={formik.handleChange}
+                        value={formik.values.password}
                         className="block w-full pl-10 pr-3 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-600 focus:border-transparent"
                         placeholder="Enter your password"
                       />
@@ -144,9 +181,10 @@ function Login({ onSwitch }) {
 
                   <button
                     type="submit"
+                    disabled={isLoading}
                     className="w-full bg-indigo-600 text-white py-3 px-4 rounded-lg hover:bg-indigo-700 transition duration-150 ease-in-out"
                   >
-                    Sign in
+                    {isLoading ? "Signing in" : "Sign in"}
                   </button>
                 </form>
 
