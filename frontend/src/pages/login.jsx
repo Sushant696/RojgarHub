@@ -1,4 +1,4 @@
-import { Link } from "@tanstack/react-router";
+import { Link, redirect } from "@tanstack/react-router";
 import { ArrowRight } from "iconsax-react";
 import React from "react";
 import {
@@ -13,24 +13,26 @@ import { RiLockPasswordFill } from "react-icons/ri";
 import { useFormik } from "formik";
 import { userApi } from "../api/user";
 import { useMutation } from "@tanstack/react-query";
-// import showNotification from "../utils/toastify";
+import showNotification from "../utils/toastify";
 import { toast } from "react-toastify";
+import useRouter from "../lib/router";
 
 function Login({ onSwitch }) {
-  const { mutate, isLoading, isError } = useMutation({
+  const router = useRouter();
+  const { mutate, isPending } = useMutation({
     mutationKey: ["login"],
     mutationFn: userApi.Login,
     onSuccess: () => {
-      toast.success("Login successful, Welcome to the dashboard!");
+      showNotification(
+        "success",
+        "Login successful, Welcome to the dashboard!",
+      );
+      router.push("/");
     },
     onError: (error) => {
       toast.error(error.message || "Sometime went wrong.");
     },
   });
-
-  if (isLoading) {
-    return <h1>Loading..</h1>;
-  }
 
   const formik = useFormik({
     initialValues: {
@@ -38,12 +40,14 @@ function Login({ onSwitch }) {
       password: "",
     },
     onSubmit: (values) => {
-      console.log(values);
       formik.resetForm();
       mutate(values);
-      // perform your post request here...
     },
   });
+
+  if (isPending) {
+    return <h1>Loading..</h1>;
+  }
 
   return (
     <div className="flex">
@@ -128,7 +132,7 @@ function Login({ onSwitch }) {
                       htmlFor="phoneNo"
                       className="block small-text font-medium text-gray-700 mb-2"
                     >
-                      Username
+                      UserID
                     </label>
                     <div className="relative">
                       <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
@@ -140,7 +144,7 @@ function Login({ onSwitch }) {
                         onChange={formik.handleChange}
                         value={formik.values.phoneNo}
                         className="block w-full pl-10 pr-3 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-600 focus:border-transparent"
-                        placeholder="Enter your username"
+                        placeholder="Enter your mobile number"
                       />
                     </div>
                   </div>
@@ -181,10 +185,10 @@ function Login({ onSwitch }) {
 
                   <button
                     type="submit"
-                    disabled={isLoading}
+                    disabled={isPending}
                     className="w-full bg-indigo-600 text-white py-3 px-4 rounded-lg hover:bg-indigo-700 transition duration-150 ease-in-out"
                   >
-                    {isLoading ? "Signing in" : "Sign in"}
+                    {isPending ? "Signing in" : "Sign in"}
                   </button>
                 </form>
 

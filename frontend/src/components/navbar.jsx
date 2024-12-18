@@ -4,7 +4,7 @@ import React from "react";
 
 function Navbar() {
   return (
-    <div className="bg-white/20 backdrop-blur-lg py-1">
+    <div className="bg-blue-200/20 backdrop-blur-xl py-1">
       <div className="flex container justify-between items-center">
         <div className="flex items-center gap-2">
           <img src="/tempLogo.png" className="w-20 h-20" alt="temp logo" />
@@ -13,11 +13,11 @@ function Navbar() {
           <Link to="/" className="[&.active]:font-bold  regular-text ">
             Home
           </Link>{" "}
-          <Link to="/about" className="[&.active]:font-bold  regular-text">
-            About Us
-          </Link>
           <Link to="/apply" className="[&.active]:font-bold  regular-text">
             Find a Job
+          </Link>
+          <Link to="/pricing" className="[&.active]:font-bold  regular-text">
+            Pricing
           </Link>
           <Link to="/blog" className="[&.active]:font-bold  regular-text">
             blogs
