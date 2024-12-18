@@ -16,7 +16,7 @@ function SlidingForms() {
 
   return (
     <div>
-      <div className=" relative mt-6 flex items-center justify-center w-full h-[calc(100vh-12rem)] overflow-hidden">
+      <div className=" relative mt-16 flex items-center justify-center w-full h-[calc(100vh-9rem)] overflow-hidden">
         {activeForm === "login" && (
           <motion.div
             key="login"

@@ -10,7 +10,6 @@ async function Login(formData) {
     });
 
     const data = await response.json();
-    // Check if the response status is not ok (not in 200-299 range)
     if (!data?.success) {
       throw new Error(data.message || "Something went wrong!");
     }
@@ -21,23 +20,26 @@ async function Login(formData) {
   }
 }
 
-async function Register(formData) {
-  console.log(formData, "login from user.js");
+async function Register(formData, currentUser) {
+  console.log(currentUser, formData, "from user.js");
   try {
-    const response = await fetch("http://localhost:5500/api/user/login", {
+    const response = await fetch(`http://localhost:5500/api/${currentUser}/`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
-        username: formData.phoneNo,
+        username: formData.username,
+        email: formData.email,
+        contact: formData.contact,
         password: formData.password,
       }),
     });
 
-    if (!response.ok) {
-      throw new Error("Network response was not ok");
+    const data = await response.json();
+    if (!data?.success) {
+      throw new Error(data?.message || "Something went wrong");
     }
   } catch (error) {
-    console.error(error, "Error Occurred while signing in");
+    throw error;
   }
 }
 
