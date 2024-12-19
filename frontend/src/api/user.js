@@ -21,7 +21,6 @@ async function Login(formData) {
 }
 
 async function Register(formData, currentUser) {
-  console.log(currentUser, formData, "from user.js");
   try {
     const response = await fetch(`http://localhost:5500/api/${currentUser}/`, {
       method: "POST",
