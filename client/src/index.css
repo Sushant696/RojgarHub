@@ -53,6 +53,32 @@
   @apply text-sm sm:text-base md:text-lg lg:text-xl font-normal;
 }
 
+/* main colors codes */
+
+.bg-color {
+  @apply bg-[#F2F8FF];
+}
+
+.text-color-dark {
+  @apply bg-blue-950;
+}
+
+.text-color-md {
+  @apply bg-blue-500;
+}
+
+.text-color-light {
+  @apply bg-blue-50;
+}
+
+.section-margin {
+  @apply my-12;
+}
+
+.sub-section-margin {
+  @apply my-8;
+}
+
 /* Extra large for main headings or special emphasis */
 .extra-large-text {
   @apply text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-extrabold;

@@ -12,7 +12,7 @@ import "react-toastify/dist/ReactToastify.css";
 const router = createRouter({ routeTree });
 
 // Render the app
-const rootElement = document.getElementById("root");
+const rootElement = document.getElementById("root")!;
 if (!rootElement.innerHTML) {
   const root = ReactDOM.createRoot(rootElement);
   root.render(

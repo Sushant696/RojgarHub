@@ -1,4 +1,3 @@
-import React from "react";
 import SearchComponent from "../../components/SearchComponent";
 import SearchComponentMobile from "../../components/mobileSearch";
 
@@ -42,12 +41,9 @@ function Hero() {
 
         <h1>Top rated company or something like that</h1>
 
-        <div className="border my-12 h-[480px]">
-          <h1 className="emphasized-text">Latest Job Post</h1>
-          <p>
-            Explore the different types of available jobs to apply discover
-            which is right for you.
-          </p>
+        <div className="border section-margin h-[480px]">
+          <h1 className="emphasized-text text-center">Trusted by</h1>
+          <div></div>
         </div>
       </div>
     </div>

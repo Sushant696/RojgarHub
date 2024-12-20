@@ -260,7 +260,7 @@ export const routeTree = rootRoute
 {
   "routes": {
     "__root__": {
-      "filePath": "__root.jsx",
+      "filePath": "__root.tsx",
       "children": [
         "/",
         "/pricing",
@@ -274,31 +274,31 @@ export const routeTree = rootRoute
       ]
     },
     "/": {
-      "filePath": "index.lazy.jsx"
+      "filePath": "index.lazy.tsx"
     },
     "/pricing": {
-      "filePath": "pricing.jsx"
+      "filePath": "pricing.tsx"
     },
     "/register": {
-      "filePath": "register.jsx"
+      "filePath": "register.tsx"
     },
     "/about": {
-      "filePath": "about.lazy.jsx"
+      "filePath": "about.lazy.tsx"
     },
     "/apply": {
-      "filePath": "apply.lazy.jsx"
+      "filePath": "apply.lazy.tsx"
     },
     "/blog": {
-      "filePath": "blog.lazy.jsx"
+      "filePath": "blog.lazy.tsx"
     },
     "/contact": {
-      "filePath": "contact.lazy.jsx"
+      "filePath": "contact.lazy.tsx"
     },
     "/dashboard": {
-      "filePath": "dashboard.lazy.jsx"
+      "filePath": "dashboard.lazy.tsx"
     },
     "/login": {
-      "filePath": "login.lazy.jsx"
+      "filePath": "login.lazy.tsx"
     }
   }
 }

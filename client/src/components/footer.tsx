@@ -1,5 +1,6 @@
 import React from "react";
 import { FaFacebookSquare, FaLinkedin, FaWhatsappSquare } from "react-icons/fa";
+import { FaSquareInstagram, FaXTwitter } from "react-icons/fa6";
 
 function Footer() {
   return (
@@ -22,25 +23,34 @@ function Footer() {
 
         <div className="flex-1">
           <div>
-            <h2>First Item</h2>
-            <h2>Second Item</h2>
-            <h2>Third Item</h2>
+            <h2>Contact Us</h2>
+            <h2>About Us</h2>
+            <h2>Blogs and Articles</h2>
+            <h2>Privacy Policy</h2>
+            <h2>Terms of Service</h2>
           </div>
         </div>
+
         <div className="flex-1">
           <div>
-            <h2>First Item</h2>
-            <h2>Second Item</h2>
-            <h2>Third Item</h2>
+            <h2>Find Jobs</h2>
+            <h2>Post a Resume</h2>
+            <h2>Job Categories</h2>
+            <h2>Interview Tips</h2>
+            <h2>FAQs</h2>
           </div>
         </div>
+
         <div className="flex-1">
           <div>
-            <h2>First Item</h2>
-            <h2>Second Item</h2>
-            <h2>Third Item</h2>
+            <h2>Post a Job</h2>
+            <h2>Employer Login</h2>
+            <h2>Plans and Pricing</h2>
+            <h2>Applicant Tracking</h2>
+            <h2>Employer FAQs</h2>
           </div>
         </div>
+
         <div className="flex-1">
           <div>Download App</div>
           <div className="flex justify-center gap-3">
@@ -49,13 +59,15 @@ function Footer() {
           </div>
         </div>
       </div>
-      <div className="my-8">
+      <div className="my-8 container">
         <hr />
       </div>
       <div className="flex justify-center items-center gap-4 my-5">
         <FaFacebookSquare className="text-blue-600" size={26} />
         <FaLinkedin className="text-blue-600" size={26} />
+        <FaXTwitter size={26} />
         <FaWhatsappSquare className="text-blue-600" size={26} />
+        <FaSquareInstagram className="text-blue-600" size={26} />
       </div>
       <div className="text-center mb-4">
         Copyright &copy; | 2025 | RojgarHub Pvt.Ltd

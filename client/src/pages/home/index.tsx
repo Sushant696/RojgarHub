@@ -1,4 +1,3 @@
-import React from "react";
 import Hero from "./hero";
 import { Helmet } from "react-helmet";
 
@@ -6,7 +5,7 @@ function Home() {
   return (
     <div>
       <Helmet>
-        <title>Hero Section | RojgarHub</title>
+        <title>Home | RojgarHub</title>
       </Helmet>
       <Hero />
       Jobs of the day

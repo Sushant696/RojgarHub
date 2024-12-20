@@ -9,7 +9,6 @@ import mainRouter from "./modules/main.router.js";
 import { errorHandler } from "./middlewares/errorhandler.middlewares.js";
 
 
-
 export const app = express();
 
 const corsOption = {

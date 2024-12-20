@@ -2,10 +2,10 @@ import React from "react";
 import { FormControl, Select, MenuItem } from "@mui/material";
 import { useState } from "react";
 
-function Dropdown({ data, setData, name }) {
+function Dropdown({ data, setData, name }: any) {
   const [value, setValue] = useState("placeholder");
 
-  function handleChange(e) {
+  function handleChange(e: any) {
     setValue(e.target.value);
     setData(value);
   }
@@ -42,7 +42,7 @@ function Dropdown({ data, setData, name }) {
           <MenuItem value="placeholder" disabled>
             Select a {name}
           </MenuItem>
-          {data?.map((item, index) => (
+          {data?.map(({ item, index }: any) => (
             <MenuItem key={index} value={item}>
               {item}
             </MenuItem>
