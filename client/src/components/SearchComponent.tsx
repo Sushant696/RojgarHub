@@ -1,18 +1,47 @@
 import { Button } from "@mui/material";
 import { MdOutlineWorkOutline } from "react-icons/md";
 import { HiCubeTransparent } from "react-icons/hi";
-import React from "react";
 import Dropdown from "./ui/Dropdown";
 import { Location } from "iconsax-react";
-import { useState } from "react";
+import { useState, useEffect } from "react";
+
+const industry: string[] = [
+  "Software Development",
+  "Manufacturing",
+  "Marketing",
+];
+const location: string[] = [
+  "Kathmandu",
+  "New York",
+  "Birtamod",
+  "Biratnagar",
+  "Lalitpur",
+];
 
 function SearchComponent() {
-  // fetch  the data and sent the data to the dropdown
-  const [data, setData] = useState();
+  const [selectedValue, setSelectedValue] = useState<string>("");
+  const [keywords, setKeywords] = useState<string>("");
+  const [selectedValueLocation, setSelectedValueLocation] =
+    useState<string>("");
 
-  const industry = ["Software Development", "Manufacturing", "Marketing"];
-  const location = ["Kathmandu", "New York", "Birtamod"];
-  console.log(data);
+  useEffect(() => {
+    if (selectedValue) {
+      console.log(`Selected Industry changed to: ${selectedValue}`);
+    }
+  }, [selectedValue, selectedValueLocation]);
+
+  function handleSearchQuery() {
+    const queryObject = {
+      location: selectedValueLocation,
+      industry: selectedValue,
+      keywords,
+    };
+
+    // reset the fields after submission
+    setSelectedValue("");
+    setSelectedValueLocation("");
+    setKeywords("");
+  }
 
   return (
     <div>
@@ -22,6 +51,10 @@ function SearchComponent() {
           <HiCubeTransparent className="text-blue-950 text-2xl flex-shrink-0" />
           <input
             type="text"
+            value={keywords}
+            onChange={(e) => {
+              setKeywords(e.target.value);
+            }}
             placeholder="Job keywords or title.."
             className="w-full bg-[#F4F7FD] outline-none h-full"
           />
@@ -30,17 +63,28 @@ function SearchComponent() {
 
         <div className="flex-2 flex items-center h-12 gap-3 rounded-lg px-4">
           <MdOutlineWorkOutline className="text-blue-950 text-2xl flex-shrink-0" />
-          <Dropdown data={industry} setData={setData} name="Industry" />
+          <Dropdown
+            data={industry}
+            setSelectedValue={setSelectedValue}
+            name="Industry"
+            value={selectedValue}
+          />
         </div>
 
         <div>|</div>
         <div className="flex-2 flex items-center h-12 gap-3  rounded-lg px-4">
           <Location size={24} className="text-blue-950 flex-shrink-0" />
-          <Dropdown data={location} setData={setData} name="location" />
+          <Dropdown
+            data={location}
+            setSelectedValue={setSelectedValueLocation}
+            name="Location"
+            value={selectedValueLocation}
+          />
         </div>
 
         <div className="flex items-center h-12">
           <Button
+            onClick={handleSearchQuery}
             variant="contained"
             sx={{
               height: "100%",

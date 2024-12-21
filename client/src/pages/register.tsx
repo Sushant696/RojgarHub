@@ -1,4 +1,3 @@
-import React from "react";
 import {
   FaFacebook,
   FaGithub,
@@ -20,12 +19,24 @@ import ToggleUser from "../components/toggleButton";
 import { Mobile } from "iconsax-react";
 import { useState } from "react";
 
-function Register({ onSwitch }) {
+interface RegisterProps {
+  onSwitch: () => void;
+}
+
+interface FormDataTypes {
+  username: string;
+  email: string;
+  contact: string;
+  password: string;
+}
+
+function Register({ onSwitch }: RegisterProps) {
   const { push } = useRouter();
   const [currentUser, setCurrentUser] = useState("user");
   const { mutate, isPending } = useMutation({
     mutationKey: ["register"],
-    mutationFn: (values) => userApi.Register(values, currentUser),
+    mutationFn: (values: FormDataTypes) =>
+      userApi.Register(values, currentUser),
     onSuccess: () => {
       formik.resetForm();
       showNotification("success", "User registered Successfully");

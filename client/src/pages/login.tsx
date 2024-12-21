@@ -17,7 +17,16 @@ import showNotification from "../utils/toastify";
 import { toast } from "react-toastify";
 import useRouter from "../lib/router";
 
-function Login({ onSwitch }) {
+interface LoginProps {
+  onSwitch: () => void;
+}
+
+interface FormDataTypes {
+  phoneNo: string;
+  password: string;
+}
+
+function Login({ onSwitch }: LoginProps) {
   const router = useRouter();
   const { mutate, isPending } = useMutation({
     mutationKey: ["login"],
@@ -39,7 +48,7 @@ function Login({ onSwitch }) {
       phoneNo: "",
       password: "",
     },
-    onSubmit: (values) => {
+    onSubmit: (values: FormDataTypes) => {
       formik.resetForm();
       mutate(values);
     },

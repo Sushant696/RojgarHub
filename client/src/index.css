@@ -103,3 +103,7 @@
 .responsive-grid {
   @apply grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 sm:gap-4;
 }
+
+.clip-sloppy {
+  clip-path: polygon(0 95%, 50% 100%, 100% 95%, 100% 0, 0 0);
+}

@@ -1,17 +1,36 @@
 import { Button } from "@mui/material";
 import { MdOutlineWorkOutline } from "react-icons/md";
 import { HiCubeTransparent } from "react-icons/hi";
-import React from "react";
-import Dropdown from "./ui/Dropdown";
 import { Location } from "iconsax-react";
-import { useState } from "react";
+import { useState, useEffect } from "react";
+
+import Dropdown from "./ui/Dropdown";
+
+const industry: string[] = [
+  "Software Development",
+  "Manufacturing",
+  "Marketing",
+];
+const location: string[] = [
+  "Kathmandu",
+  "New York",
+  "Birtamod",
+  "Biratnagar",
+  "Lalitpur",
+];
 
 function SearchComponentMobile() {
-  const [data, setData] = useState();
-  const industry = ["Software Development", "Manufacturing", "Marketing"];
-  const location = ["Kathmandu", "New York", "Birtamod"];
+  const [selectedValue, setSelectedValue] = useState<string>("");
 
-  console.log(data);
+  const [selectedValueLocation, setSelectedValueLocation] =
+    useState<string>("");
+
+  useEffect(() => {
+    if (selectedValue) {
+      console.log(`Selected Industry changed to: ${selectedValue}`);
+    }
+  }, [selectedValue, selectedValueLocation]);
+
   return (
     <div>
       <div className="border text-center mx-8 p-4 md:mx-16 xl:mx-32 rounded-lg my-12 space-y-4">
@@ -25,11 +44,21 @@ function SearchComponentMobile() {
         </div>
         <div className="flex-2 flex items-center p-5 gap-3 border rounded-lg">
           <MdOutlineWorkOutline className="emphasized-text text-blue-950" />
-          <Dropdown data={industry} setData={setData} name="Industry" />
+          <Dropdown
+            data={industry}
+            setSelectedValue={setSelectedValue}
+            name="Industry"
+            value={selectedValue}
+          />
         </div>
         <div className="flex-2 flex items-center p-5 gap-3 border rounded-lg">
           <Location className="regular-text text-blue-950" />
-          <Dropdown data={location} setData={setData} name="location" />
+          <Dropdown
+            data={location}
+            setSelectedValue={setSelectedValueLocation}
+            name="Location"
+            value={selectedValueLocation}
+          />
         </div>
         <div className="p-2">
           <Button variant="contained">Search</Button>

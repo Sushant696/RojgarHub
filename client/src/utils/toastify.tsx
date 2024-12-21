@@ -1,6 +1,8 @@
-import { toast } from "react-toastify";
+import { toast, ToastOptions } from "react-toastify";
 
-const defaultOptions = {
+type NotificationType = "success" | "error" | "info" | "warning";
+
+const defaultOptions: ToastOptions = {
   position: "top-right",
   autoClose: 3000,
   hideProgressBar: false,
@@ -10,7 +12,11 @@ const defaultOptions = {
   progress: undefined,
 };
 
-const showNotification = (type, message, options) => {
+const showNotification = (
+  type: NotificationType,
+  message: string,
+  options?: ToastOptions,
+) => {
   const toastOptions = { ...defaultOptions, ...options };
 
   switch (type) {

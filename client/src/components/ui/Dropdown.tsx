@@ -1,13 +1,21 @@
-import React from "react";
-import { FormControl, Select, MenuItem } from "@mui/material";
-import { useState } from "react";
+import {
+  FormControl,
+  Select,
+  MenuItem,
+  SelectChangeEvent,
+} from "@mui/material";
 
-function Dropdown({ data, setData, name }: any) {
-  const [value, setValue] = useState("placeholder");
+interface DropdownTypes {
+  data: string[];
+  setSelectedValue: (value: string) => void;
+  name: string;
+  value: string;
+}
 
-  function handleChange(e: any) {
-    setValue(e.target.value);
-    setData(value);
+function Dropdown({ data, setSelectedValue, name, value }: DropdownTypes) {
+  function handleSelectdOption(e: SelectChangeEvent<string>) {
+    const selectedValue = e.target.value as string;
+    setSelectedValue(selectedValue);
   }
 
   return (
@@ -25,7 +33,8 @@ function Dropdown({ data, setData, name }: any) {
       >
         <Select
           value={value}
-          onChange={handleChange}
+          onChange={handleSelectdOption}
+          displayEmpty
           sx={{
             "&.Mui-focused .MuiOutlinedInput-notchedOutline": {
               border: "none",
@@ -39,12 +48,12 @@ function Dropdown({ data, setData, name }: any) {
             },
           }}
         >
-          <MenuItem value="placeholder" disabled>
+          <MenuItem value="" disabled>
             Select a {name}
           </MenuItem>
-          {data?.map(({ item, index }: any) => (
-            <MenuItem key={index} value={item}>
-              {item}
+          {data?.map((option, index) => (
+            <MenuItem key={index} value={option}>
+              {option}
             </MenuItem>
           ))}
         </Select>

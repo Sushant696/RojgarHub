@@ -1,5 +1,4 @@
 import { useLocation } from "@tanstack/react-router";
-import React from "react";
 import { useState } from "react";
 import Login from "../pages/login";
 import Register from "../pages/register";
@@ -12,7 +11,7 @@ function SlidingForms() {
 
   useEffect(() => {
     setActiveForm(location.pathname.slice(1));
-  }, location.pathname);
+  }, [location.pathname]);
 
   return (
     <div>
