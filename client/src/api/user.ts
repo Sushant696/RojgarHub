@@ -1,6 +1,17 @@
-async function Login(formData) {
+interface FormDataTypes {
+  phoneNo: string;
+  password: string;
+}
+interface RegisterFormtypes {
+  username: string;
+  email: string;
+  contact: string;
+  password: string;
+}
+
+async function Login(formData: FormDataTypes) {
   try {
-    const response = await fetch("http://localhost:5500/api/user/login", {
+    const response = await fetch(`${process.env.API_URL}/api/user/login`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
@@ -20,7 +31,7 @@ async function Login(formData) {
   }
 }
 
-async function Register(formData, currentUser) {
+async function Register(formData: RegisterFormtypes, currentUser: string) {
   try {
     const response = await fetch(`http://localhost:5500/api/${currentUser}/`, {
       method: "POST",

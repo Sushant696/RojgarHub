@@ -15,6 +15,8 @@
     "@mui/material": "^6.2.1",
     "@tanstack/react-query": "^5.62.8",
     "@tanstack/react-router": "^1.91.3",
+    "@types/react-helmet": "^6.1.11",
+    "dotenv": "^16.4.7",
     "formik": "^2.4.6",
     "iconsax-react": "^0.0.8",
     "motion": "^11.15.0",
@@ -22,12 +24,14 @@
     "react-dom": "^18.3.1",
     "react-helmet": "^6.1.0",
     "react-icons": "^5.4.0",
-    "react-toastify": "^11.0.2"
+    "react-toastify": "^11.0.2",
+    "yup": "^1.6.1"
   },
   "devDependencies": {
     "@eslint/js": "^9.17.0",
     "@tanstack/router-devtools": "^1.91.3",
     "@tanstack/router-plugin": "^1.91.1",
+    "@types/node": "^22.10.2",
     "@types/react": "^18.3.17",
     "@types/react-dom": "^18.3.5",
     "@vitejs/plugin-react": "^4.3.4",

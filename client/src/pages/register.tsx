@@ -18,6 +18,7 @@ import useRouter from "../lib/router";
 import ToggleUser from "../components/toggleButton";
 import { Mobile } from "iconsax-react";
 import { useState } from "react";
+import * as Yup from "yup";
 
 interface RegisterProps {
   onSwitch: () => void;
@@ -29,6 +30,16 @@ interface FormDataTypes {
   contact: string;
   password: string;
 }
+
+const registerSchema = Yup.object().shape({
+  username: Yup.string().required(),
+  email: Yup.string()
+    .email("Invalid email format")
+    .required("Email is required"),
+
+  contact: Yup.string().required().min(10).max(10),
+  password: Yup.string().required(),
+});
 
 function Register({ onSwitch }: RegisterProps) {
   const { push } = useRouter();
@@ -54,6 +65,7 @@ function Register({ onSwitch }: RegisterProps) {
       contact: "",
       confirmPassword: "",
     },
+    validationSchema: registerSchema,
     onSubmit: (values) => {
       console.log(currentUser, "inside");
       mutate(values);
@@ -90,11 +102,7 @@ function Register({ onSwitch }: RegisterProps) {
                   </div>
                 </div>
 
-                <form
-                  onSubmit={formik.handleSubmit}
-                  id="registrationForm"
-                  className="space-y-5"
-                >
+                <form onSubmit={formik.handleSubmit} className="space-y-5">
                   <div>
                     <label
                       htmlFor="username"

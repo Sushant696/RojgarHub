@@ -1,6 +1,5 @@
-import { Link, redirect } from "@tanstack/react-router";
+import { Link } from "@tanstack/react-router";
 import { ArrowRight } from "iconsax-react";
-import React from "react";
 import {
   FaFacebook,
   FaGithub,
@@ -16,7 +15,7 @@ import { useMutation } from "@tanstack/react-query";
 import showNotification from "../utils/toastify";
 import { toast } from "react-toastify";
 import useRouter from "../lib/router";
-
+import * as Yup from "yup";
 interface LoginProps {
   onSwitch: () => void;
 }
@@ -25,6 +24,13 @@ interface FormDataTypes {
   phoneNo: string;
   password: string;
 }
+
+const userLoginSchema = Yup.object().shape({
+  phoneNo: Yup.string().required("Mobile Number is required").min(10).max(10),
+  password: Yup.string()
+    .min(6, "Password must be at least 6 characters")
+    .required("Password is required"),
+});
 
 function Login({ onSwitch }: LoginProps) {
   const router = useRouter();
@@ -48,6 +54,7 @@ function Login({ onSwitch }: LoginProps) {
       phoneNo: "",
       password: "",
     },
+    validationSchema: userLoginSchema,
     onSubmit: (values: FormDataTypes) => {
       formik.resetForm();
       mutate(values);

@@ -24,6 +24,7 @@ function SearchComponent() {
   const [selectedValueLocation, setSelectedValueLocation] =
     useState<string>("");
 
+  console.log("search component");
   useEffect(() => {
     if (selectedValue) {
       console.log(`Selected Industry changed to: ${selectedValue}`);
@@ -36,6 +37,7 @@ function SearchComponent() {
       industry: selectedValue,
       keywords,
     };
+    console.log(queryObject);
 
     // reset the fields after submission
     setSelectedValue("");
@@ -53,11 +55,13 @@ function SearchComponent() {
             type="text"
             value={keywords}
             onChange={(e) => {
+              console.log("touched")
               setKeywords(e.target.value);
             }}
             placeholder="Job keywords or title.."
             className="w-full bg-[#F4F7FD] outline-none h-full"
           />
+          
         </div>
         <div>|</div>
 

@@ -16,6 +16,7 @@ function Dropdown({ data, setSelectedValue, name, value }: DropdownTypes) {
   function handleSelectdOption(e: SelectChangeEvent<string>) {
     const selectedValue = e.target.value as string;
     setSelectedValue(selectedValue);
+    console.log("hello")
   }
 
   return (

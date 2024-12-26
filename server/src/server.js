@@ -8,7 +8,6 @@ import bodyParser from "body-parser";
 import mainRouter from "./modules/main.router.js";
 import { errorHandler } from "./middlewares/errorhandler.middlewares.js";
 
-
 export const app = express();
 
 const corsOption = {
@@ -24,6 +23,7 @@ const limiter = rateLimit({
   windowMs: 15 * 60 * 1000, // 15 minutes
   max: 100, // Limit each IP to 100 requests per windowMs
 });
+
 
 app.get("/", (_, res) => {
   return res.status(200).json("Welcome to rojgarHub Server");
