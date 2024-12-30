@@ -44,6 +44,7 @@ const registerSchema = Yup.object().shape({
 function Register({ onSwitch }: RegisterProps) {
   const { push } = useRouter();
   const [currentUser, setCurrentUser] = useState("user");
+
   const { mutate, isPending } = useMutation({
     mutationKey: ["register"],
     mutationFn: (values: FormDataTypes) =>
@@ -51,7 +52,8 @@ function Register({ onSwitch }: RegisterProps) {
     onSuccess: () => {
       formik.resetForm();
       showNotification("success", "User registered Successfully");
-      push("/login");
+
+      currentUser === "user" ? push("/login") : push("/dashboard");
     },
     onError: (error) => {
       showNotification("success", error.message || "Something went wrong.");

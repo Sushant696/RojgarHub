@@ -1,6 +1,11 @@
+import EmployerLogin from "./employerLogin";
 
 function Dashboard() {
-  return <div>welcome to Dashboard</div>;
+  return (
+    <div>
+      <EmployerLogin />
+    </div>
+  );
 }
 
 export default Dashboard;

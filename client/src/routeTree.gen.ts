@@ -15,11 +15,12 @@ import { createFileRoute } from '@tanstack/react-router'
 import { Route as rootRoute } from './routes/__root'
 import { Route as RegisterImport } from './routes/register'
 import { Route as PricingImport } from './routes/pricing'
+import { Route as DashboardImport } from './routes/dashboard'
+import { Route as AuthImport } from './routes/_auth'
 
 // Create Virtual Routes
 
 const LoginLazyImport = createFileRoute('/login')()
-const DashboardLazyImport = createFileRoute('/dashboard')()
 const ContactLazyImport = createFileRoute('/contact')()
 const BlogLazyImport = createFileRoute('/blog')()
 const ApplyLazyImport = createFileRoute('/apply')()
@@ -33,12 +34,6 @@ const LoginLazyRoute = LoginLazyImport.update({
   path: '/login',
   getParentRoute: () => rootRoute,
 } as any).lazy(() => import('./routes/login.lazy').then((d) => d.Route))
-
-const DashboardLazyRoute = DashboardLazyImport.update({
-  id: '/dashboard',
-  path: '/dashboard',
-  getParentRoute: () => rootRoute,
-} as any).lazy(() => import('./routes/dashboard.lazy').then((d) => d.Route))
 
 const ContactLazyRoute = ContactLazyImport.update({
   id: '/contact',
@@ -76,6 +71,17 @@ const PricingRoute = PricingImport.update({
   getParentRoute: () => rootRoute,
 } as any)
 
+const DashboardRoute = DashboardImport.update({
+  id: '/dashboard',
+  path: '/dashboard',
+  getParentRoute: () => rootRoute,
+} as any)
+
+const AuthRoute = AuthImport.update({
+  id: '/_auth',
+  getParentRoute: () => rootRoute,
+} as any)
+
 const IndexLazyRoute = IndexLazyImport.update({
   id: '/',
   path: '/',
@@ -91,6 +97,20 @@ declare module '@tanstack/react-router' {
       path: '/'
       fullPath: '/'
       preLoaderRoute: typeof IndexLazyImport
+      parentRoute: typeof rootRoute
+    }
+    '/_auth': {
+      id: '/_auth'
+      path: ''
+      fullPath: ''
+      preLoaderRoute: typeof AuthImport
+      parentRoute: typeof rootRoute
+    }
+    '/dashboard': {
+      id: '/dashboard'
+      path: '/dashboard'
+      fullPath: '/dashboard'
+      preLoaderRoute: typeof DashboardImport
       parentRoute: typeof rootRoute
     }
     '/pricing': {
@@ -135,13 +155,6 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ContactLazyImport
       parentRoute: typeof rootRoute
     }
-    '/dashboard': {
-      id: '/dashboard'
-      path: '/dashboard'
-      fullPath: '/dashboard'
-      preLoaderRoute: typeof DashboardLazyImport
-      parentRoute: typeof rootRoute
-    }
     '/login': {
       id: '/login'
       path: '/login'
@@ -156,38 +169,41 @@ declare module '@tanstack/react-router' {
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexLazyRoute
+  '': typeof AuthRoute
+  '/dashboard': typeof DashboardRoute
   '/pricing': typeof PricingRoute
   '/register': typeof RegisterRoute
   '/about': typeof AboutLazyRoute
   '/apply': typeof ApplyLazyRoute
   '/blog': typeof BlogLazyRoute
   '/contact': typeof ContactLazyRoute
-  '/dashboard': typeof DashboardLazyRoute
   '/login': typeof LoginLazyRoute
 }
 
 export interface FileRoutesByTo {
   '/': typeof IndexLazyRoute
+  '': typeof AuthRoute
+  '/dashboard': typeof DashboardRoute
   '/pricing': typeof PricingRoute
   '/register': typeof RegisterRoute
   '/about': typeof AboutLazyRoute
   '/apply': typeof ApplyLazyRoute
   '/blog': typeof BlogLazyRoute
   '/contact': typeof ContactLazyRoute
-  '/dashboard': typeof DashboardLazyRoute
   '/login': typeof LoginLazyRoute
 }
 
 export interface FileRoutesById {
   __root__: typeof rootRoute
   '/': typeof IndexLazyRoute
+  '/_auth': typeof AuthRoute
+  '/dashboard': typeof DashboardRoute
   '/pricing': typeof PricingRoute
   '/register': typeof RegisterRoute
   '/about': typeof AboutLazyRoute
   '/apply': typeof ApplyLazyRoute
   '/blog': typeof BlogLazyRoute
   '/contact': typeof ContactLazyRoute
-  '/dashboard': typeof DashboardLazyRoute
   '/login': typeof LoginLazyRoute
 }
 
@@ -195,60 +211,65 @@ export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
     | '/'
+    | ''
+    | '/dashboard'
     | '/pricing'
     | '/register'
     | '/about'
     | '/apply'
     | '/blog'
     | '/contact'
-    | '/dashboard'
     | '/login'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
+    | ''
+    | '/dashboard'
     | '/pricing'
     | '/register'
     | '/about'
     | '/apply'
     | '/blog'
     | '/contact'
-    | '/dashboard'
     | '/login'
   id:
     | '__root__'
     | '/'
+    | '/_auth'
+    | '/dashboard'
     | '/pricing'
     | '/register'
     | '/about'
     | '/apply'
     | '/blog'
     | '/contact'
-    | '/dashboard'
     | '/login'
   fileRoutesById: FileRoutesById
 }
 
 export interface RootRouteChildren {
   IndexLazyRoute: typeof IndexLazyRoute
+  AuthRoute: typeof AuthRoute
+  DashboardRoute: typeof DashboardRoute
   PricingRoute: typeof PricingRoute
   RegisterRoute: typeof RegisterRoute
   AboutLazyRoute: typeof AboutLazyRoute
   ApplyLazyRoute: typeof ApplyLazyRoute
   BlogLazyRoute: typeof BlogLazyRoute
   ContactLazyRoute: typeof ContactLazyRoute
-  DashboardLazyRoute: typeof DashboardLazyRoute
   LoginLazyRoute: typeof LoginLazyRoute
 }
 
 const rootRouteChildren: RootRouteChildren = {
   IndexLazyRoute: IndexLazyRoute,
+  AuthRoute: AuthRoute,
+  DashboardRoute: DashboardRoute,
   PricingRoute: PricingRoute,
   RegisterRoute: RegisterRoute,
   AboutLazyRoute: AboutLazyRoute,
   ApplyLazyRoute: ApplyLazyRoute,
   BlogLazyRoute: BlogLazyRoute,
   ContactLazyRoute: ContactLazyRoute,
-  DashboardLazyRoute: DashboardLazyRoute,
   LoginLazyRoute: LoginLazyRoute,
 }
 
@@ -263,18 +284,25 @@ export const routeTree = rootRoute
       "filePath": "__root.tsx",
       "children": [
         "/",
+        "/_auth",
+        "/dashboard",
         "/pricing",
         "/register",
         "/about",
         "/apply",
         "/blog",
         "/contact",
-        "/dashboard",
         "/login"
       ]
     },
     "/": {
       "filePath": "index.lazy.tsx"
+    },
+    "/_auth": {
+      "filePath": "_auth.tsx"
+    },
+    "/dashboard": {
+      "filePath": "dashboard.tsx"
     },
     "/pricing": {
       "filePath": "pricing.tsx"
@@ -293,9 +321,6 @@ export const routeTree = rootRoute
     },
     "/contact": {
       "filePath": "contact.lazy.tsx"
-    },
-    "/dashboard": {
-      "filePath": "dashboard.lazy.tsx"
     },
     "/login": {
       "filePath": "login.lazy.tsx"

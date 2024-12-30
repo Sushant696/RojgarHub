@@ -1,6 +1,6 @@
-import { createLazyFileRoute } from "@tanstack/react-router";
-import SlidingForms from "../components/SlidingForms";
+import { createLazyFileRoute } from '@tanstack/react-router'
+import SlidingForms from '../components/SlidingForms'
 
-export const Route = createLazyFileRoute("/login")({
+export const Route = createLazyFileRoute('/login')({
   component: SlidingForms,
-});
+})

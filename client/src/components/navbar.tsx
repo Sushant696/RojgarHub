@@ -1,6 +1,5 @@
 import { Button } from "@mui/material";
 import { Link } from "@tanstack/react-router";
-import React from "react";
 
 function Navbar() {
   return (

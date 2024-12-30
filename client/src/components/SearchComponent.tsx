@@ -3,7 +3,7 @@ import { MdOutlineWorkOutline } from "react-icons/md";
 import { HiCubeTransparent } from "react-icons/hi";
 import Dropdown from "./ui/Dropdown";
 import { Location } from "iconsax-react";
-import { useState, useEffect } from "react";
+import { useState } from "react";
 
 const industry: string[] = [
   "Software Development",
@@ -23,13 +23,6 @@ function SearchComponent() {
   const [keywords, setKeywords] = useState<string>("");
   const [selectedValueLocation, setSelectedValueLocation] =
     useState<string>("");
-
-  console.log("search component");
-  useEffect(() => {
-    if (selectedValue) {
-      console.log(`Selected Industry changed to: ${selectedValue}`);
-    }
-  }, [selectedValue, selectedValueLocation]);
 
   function handleSearchQuery() {
     const queryObject = {
@@ -55,13 +48,12 @@ function SearchComponent() {
             type="text"
             value={keywords}
             onChange={(e) => {
-              console.log("touched")
+              console.log("touched");
               setKeywords(e.target.value);
             }}
             placeholder="Job keywords or title.."
             className="w-full bg-[#F4F7FD] outline-none h-full"
           />
-          
         </div>
         <div>|</div>
 

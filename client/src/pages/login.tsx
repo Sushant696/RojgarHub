@@ -42,6 +42,7 @@ function Login({ onSwitch }: LoginProps) {
         "success",
         "Login successful, Welcome to the dashboard!",
       );
+      // push user to the respective dashboard according to their role
       router.push("/");
     },
     onError: (error) => {
