@@ -12,13 +12,13 @@ import { useFormik } from "formik";
 import { IoMail } from "react-icons/io5";
 import { ArrowLeft } from "iconsax-react";
 import { useMutation } from "@tanstack/react-query";
-import { userApi } from "../api/user";
 import showNotification from "../utils/toastify";
 import useRouter from "../lib/router";
 import ToggleUser from "../components/toggleButton";
 import { Mobile } from "iconsax-react";
 import { useState } from "react";
 import * as Yup from "yup";
+import { authApi } from "../api/user";
 
 interface RegisterProps {
   onSwitch: () => void;
@@ -36,24 +36,22 @@ const registerSchema = Yup.object().shape({
   email: Yup.string()
     .email("Invalid email format")
     .required("Email is required"),
-
   contact: Yup.string().required().min(10).max(10),
   password: Yup.string().required(),
 });
 
 function Register({ onSwitch }: RegisterProps) {
   const { push } = useRouter();
-  const [currentUser, setCurrentUser] = useState("user");
+  const [currentUser, setCurrentUser] = useState("candidate");
 
   const { mutate, isPending } = useMutation({
     mutationKey: ["register"],
     mutationFn: (values: FormDataTypes) =>
-      userApi.Register(values, currentUser),
+      authApi.Register(values, currentUser),
     onSuccess: () => {
       formik.resetForm();
       showNotification("success", "User registered Successfully");
-
-      currentUser === "user" ? push("/login") : push("/dashboard");
+      push("/login");
     },
     onError: (error) => {
       showNotification("success", error.message || "Something went wrong.");
@@ -69,7 +67,6 @@ function Register({ onSwitch }: RegisterProps) {
     },
     validationSchema: registerSchema,
     onSubmit: (values) => {
-      console.log(currentUser, "inside");
       mutate(values);
     },
   });
