@@ -3,6 +3,7 @@ import JobsOfTheDay from "../../components/JobsOfTheDay";
 import SearchComponent from "../../components/SearchComponent";
 import TrustedBy from "../../components/TrustedBy";
 import SearchComponentMobile from "../../components/mobileSearch";
+import useAuthStore from "../../stores/authStore";
 
 const popularSearches = [
   "software Developer",
@@ -12,6 +13,9 @@ const popularSearches = [
 ];
 
 function Hero() {
+
+  const user = useAuthStore(state => state.user)
+  console.log(user, "user")
   return (
     <>
       <div className=" w-full bg-[#F4F7FD] pb-36">
@@ -51,6 +55,9 @@ function Hero() {
       </div>
       Discover Your Calling
       <JobsOfTheDay />
+      <h1 className="subtitle-text">
+        Hello {user?.username} welcome to your dashboard
+      </h1>
     </>
   );
 }

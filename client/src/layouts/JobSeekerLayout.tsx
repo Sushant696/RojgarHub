@@ -20,3 +20,5 @@ export const JobSeekerLayout = () => {
     </div>
   );
 };
+
+// verify the user and get the user object when he log ins then save that in the cookies or something  where i will have access over and then according to that send the user to specific routes and manage the roles from there need to make state persistence

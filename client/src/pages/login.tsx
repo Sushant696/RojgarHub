@@ -8,14 +8,15 @@ import {
   FaShieldAlt,
   FaSync,
 } from "react-icons/fa";
+import * as Yup from "yup";
 import { RiLockPasswordFill } from "react-icons/ri";
 import { useFormik } from "formik";
-import { userApi } from "../api/user";
 import { useMutation } from "@tanstack/react-query";
-import showNotification from "../utils/toastify";
-import { toast } from "react-toastify";
+
 import useRouter from "../lib/router";
-import * as Yup from "yup";
+import showNotification from "../utils/toastify";
+import useAuthStore from "../stores/authStore";
+
 interface LoginProps {
   onSwitch: () => void;
 }
@@ -33,22 +34,9 @@ const userLoginSchema = Yup.object().shape({
 });
 
 function Login({ onSwitch }: LoginProps) {
+  const user = useAuthStore(state => state.user)
   const router = useRouter();
-  const { mutate, isPending } = useMutation({
-    mutationKey: ["login"],
-    mutationFn: userApi.Login,
-    onSuccess: () => {
-      showNotification(
-        "success",
-        "Login successful, Welcome to the dashboard!",
-      );
-      // push user to the respective dashboard according to their role
-      router.push("/");
-    },
-    onError: (error) => {
-      toast.error(error.message || "Sometime went wrong.");
-    },
-  });
+  const login = useAuthStore((state) => state.login);
 
   const formik = useFormik({
     initialValues: {
@@ -59,6 +47,24 @@ function Login({ onSwitch }: LoginProps) {
     onSubmit: (values: FormDataTypes) => {
       formik.resetForm();
       mutate(values);
+    },
+  });
+
+  const { mutate, isPending } = useMutation({
+    mutationKey: ["login"],
+    mutationFn: async (values: FormDataTypes) => {
+      await login(values.phoneNo, values.password);
+    },
+    onSuccess: () => {
+      showNotification(
+        "success",
+        "Login successful, Welcome to the dashboard!",
+      );
+      user?.role == "employer" ? router.push("/") : router.push("/apply")
+    },
+
+    onError: (error) => {
+      showNotification("error", error.message || "Sometime went wrong.");
     },
   });
 
@@ -164,6 +170,11 @@ function Login({ onSwitch }: LoginProps) {
                         placeholder="Enter your mobile number"
                       />
                     </div>
+                    {formik.touched.phoneNo && formik.errors.phoneNo && (
+                      <div className="text-red-500 text-sm mt-1">
+                        Phone number must be 10 digits
+                      </div>
+                    )}
                   </div>
 
                   <div>
@@ -189,6 +200,11 @@ function Login({ onSwitch }: LoginProps) {
                         placeholder="Enter your password"
                       />
                     </div>
+                    {formik.touched.password && formik.errors.password && (
+                      <div className="text-red-500 text-sm mt-1">
+                        {formik.errors.password}
+                      </div>
+                    )}
                   </div>
 
                   <div className="flex items-center justify-between">
@@ -201,8 +217,7 @@ function Login({ onSwitch }: LoginProps) {
                   </div>
 
                   <button
-                    type="submit"
-                    disabled={isPending}
+                    //type="submit"
                     className="w-full bg-indigo-600 text-white py-3 px-4 rounded-lg hover:bg-indigo-700 transition duration-150 ease-in-out"
                   >
                     {isPending ? "Signing in" : "Sign in"}
@@ -238,11 +253,7 @@ function Login({ onSwitch }: LoginProps) {
         </div>
       </div>
       <div className="w-1/4 flex justify-center items-center">
-        <Link
-          onClick={onSwitch}
-          href="/register"
-          className="flex items-center gap-4"
-        >
+        <Link onClick={onSwitch} href="/" className="flex items-center gap-4">
           Create new account <ArrowRight variant="Bulk" size={32} />
         </Link>
       </div>

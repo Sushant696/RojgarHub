@@ -10,47 +10,41 @@ interface RegisterFormtypes {
 }
 
 async function Login(formData: FormDataTypes) {
-  try {
-    const response = await fetch(`${process.env.API_URL}/api/user/login`, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        contact: formData.phoneNo,
-        password: formData.password,
-      }),
-    });
+  // const response = await fetch(`${process.env.API_URL}/api/auth`, {
+  const response = await fetch(`http://localhost:5500/api/auth/login`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({
+      contact: formData.phoneNo,
+      password: formData.password,
+    }),
+  });
 
-    const data = await response.json();
-    if (!data?.success) {
-      throw new Error(data.message || "Something went wrong!");
-    }
-
-    return data;
-  } catch (error) {
-    throw error;
+  const data = await response.json();
+  if (!data?.success) {
+    throw new Error(data.message || "Something went wrong!");
   }
+  return data;
 }
 
 async function Register(formData: RegisterFormtypes, currentUser: string) {
-  try {
-    const response = await fetch(`http://localhost:5500/api/${currentUser}/`, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        username: formData.username,
-        email: formData.email,
-        contact: formData.contact,
-        password: formData.password,
-      }),
-    });
+  console.log(currentUser);
+  const response = await fetch(`http://localhost:5500/api/auth/register`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({
+      username: formData.username,
+      email: formData.email,
+      contact: formData.contact,
+      password: formData.password,
+      currentUser: currentUser,
+    }),
+  });
 
-    const data = await response.json();
-    if (!data?.success) {
-      throw new Error(data?.message || "Something went wrong");
-    }
-  } catch (error) {
-    throw error;
+  const data = await response.json();
+  if (!data?.success) {
+    throw new Error(data?.message || "Something went wrong");
   }
 }
 
-export const userApi = { Login, Register };
+export const authApi = { Login, Register };

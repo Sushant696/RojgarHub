@@ -1,14 +1,18 @@
-import * as React from "react";
 import ToggleButton from "@mui/material/ToggleButton";
 import ToggleButtonGroup from "@mui/material/ToggleButtonGroup";
 import { useState } from "react";
 import { useEffect } from "react";
 
-export default function ToggleUser({ setCurrentUser }) {
+interface ToggleUserProps {
+  setCurrentUser: (userType: string) => void
+}
+
+
+export default function ToggleUser({ setCurrentUser }: ToggleUserProps) {
   const [alignment, setAlignment] = useState("left");
 
   useEffect(() => {
-    const userType = alignment === "left" ? "user" : "employer";
+    const userType = alignment === "left" ? "candidate" : "employer";
     setCurrentUser(userType);
   }, [alignment, setCurrentUser]);
 

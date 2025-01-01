@@ -15,8 +15,6 @@ import { createFileRoute } from '@tanstack/react-router'
 import { Route as rootRoute } from './routes/__root'
 import { Route as RegisterImport } from './routes/register'
 import { Route as PricingImport } from './routes/pricing'
-import { Route as DashboardImport } from './routes/dashboard'
-import { Route as AuthImport } from './routes/_auth'
 
 // Create Virtual Routes
 
@@ -71,17 +69,6 @@ const PricingRoute = PricingImport.update({
   getParentRoute: () => rootRoute,
 } as any)
 
-const DashboardRoute = DashboardImport.update({
-  id: '/dashboard',
-  path: '/dashboard',
-  getParentRoute: () => rootRoute,
-} as any)
-
-const AuthRoute = AuthImport.update({
-  id: '/_auth',
-  getParentRoute: () => rootRoute,
-} as any)
-
 const IndexLazyRoute = IndexLazyImport.update({
   id: '/',
   path: '/',
@@ -97,20 +84,6 @@ declare module '@tanstack/react-router' {
       path: '/'
       fullPath: '/'
       preLoaderRoute: typeof IndexLazyImport
-      parentRoute: typeof rootRoute
-    }
-    '/_auth': {
-      id: '/_auth'
-      path: ''
-      fullPath: ''
-      preLoaderRoute: typeof AuthImport
-      parentRoute: typeof rootRoute
-    }
-    '/dashboard': {
-      id: '/dashboard'
-      path: '/dashboard'
-      fullPath: '/dashboard'
-      preLoaderRoute: typeof DashboardImport
       parentRoute: typeof rootRoute
     }
     '/pricing': {
@@ -169,8 +142,6 @@ declare module '@tanstack/react-router' {
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexLazyRoute
-  '': typeof AuthRoute
-  '/dashboard': typeof DashboardRoute
   '/pricing': typeof PricingRoute
   '/register': typeof RegisterRoute
   '/about': typeof AboutLazyRoute
@@ -182,8 +153,6 @@ export interface FileRoutesByFullPath {
 
 export interface FileRoutesByTo {
   '/': typeof IndexLazyRoute
-  '': typeof AuthRoute
-  '/dashboard': typeof DashboardRoute
   '/pricing': typeof PricingRoute
   '/register': typeof RegisterRoute
   '/about': typeof AboutLazyRoute
@@ -196,8 +165,6 @@ export interface FileRoutesByTo {
 export interface FileRoutesById {
   __root__: typeof rootRoute
   '/': typeof IndexLazyRoute
-  '/_auth': typeof AuthRoute
-  '/dashboard': typeof DashboardRoute
   '/pricing': typeof PricingRoute
   '/register': typeof RegisterRoute
   '/about': typeof AboutLazyRoute
@@ -211,8 +178,6 @@ export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
     | '/'
-    | ''
-    | '/dashboard'
     | '/pricing'
     | '/register'
     | '/about'
@@ -223,8 +188,6 @@ export interface FileRouteTypes {
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
-    | ''
-    | '/dashboard'
     | '/pricing'
     | '/register'
     | '/about'
@@ -235,8 +198,6 @@ export interface FileRouteTypes {
   id:
     | '__root__'
     | '/'
-    | '/_auth'
-    | '/dashboard'
     | '/pricing'
     | '/register'
     | '/about'
@@ -249,8 +210,6 @@ export interface FileRouteTypes {
 
 export interface RootRouteChildren {
   IndexLazyRoute: typeof IndexLazyRoute
-  AuthRoute: typeof AuthRoute
-  DashboardRoute: typeof DashboardRoute
   PricingRoute: typeof PricingRoute
   RegisterRoute: typeof RegisterRoute
   AboutLazyRoute: typeof AboutLazyRoute
@@ -262,8 +221,6 @@ export interface RootRouteChildren {
 
 const rootRouteChildren: RootRouteChildren = {
   IndexLazyRoute: IndexLazyRoute,
-  AuthRoute: AuthRoute,
-  DashboardRoute: DashboardRoute,
   PricingRoute: PricingRoute,
   RegisterRoute: RegisterRoute,
   AboutLazyRoute: AboutLazyRoute,
@@ -284,8 +241,6 @@ export const routeTree = rootRoute
       "filePath": "__root.tsx",
       "children": [
         "/",
-        "/_auth",
-        "/dashboard",
         "/pricing",
         "/register",
         "/about",
@@ -297,12 +252,6 @@ export const routeTree = rootRoute
     },
     "/": {
       "filePath": "index.lazy.tsx"
-    },
-    "/_auth": {
-      "filePath": "_auth.tsx"
-    },
-    "/dashboard": {
-      "filePath": "dashboard.tsx"
     },
     "/pricing": {
       "filePath": "pricing.tsx"
