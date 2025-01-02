@@ -1,8 +1,7 @@
-export type UserRole = "jobSeeker" | "employer";
-
+export type UserRole = "candidate" | "employer";
 
 export interface User {
-  id: string
-  role: UserRole
-  name: string
+  id: string;
+  role: UserRole;
+  name: string;
 }

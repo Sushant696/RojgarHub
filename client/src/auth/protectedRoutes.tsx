@@ -1,33 +1,32 @@
-// when user tries to access a protected route check if the user is authenticated or not
-// if yes then check if he has permissions to do so (roles) || if not then redirect to login page
-// if yes then redirect to where used wanted to go previously || if not then show error message you don't have enough permissoin to do so
-
-import { Outlet } from "@tanstack/react-router";
 import useRouter from "../lib/router";
 import { UserRole } from "../types/auth";
+import useAuthStore from "../stores/authStore";
+import { Outlet } from "@tanstack/react-router";
 import showNotification from "../utils/toastify";
-
 
 interface ProtectedRoutesProps {
   allowedRoles: UserRole[];
+  children: React.ReactNode;
 }
 
-export const ProtectedRoutes = ({ allowedRoles }: ProtectedRoutesProps) => {
+export const ProtectedRoutes = ({
+  children,
+  allowedRoles,
+}: ProtectedRoutesProps) => {
   const router = useRouter();
-  // auth check
-  const { user, isAuthenticated, isLoading } = useAuthStore();
+  const { user, isAuthenticated } = useAuthStore();
 
-  if (isLoading) {
-    <h1>loading</h1>;
-  }
-
+  // if authenticated
   if (!isAuthenticated || !user) {
-    return router.push("/login");
+    router.push("/login");
+    return null;
   }
 
+  // if eligible
   if (!allowedRoles.includes(user.role)) {
     showNotification("error", "Sorry, you are not eligible for the operation");
+    router.push("/login");
+    return null;
   }
-
-  return <Outlet />;
+  return <>{children ?? <Outlet />}</>;
 };

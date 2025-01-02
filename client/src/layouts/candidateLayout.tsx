@@ -1,11 +1,14 @@
 import { Outlet } from "@tanstack/react-router";
 import useRouter from "../lib/router";
+import useAuthStore from "../stores/authStore";
 
-export const JobSeekerLayout = () => {
+export const CandidateLayout = () => {
   const router = useRouter();
+  const user = useAuthStore((state) => state.user);
 
   return (
-    <div className="flex">
+    <div className="flex mt-10">
+      <h1 className="title-text">Welcome to dashboard' {user?.username}</h1>
       <nav className="w-64 bg-gray-100">
         <button onClick={() => router.push("/dashboard")}>Dashboard</button>
         <button onClick={() => router.push("/job-applications")}>
@@ -20,5 +23,3 @@ export const JobSeekerLayout = () => {
     </div>
   );
 };
-
-// verify the user and get the user object when he log ins then save that in the cookies or something  where i will have access over and then according to that send the user to specific routes and manage the roles from there need to make state persistence

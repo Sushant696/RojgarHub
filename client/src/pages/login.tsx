@@ -34,7 +34,7 @@ const userLoginSchema = Yup.object().shape({
 });
 
 function Login({ onSwitch }: LoginProps) {
-  const user = useAuthStore(state => state.user)
+  const user = useAuthStore((state) => state.user);
   const router = useRouter();
   const login = useAuthStore((state) => state.login);
 
@@ -60,7 +60,9 @@ function Login({ onSwitch }: LoginProps) {
         "success",
         "Login successful, Welcome to the dashboard!",
       );
-      user?.role == "employer" ? router.push("/") : router.push("/apply")
+      user?.role == "employer"
+        ? router.push("/employer")
+        : router.push("/candidate");
     },
 
     onError: (error) => {
@@ -253,7 +255,11 @@ function Login({ onSwitch }: LoginProps) {
         </div>
       </div>
       <div className="w-1/4 flex justify-center items-center">
-        <Link onClick={onSwitch} href="/" className="flex items-center gap-4">
+        <Link
+          onClick={onSwitch}
+          href="/register"
+          className="flex items-center gap-4"
+        >
           Create new account <ArrowRight variant="Bulk" size={32} />
         </Link>
       </div>
