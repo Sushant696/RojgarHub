@@ -1,24 +1,34 @@
 import { createRootRoute, Outlet } from "@tanstack/react-router";
 import { TanStackRouterDevtools } from "@tanstack/router-devtools";
-import Navbar from "../components/navbar";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import Footer from "../components/footer";
+
+import useAuthStore from "../stores/authStore";
+import { EmployerLayout } from "../layouts/EmployerLayout";
+import { CandidateLayout } from "../layouts/candidateLayout";
+import PublicLayout from "../layouts/publicLayout";
 
 const queryClient = new QueryClient();
 
+const user = useAuthStore.getState().user;
+
 export const Route = createRootRoute({
+  notFoundComponent: () => {
+    return <p>Not found bro make and custom component for this </p>;
+  },
+
   component: () => (
     <>
       <QueryClientProvider client={queryClient}>
-        <div className="sticky top-0 z-50 overflow-hidden">
-          <Navbar />
-        </div>
-        <div className="">
-          <Outlet />
-        </div>
-        <div className="mt-20">
-          <Footer />
-        </div>
+        {(() => {
+          switch (user?.role) {
+            case "employer":
+              return <EmployerLayout />;
+            case "candidate":
+              return <CandidateLayout />;
+            default:
+              return <PublicLayout />;
+          }
+        })()}
         <TanStackRouterDevtools />
       </QueryClientProvider>
     </>

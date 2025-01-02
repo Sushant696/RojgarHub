@@ -15,6 +15,10 @@ import { createFileRoute } from '@tanstack/react-router'
 import { Route as rootRoute } from './routes/__root'
 import { Route as RegisterImport } from './routes/register'
 import { Route as PricingImport } from './routes/pricing'
+import { Route as EmployerImport } from './routes/employer'
+import { Route as CandidateImport } from './routes/candidate'
+import { Route as DynamicIdImport } from './routes/dynamic/$id'
+import { Route as DashboardSettingsImport } from './routes/dashboard/settings'
 
 // Create Virtual Routes
 
@@ -69,11 +73,35 @@ const PricingRoute = PricingImport.update({
   getParentRoute: () => rootRoute,
 } as any)
 
+const EmployerRoute = EmployerImport.update({
+  id: '/employer',
+  path: '/employer',
+  getParentRoute: () => rootRoute,
+} as any)
+
+const CandidateRoute = CandidateImport.update({
+  id: '/candidate',
+  path: '/candidate',
+  getParentRoute: () => rootRoute,
+} as any)
+
 const IndexLazyRoute = IndexLazyImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => rootRoute,
 } as any).lazy(() => import('./routes/index.lazy').then((d) => d.Route))
+
+const DynamicIdRoute = DynamicIdImport.update({
+  id: '/dynamic/$id',
+  path: '/dynamic/$id',
+  getParentRoute: () => rootRoute,
+} as any)
+
+const DashboardSettingsRoute = DashboardSettingsImport.update({
+  id: '/dashboard/settings',
+  path: '/dashboard/settings',
+  getParentRoute: () => rootRoute,
+} as any)
 
 // Populate the FileRoutesByPath interface
 
@@ -84,6 +112,20 @@ declare module '@tanstack/react-router' {
       path: '/'
       fullPath: '/'
       preLoaderRoute: typeof IndexLazyImport
+      parentRoute: typeof rootRoute
+    }
+    '/candidate': {
+      id: '/candidate'
+      path: '/candidate'
+      fullPath: '/candidate'
+      preLoaderRoute: typeof CandidateImport
+      parentRoute: typeof rootRoute
+    }
+    '/employer': {
+      id: '/employer'
+      path: '/employer'
+      fullPath: '/employer'
+      preLoaderRoute: typeof EmployerImport
       parentRoute: typeof rootRoute
     }
     '/pricing': {
@@ -135,6 +177,20 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof LoginLazyImport
       parentRoute: typeof rootRoute
     }
+    '/dashboard/settings': {
+      id: '/dashboard/settings'
+      path: '/dashboard/settings'
+      fullPath: '/dashboard/settings'
+      preLoaderRoute: typeof DashboardSettingsImport
+      parentRoute: typeof rootRoute
+    }
+    '/dynamic/$id': {
+      id: '/dynamic/$id'
+      path: '/dynamic/$id'
+      fullPath: '/dynamic/$id'
+      preLoaderRoute: typeof DynamicIdImport
+      parentRoute: typeof rootRoute
+    }
   }
 }
 
@@ -142,6 +198,8 @@ declare module '@tanstack/react-router' {
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexLazyRoute
+  '/candidate': typeof CandidateRoute
+  '/employer': typeof EmployerRoute
   '/pricing': typeof PricingRoute
   '/register': typeof RegisterRoute
   '/about': typeof AboutLazyRoute
@@ -149,10 +207,14 @@ export interface FileRoutesByFullPath {
   '/blog': typeof BlogLazyRoute
   '/contact': typeof ContactLazyRoute
   '/login': typeof LoginLazyRoute
+  '/dashboard/settings': typeof DashboardSettingsRoute
+  '/dynamic/$id': typeof DynamicIdRoute
 }
 
 export interface FileRoutesByTo {
   '/': typeof IndexLazyRoute
+  '/candidate': typeof CandidateRoute
+  '/employer': typeof EmployerRoute
   '/pricing': typeof PricingRoute
   '/register': typeof RegisterRoute
   '/about': typeof AboutLazyRoute
@@ -160,11 +222,15 @@ export interface FileRoutesByTo {
   '/blog': typeof BlogLazyRoute
   '/contact': typeof ContactLazyRoute
   '/login': typeof LoginLazyRoute
+  '/dashboard/settings': typeof DashboardSettingsRoute
+  '/dynamic/$id': typeof DynamicIdRoute
 }
 
 export interface FileRoutesById {
   __root__: typeof rootRoute
   '/': typeof IndexLazyRoute
+  '/candidate': typeof CandidateRoute
+  '/employer': typeof EmployerRoute
   '/pricing': typeof PricingRoute
   '/register': typeof RegisterRoute
   '/about': typeof AboutLazyRoute
@@ -172,12 +238,16 @@ export interface FileRoutesById {
   '/blog': typeof BlogLazyRoute
   '/contact': typeof ContactLazyRoute
   '/login': typeof LoginLazyRoute
+  '/dashboard/settings': typeof DashboardSettingsRoute
+  '/dynamic/$id': typeof DynamicIdRoute
 }
 
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
     | '/'
+    | '/candidate'
+    | '/employer'
     | '/pricing'
     | '/register'
     | '/about'
@@ -185,9 +255,13 @@ export interface FileRouteTypes {
     | '/blog'
     | '/contact'
     | '/login'
+    | '/dashboard/settings'
+    | '/dynamic/$id'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
+    | '/candidate'
+    | '/employer'
     | '/pricing'
     | '/register'
     | '/about'
@@ -195,9 +269,13 @@ export interface FileRouteTypes {
     | '/blog'
     | '/contact'
     | '/login'
+    | '/dashboard/settings'
+    | '/dynamic/$id'
   id:
     | '__root__'
     | '/'
+    | '/candidate'
+    | '/employer'
     | '/pricing'
     | '/register'
     | '/about'
@@ -205,11 +283,15 @@ export interface FileRouteTypes {
     | '/blog'
     | '/contact'
     | '/login'
+    | '/dashboard/settings'
+    | '/dynamic/$id'
   fileRoutesById: FileRoutesById
 }
 
 export interface RootRouteChildren {
   IndexLazyRoute: typeof IndexLazyRoute
+  CandidateRoute: typeof CandidateRoute
+  EmployerRoute: typeof EmployerRoute
   PricingRoute: typeof PricingRoute
   RegisterRoute: typeof RegisterRoute
   AboutLazyRoute: typeof AboutLazyRoute
@@ -217,10 +299,14 @@ export interface RootRouteChildren {
   BlogLazyRoute: typeof BlogLazyRoute
   ContactLazyRoute: typeof ContactLazyRoute
   LoginLazyRoute: typeof LoginLazyRoute
+  DashboardSettingsRoute: typeof DashboardSettingsRoute
+  DynamicIdRoute: typeof DynamicIdRoute
 }
 
 const rootRouteChildren: RootRouteChildren = {
   IndexLazyRoute: IndexLazyRoute,
+  CandidateRoute: CandidateRoute,
+  EmployerRoute: EmployerRoute,
   PricingRoute: PricingRoute,
   RegisterRoute: RegisterRoute,
   AboutLazyRoute: AboutLazyRoute,
@@ -228,6 +314,8 @@ const rootRouteChildren: RootRouteChildren = {
   BlogLazyRoute: BlogLazyRoute,
   ContactLazyRoute: ContactLazyRoute,
   LoginLazyRoute: LoginLazyRoute,
+  DashboardSettingsRoute: DashboardSettingsRoute,
+  DynamicIdRoute: DynamicIdRoute,
 }
 
 export const routeTree = rootRoute
@@ -241,17 +329,27 @@ export const routeTree = rootRoute
       "filePath": "__root.tsx",
       "children": [
         "/",
+        "/candidate",
+        "/employer",
         "/pricing",
         "/register",
         "/about",
         "/apply",
         "/blog",
         "/contact",
-        "/login"
+        "/login",
+        "/dashboard/settings",
+        "/dynamic/$id"
       ]
     },
     "/": {
       "filePath": "index.lazy.tsx"
+    },
+    "/candidate": {
+      "filePath": "candidate.tsx"
+    },
+    "/employer": {
+      "filePath": "employer.tsx"
     },
     "/pricing": {
       "filePath": "pricing.tsx"
@@ -273,6 +371,12 @@ export const routeTree = rootRoute
     },
     "/login": {
       "filePath": "login.lazy.tsx"
+    },
+    "/dashboard/settings": {
+      "filePath": "dashboard/settings.tsx"
+    },
+    "/dynamic/$id": {
+      "filePath": "dynamic/$id.tsx"
     }
   }
 }
