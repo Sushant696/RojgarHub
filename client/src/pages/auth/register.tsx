@@ -7,18 +7,20 @@ import {
   FaSync,
   FaUser,
 } from "react-icons/fa";
-import { Link } from "@tanstack/react-router";
+
+import { useState } from "react";
 import { useFormik } from "formik";
+import { Mobile } from "iconsax-react";
 import { IoMail } from "react-icons/io5";
 import { ArrowLeft } from "iconsax-react";
+import { Link } from "@tanstack/react-router";
 import { useMutation } from "@tanstack/react-query";
-import showNotification from "../utils/toastify";
-import useRouter from "../lib/router";
-import ToggleUser from "../components/toggleButton";
-import { Mobile } from "iconsax-react";
-import { useState } from "react";
-import * as Yup from "yup";
-import { authApi } from "../api/user";
+
+import { authApi } from "../../api/user";
+import useRouter from "../../lib/router";
+import { registerSchema } from "./schemas";
+import showNotification from "../../utils/toastify";
+import ToggleUser from "../../components/toggleButton";
 
 interface RegisterProps {
   onSwitch: () => void;
@@ -30,15 +32,6 @@ interface FormDataTypes {
   contact: string;
   password: string;
 }
-
-const registerSchema = Yup.object().shape({
-  username: Yup.string().required(),
-  email: Yup.string()
-    .email("Invalid email format")
-    .required("Email is required"),
-  contact: Yup.string().required().min(10).max(10),
-  password: Yup.string().required(),
-});
 
 function Register({ onSwitch }: RegisterProps) {
   const { push } = useRouter();
@@ -57,6 +50,7 @@ function Register({ onSwitch }: RegisterProps) {
       showNotification("success", error.message || "Something went wrong.");
     },
   });
+
   const formik = useFormik({
     initialValues: {
       username: "",

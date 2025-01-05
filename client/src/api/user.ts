@@ -1,3 +1,5 @@
+import axios from "axios";
+
 interface FormDataTypes {
   phoneNo: string;
   password: string;
@@ -47,4 +49,14 @@ async function Register(formData: RegisterFormtypes, currentUser: string) {
   }
 }
 
-export const authApi = { Login, Register };
+async function Verify() {
+  const response = await axios.get("hello");
+  return response;
+}
+
+async function Logout() {
+  const response = await axios.get("hello");
+  return response;
+}
+
+export const authApi = { Login, Register, Verify, Logout };

@@ -6,28 +6,31 @@ import { persist } from "zustand/middleware";
 interface User {
   id: string;
   role: UserRole;
-  email: string;
   contact: string;
-  username: string;
 }
 interface AuthState {
   user: User | null;
+  accessToken: string | null;
   isAuthenticated: boolean;
-  isLoading: boolean;
-
-  token: string | null;
+  setAccessToken: (token: string | null) => void;
   login: (phoneNo: string, password: string) => Promise<any>;
   logout: () => Promise<void>;
-  getCurrentUser: () => Promise<void>;
+  setIsAuthenticated: (status: boolean) => void,
+  setCurrentuser: (user: User | null) => Promise<void>;
 }
 
 const useAuthStore = create<AuthState>()(
   persist(
     (set) => ({
       user: null,
+      accessToken: null,
       isAuthenticated: false,
-      isLoading: true,
       token: null,
+
+      setAccessToken: (token) => {
+        set({ accessToken: token })
+      },
+      setIsAuthenticated: () => { },
 
       login: async (phoneNo, password) => {
         const response = await authApi.Login({ phoneNo, password });
@@ -35,19 +38,18 @@ const useAuthStore = create<AuthState>()(
           set({
             user: response.data.user,
             isAuthenticated: true,
-            token: response.data.accessToken,
-            isLoading: false,
+            accessToken: response.data.accessToken,
           });
         }
-        set({ isLoading: false });
         return response;
       },
 
+      setCurrentuser: async () => {
+
+      },
       logout: async () => {
         set({ user: null, isAuthenticated: false });
       },
-
-      getCurrentUser: async () => { },
     }),
     {
       name: "auth-storage",

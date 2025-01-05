@@ -9,24 +9,23 @@ interface ProtectedRoutesProps {
   children: React.ReactNode;
 }
 
-export const ProtectedRoutes = ({
-  children,
-  allowedRoles,
-}: ProtectedRoutesProps) => {
+export const ProtectedRoutes = ({ allowedRoles }: ProtectedRoutesProps) => {
   const router = useRouter();
-  const { user, isAuthenticated } = useAuthStore();
+  const { user, isAuthenticated, logout } = useAuthStore();
 
   // if authenticated
   if (!isAuthenticated || !user) {
+    showNotification("warning", "Please, Login to continue");
+
     router.push("/login");
     return null;
   }
 
-  // if eligible
   if (!allowedRoles.includes(user.role)) {
-    showNotification("error", "Sorry, you are not eligible for the operation");
+    logout();
     router.push("/login");
     return null;
   }
-  return <>{children ?? <Outlet />}</>;
+
+  return <>{<Outlet />}</>;
 };

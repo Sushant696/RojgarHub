@@ -7,16 +7,21 @@ export const CandidateLayout = () => {
   const user = useAuthStore((state) => state.user);
 
   return (
-    <div className="flex mt-10">
-      <h1 className="title-text">Welcome to dashboard' {user?.username}</h1>
-      <nav className="w-64 bg-gray-100">
-        <button onClick={() => router.push("/dashboard")}>Dashboard</button>
-        <button onClick={() => router.push("/job-applications")}>
+    <div className="">
+      <nav className=" p-4 flex justify-around w-full bg-gray-100">
+        <button onClick={() => router.push("/candidate/dashboard")}>
+          Dashboard
+        </button>
+        <button onClick={() => router.push("/candidate/savedJobs")}>
           My Applications
+        </button>
+        <button onClick={() => router.push("/employer")}>
+          Employer access only
         </button>
         <button onClick={() => router.push("/saved-jobs")}>Saved Jobs</button>
         <button onClick={() => router.push("/settings")}>Settings</button>
       </nav>
+      <h1 className="title-text">Welcome to dashboard' {user?.username}</h1>
       <main className="flex-1">
         <Outlet />
       </main>

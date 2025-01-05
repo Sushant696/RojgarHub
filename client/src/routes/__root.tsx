@@ -1,4 +1,4 @@
-import { createRootRoute, Outlet } from "@tanstack/react-router";
+import { createRootRoute } from "@tanstack/react-router";
 import { TanStackRouterDevtools } from "@tanstack/router-devtools";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 
@@ -9,28 +9,28 @@ import PublicLayout from "../layouts/publicLayout";
 
 const queryClient = new QueryClient();
 
-const user = useAuthStore.getState().user;
+const LayoutWrapper = () => {
+  const user = useAuthStore((state) => state.user);
+
+  if (user?.role === "employer") {
+    return <EmployerLayout />;
+  } else if (user?.role === "candidate") {
+    return <CandidateLayout />;
+  } else {
+    return <PublicLayout />;
+  }
+};
 
 export const Route = createRootRoute({
   notFoundComponent: () => {
-    return <p>Not found bro make and custom component for this </p>;
+    return <p>Not found bro make a custom component for this </p>;
   },
 
   component: () => (
-    <>
-      <QueryClientProvider client={queryClient}>
-        {(() => {
-          switch (user?.role) {
-            case "employer":
-              return <EmployerLayout />;
-            case "candidate":
-              return <CandidateLayout />;
-            default:
-              return <PublicLayout />;
-          }
-        })()}
-        <TanStackRouterDevtools />
-      </QueryClientProvider>
-    </>
+    <QueryClientProvider client={queryClient}>
+      {/* Use the wrapper component to handle layout */}
+      <LayoutWrapper />
+      <TanStackRouterDevtools />
+    </QueryClientProvider>
   ),
 });
