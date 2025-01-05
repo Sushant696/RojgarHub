@@ -1,7 +1,7 @@
 import { useLocation } from "@tanstack/react-router";
 import { useState } from "react";
-import Login from "../pages/login";
-import Register from "../pages/register";
+import Login from "../pages/auth/login";
+import Register from "../pages/auth/register";
 import { motion } from "motion/react";
 import { useEffect } from "react";
 

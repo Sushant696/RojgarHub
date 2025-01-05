@@ -8,14 +8,11 @@ import {
   FaShieldAlt,
   FaSync,
 } from "react-icons/fa";
-import * as Yup from "yup";
 import { RiLockPasswordFill } from "react-icons/ri";
 import { useFormik } from "formik";
-import { useMutation } from "@tanstack/react-query";
 
-import useRouter from "../lib/router";
-import showNotification from "../utils/toastify";
-import useAuthStore from "../stores/authStore";
+import { userLoginSchema } from "./schemas";
+import { useLogin } from "../../hooks/auth";
 
 interface LoginProps {
   onSwitch: () => void;
@@ -26,17 +23,8 @@ interface FormDataTypes {
   password: string;
 }
 
-const userLoginSchema = Yup.object().shape({
-  phoneNo: Yup.string().required("Mobile Number is required").min(10).max(10),
-  password: Yup.string()
-    .min(6, "Password must be at least 6 characters")
-    .required("Password is required"),
-});
-
 function Login({ onSwitch }: LoginProps) {
-  const user = useAuthStore((state) => state.user);
-  const router = useRouter();
-  const login = useAuthStore((state) => state.login);
+  const loginMutation = useLogin();
 
   const formik = useFormik({
     initialValues: {
@@ -46,31 +34,11 @@ function Login({ onSwitch }: LoginProps) {
     validationSchema: userLoginSchema,
     onSubmit: (values: FormDataTypes) => {
       formik.resetForm();
-      mutate(values);
+      loginMutation.mutate(values);
     },
   });
 
-  const { mutate, isPending } = useMutation({
-    mutationKey: ["login"],
-    mutationFn: async (values: FormDataTypes) => {
-      await login(values.phoneNo, values.password);
-    },
-    onSuccess: () => {
-      showNotification(
-        "success",
-        "Login successful, Welcome to the dashboard!",
-      );
-      user?.role == "employer"
-        ? router.push("/employer")
-        : router.push("/candidate");
-    },
-
-    onError: (error) => {
-      showNotification("error", error.message || "Sometime went wrong.");
-    },
-  });
-
-  if (isPending) {
+  if (loginMutation.isPending) {
     return <h1>Loading..</h1>;
   }
 
@@ -218,11 +186,8 @@ function Login({ onSwitch }: LoginProps) {
                     </a>
                   </div>
 
-                  <button
-                    //type="submit"
-                    className="w-full bg-indigo-600 text-white py-3 px-4 rounded-lg hover:bg-indigo-700 transition duration-150 ease-in-out"
-                  >
-                    {isPending ? "Signing in" : "Sign in"}
+                  <button className="w-full bg-indigo-600 text-white py-3 px-4 rounded-lg hover:bg-indigo-700 transition duration-150 ease-in-out">
+                    {loginMutation.isPending ? "Signing in" : "Sign in"}
                   </button>
                 </form>
 
