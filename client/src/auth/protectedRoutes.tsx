@@ -11,21 +11,19 @@ interface ProtectedRoutesProps {
 
 export const ProtectedRoutes = ({ allowedRoles }: ProtectedRoutesProps) => {
   const router = useRouter();
-  const { user, isAuthenticated, logout } = useAuthStore();
+  const { user, isAuthenticated } = useAuthStore();
 
-  // if authenticated
   if (!isAuthenticated || !user) {
     showNotification("warning", "Please, Login to continue");
-
     router.push("/login");
-    return null;
+    return;
   }
 
   if (!allowedRoles.includes(user.role)) {
-    logout();
-    router.push("/login");
-    return null;
+    showNotification("error", "Access Denied");
+    router.back();
+    return;
   }
 
-  return <>{<Outlet />}</>;
+  return <Outlet />;
 };

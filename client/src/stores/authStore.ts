@@ -15,7 +15,7 @@ interface AuthState {
   setAccessToken: (token: string | null) => void;
   login: (phoneNo: string, password: string) => Promise<any>;
   logout: () => Promise<void>;
-  setIsAuthenticated: (status: boolean) => void,
+  setIsAuthenticated: (status: boolean) => void;
   setCurrentuser: (user: User | null) => Promise<void>;
 }
 
@@ -28,9 +28,11 @@ const useAuthStore = create<AuthState>()(
       token: null,
 
       setAccessToken: (token) => {
-        set({ accessToken: token })
+        set({ accessToken: token });
       },
-      setIsAuthenticated: () => { },
+      setIsAuthenticated: (status) => {
+        set({ isAuthenticated: status });
+      },
 
       login: async (phoneNo, password) => {
         const response = await authApi.Login({ phoneNo, password });
@@ -44,8 +46,8 @@ const useAuthStore = create<AuthState>()(
         return response;
       },
 
-      setCurrentuser: async () => {
-
+      setCurrentuser: async (currUser) => {
+        set({ user: currUser });
       },
       logout: async () => {
         set({ user: null, isAuthenticated: false });

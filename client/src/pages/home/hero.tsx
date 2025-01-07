@@ -14,7 +14,7 @@ const popularSearches = [
 
 function Hero() {
   const user = useAuthStore((state) => state.user);
-  
+
   return (
     <>
       <div className=" w-full main-color-hero ">
@@ -53,7 +53,7 @@ function Hero() {
       </div>
       <JobsOfTheDay />
       <h1 className="subtitle-text">
-        Hello {user?.username} welcome to your dashboard
+        Hello {user?.role} welcome to your dashboard
       </h1>
     </>
   );
