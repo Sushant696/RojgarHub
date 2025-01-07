@@ -28,7 +28,6 @@ export const Route = createRootRoute({
 
   component: () => (
     <QueryClientProvider client={queryClient}>
-      {/* Use the wrapper component to handle layout */}
       <LayoutWrapper />
       <TanStackRouterDevtools />
     </QueryClientProvider>

@@ -15,6 +15,7 @@ import { createFileRoute } from '@tanstack/react-router'
 import { Route as rootRoute } from './routes/__root'
 import { Route as RegisterImport } from './routes/register'
 import { Route as PricingImport } from './routes/pricing'
+import { Route as LogoutImport } from './routes/logout'
 import { Route as LoginImport } from './routes/login'
 import { Route as IndexImport } from './routes/index'
 import { Route as EmployerIndexImport } from './routes/employer/index'
@@ -69,6 +70,12 @@ const RegisterRoute = RegisterImport.update({
 const PricingRoute = PricingImport.update({
   id: '/pricing',
   path: '/pricing',
+  getParentRoute: () => rootRoute,
+} as any)
+
+const LogoutRoute = LogoutImport.update({
+  id: '/logout',
+  path: '/logout',
   getParentRoute: () => rootRoute,
 } as any)
 
@@ -154,6 +161,13 @@ declare module '@tanstack/react-router' {
       path: '/login'
       fullPath: '/login'
       preLoaderRoute: typeof LoginImport
+      parentRoute: typeof rootRoute
+    }
+    '/logout': {
+      id: '/logout'
+      path: '/logout'
+      fullPath: '/logout'
+      preLoaderRoute: typeof LogoutImport
       parentRoute: typeof rootRoute
     }
     '/pricing': {
@@ -269,6 +283,7 @@ declare module '@tanstack/react-router' {
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/login': typeof LoginRoute
+  '/logout': typeof LogoutRoute
   '/pricing': typeof PricingRoute
   '/register': typeof RegisterRoute
   '/about': typeof AboutLazyRoute
@@ -289,6 +304,7 @@ export interface FileRoutesByFullPath {
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/login': typeof LoginRoute
+  '/logout': typeof LogoutRoute
   '/pricing': typeof PricingRoute
   '/register': typeof RegisterRoute
   '/about': typeof AboutLazyRoute
@@ -310,6 +326,7 @@ export interface FileRoutesById {
   __root__: typeof rootRoute
   '/': typeof IndexRoute
   '/login': typeof LoginRoute
+  '/logout': typeof LogoutRoute
   '/pricing': typeof PricingRoute
   '/register': typeof RegisterRoute
   '/about': typeof AboutLazyRoute
@@ -332,6 +349,7 @@ export interface FileRouteTypes {
   fullPaths:
     | '/'
     | '/login'
+    | '/logout'
     | '/pricing'
     | '/register'
     | '/about'
@@ -351,6 +369,7 @@ export interface FileRouteTypes {
   to:
     | '/'
     | '/login'
+    | '/logout'
     | '/pricing'
     | '/register'
     | '/about'
@@ -370,6 +389,7 @@ export interface FileRouteTypes {
     | '__root__'
     | '/'
     | '/login'
+    | '/logout'
     | '/pricing'
     | '/register'
     | '/about'
@@ -391,6 +411,7 @@ export interface FileRouteTypes {
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   LoginRoute: typeof LoginRoute
+  LogoutRoute: typeof LogoutRoute
   PricingRoute: typeof PricingRoute
   RegisterRoute: typeof RegisterRoute
   AboutLazyRoute: typeof AboutLazyRoute
@@ -411,6 +432,7 @@ export interface RootRouteChildren {
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   LoginRoute: LoginRoute,
+  LogoutRoute: LogoutRoute,
   PricingRoute: PricingRoute,
   RegisterRoute: RegisterRoute,
   AboutLazyRoute: AboutLazyRoute,
@@ -440,6 +462,7 @@ export const routeTree = rootRoute
       "children": [
         "/",
         "/login",
+        "/logout",
         "/pricing",
         "/register",
         "/about",
@@ -462,6 +485,9 @@ export const routeTree = rootRoute
     },
     "/login": {
       "filePath": "login.tsx"
+    },
+    "/logout": {
+      "filePath": "logout.tsx"
     },
     "/pricing": {
       "filePath": "pricing.tsx"

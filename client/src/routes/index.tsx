@@ -9,7 +9,7 @@ const isAuthenticated = useAuthStore.getState().isAuthenticated;
 export const Route = createFileRoute("/")({
   beforeLoad: () => {
     if (isAuthenticated && user) {
-      showNotification("success", "welcome back " + user?.username);
+      showNotification("success", "welcome back " + user?.role);
       throw redirect({
         to: user?.role == "employer" ? "/employer" : "/candidate",
       });
