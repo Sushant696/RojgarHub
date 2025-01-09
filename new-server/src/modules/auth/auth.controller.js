@@ -1,3 +1,4 @@
+import db from "../../lib/db.js";
 import { ApiError } from "../../utils/apiError.js";
 import { ApiResponse } from "../../utils/apiResponse.js";
 import asyncHandler from "../../utils/asyncHandler.js";
@@ -8,10 +9,10 @@ import { User } from "../auth/auth.model.js"
 const registerUser = asyncHandler(async (req, res) => {
 
   const { username, password, contact, email, currentUser } = req.body;
-
   if (!username || !password || !email || !contact) {
     throw new ApiError(400, "All the fields are required.")
   }
+
 
   const existingUser = await User.findOne({ contact })
   if (existingUser) {
