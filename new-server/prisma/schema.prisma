@@ -2,20 +2,24 @@ generator client {
   provider = "prisma-client-js"
 }
 
+
 datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")
 }
+
 
 enum UserRole {
   CANDIDATE
   EMPLOYER
 }
 
+
 enum JobStatus {
   OPEN
   CLOSED
 }
+
 
 enum ApplicationStatus {
   PENDING
@@ -27,15 +31,20 @@ enum ApplicationStatus {
 model User {
   id        String    @id @default(uuid())
   email     String    @unique
+  contact   String    @unique
+  username  String 
   password  String
-  role      UserRole
+  role      UserRole  
   isActive  Boolean   @default(true)
-
+  
   candidateProfile CandidateProfile?
   employerProfile  EmployerProfile?
-
+  
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+
+  // index for role based queries
+  @@index([role])
 }
 
 model CandidateProfile {

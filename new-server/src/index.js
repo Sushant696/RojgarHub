@@ -1,22 +1,24 @@
-import dotenv from "dotenv"
-import connection from "./db/connection.js";
+import cluster from "node:cluster";
+import { availableParallelism } from "node:os";
+import process from "node:process";
+
+import config from "./config/index.js";
 import { app } from "./server.js";
 
-dotenv.config();
+const numCPUs = availableParallelism();
 
-(async () => {
-  try {
-    await connection();
-    app.listen(process.env.PORT || 5500, () => {
-      console.log("RojgarHub server running at port: 5500")
-    })
-    // handle errors
-    app.on('error', () => {
-      console.log("Failed to start the server")
-      throw new Error;
-    })
-  } catch (error) {
-    console.error("Failed to start the server:", (error).message);
-    process.exit(1);
+if (cluster.isPrimary) {
+  console.log(
+    `Primary ${process.pid} is running at localhost:${config.app.port}`,
+  );
+
+  for (let i = 0; i < numCPUs; i++) {
+    cluster.fork();
   }
-})()
+
+  cluster.on("exit", (worker, code, signal) => {
+    console.log(`worker ${worker.process.pid} died`);
+  });
+} else {
+  app.listen(config.app.port, () => { });
+}
