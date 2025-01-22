@@ -1,6 +1,6 @@
 export const apiURLs = {
   AUTH: {
-    login: "",
+    login: "/api/auth/login",
     register: "/api/auth/register",
   },
 };

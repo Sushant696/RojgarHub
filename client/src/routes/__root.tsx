@@ -14,7 +14,7 @@ const LayoutWrapper = () => {
 
   if (user?.role === "EMPLOYER") {
     return <EmployerLayout />;
-  } else if (user?.role.  === "candidate") {
+  } else if (user?.role === "CANDIDATE") {
     return <CandidateLayout />;
   } else {
     return <PublicLayout />;

@@ -56,7 +56,7 @@ export const login = async (loginData) => {
     where: { id: user.id },
     data: { refreshToken: refreshToken },
     select: {
-      id:true,
+      id: true,
       username: true,
       password: false,
       role: true,
@@ -69,7 +69,6 @@ export const login = async (loginData) => {
     user: updatedUser,
     tokens: {
       accessToken,
-      refreshToken,
     },
   };
 };

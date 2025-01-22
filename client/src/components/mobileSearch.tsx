@@ -2,7 +2,7 @@ import { Button } from "@mui/material";
 import { MdOutlineWorkOutline } from "react-icons/md";
 import { HiCubeTransparent } from "react-icons/hi";
 import { Location } from "iconsax-react";
-import { useState, useEffect } from "react";
+import { useState } from "react";
 
 import Dropdown from "./ui/Dropdown";
 
@@ -24,12 +24,6 @@ function SearchComponentMobile() {
 
   const [selectedValueLocation, setSelectedValueLocation] =
     useState<string>("");
-
-  useEffect(() => {
-    if (selectedValue) {
-      console.log(`Selected Industry changed to: ${selectedValue}`);
-    }
-  }, [selectedValue, selectedValueLocation]);
 
   return (
     <div>

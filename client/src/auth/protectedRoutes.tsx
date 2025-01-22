@@ -1,7 +1,6 @@
 import useRouter from "../lib/router";
 import { UserRole } from "../types/auth";
 import useAuthStore from "../stores/authStore";
-import { Outlet } from "@tanstack/react-router";
 import showNotification from "../utils/toastify";
 
 interface ProtectedRoutesProps {
@@ -9,23 +8,25 @@ interface ProtectedRoutesProps {
   children: React.ReactNode;
 }
 
-export const ProtectedRoutes = ({ allowedRoles }: ProtectedRoutesProps) => {
+export const ProtectedRoutes = ({
+  allowedRoles,
+  children,
+}: ProtectedRoutesProps) => {
   const router = useRouter();
   const { user, isAuthenticated } = useAuthStore();
 
   if (!isAuthenticated || !user) {
     showNotification("warning", "Please, Login to continue");
     router.push("/login");
-    return;
+    return null;
   }
-
-  console.log(user.role, "user role");
 
   if (!allowedRoles.includes(user.role)) {
     showNotification("error", "Access Denied");
+
     router.back();
-    return;
+    return null;
   }
 
-  return <Outlet />;
+  return <>{children}</>;
 };

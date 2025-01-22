@@ -8,7 +8,6 @@ import { ApiResponse } from "../../utils/apiResponse.js";
 
 const registerUser = asyncHandler(async (req, res) => {
   const validatedData = await authRegisterSchema.validate(req.body);
-  console.log(validatedData);
   if (
     !validatedData.username ||
     !validatedData.password ||
@@ -37,11 +36,11 @@ const loginUser = asyncHandler(async (req, res) => {
   const loginUserObj = { contact, password };
   const loggedInUser = await authServices.login(loginUserObj);
 
-  res.cookie("accessToken", loggedInUser.tokens.accessToken, {
+  res.cookie("refreshToken", loggedInUser.tokens.refreshToken, {
     httpOnly: true,
-    secure: process.env.NODE_ENV === "production",
+    secure: true,
     sameSite: "strict",
-    maxAge: 15 * 60 * 1000,
+    maxAge: 36 * 15 * 60 * 1000,
   });
 
   return res.json(

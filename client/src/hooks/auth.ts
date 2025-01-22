@@ -17,7 +17,9 @@ export const useLogin = () => {
   return useMutation({
     mutationFn: authApi.Login,
     onSuccess: (response) => {
-      const { accessToken, role, id, contact } = response.data.user;
+      console.log(response.data.data.user);
+      const { accessToken, role, id, contact } = response.data.data.user;
+
       setAccessToken(accessToken);
       setIsAuthenticated(true);
       setCurrentUser({ id, role, contact });
@@ -25,7 +27,7 @@ export const useLogin = () => {
       role === "EMPLOYER"
         ? router.push("/employer")
         : router.push("/candidate");
-      showNotification("success", response.message);
+      showNotification("success", response.data.message);
     },
     onError: (error) => {
       console.log(error);

@@ -18,19 +18,30 @@ import { Route as PricingImport } from './routes/pricing'
 import { Route as LogoutImport } from './routes/logout'
 import { Route as LoginImport } from './routes/login'
 import { Route as IndexImport } from './routes/index'
+import { Route as CandidateIndexImport } from './routes/candidate/_index'
 import { Route as EmployerIndexImport } from './routes/employer/index'
-import { Route as CandidateIndexImport } from './routes/candidate/index'
 import { Route as EmployerSettingsImport } from './routes/employer/settings'
 import { Route as EmployerPostJobImport } from './routes/employer/postJob'
+import { Route as CandidateViewJobsImport } from './routes/candidate/viewJobs'
+import { Route as CandidateSettingsImport } from './routes/candidate/settings'
+import { Route as CandidateDashboardImport } from './routes/candidate/dashboard'
+import { Route as CandidateApplicationImport } from './routes/candidate/application'
 
 // Create Virtual Routes
 
+const CandidateImport = createFileRoute('/candidate')()
 const ContactLazyImport = createFileRoute('/contact')()
 const BlogLazyImport = createFileRoute('/blog')()
 const ApplyLazyImport = createFileRoute('/apply')()
 const AboutLazyImport = createFileRoute('/about')()
 
 // Create/Update Routes
+
+const CandidateRoute = CandidateImport.update({
+  id: '/candidate',
+  path: '/candidate',
+  getParentRoute: () => rootRoute,
+} as any)
 
 const ContactLazyRoute = ContactLazyImport.update({
   id: '/contact',
@@ -86,15 +97,14 @@ const IndexRoute = IndexImport.update({
   getParentRoute: () => rootRoute,
 } as any)
 
+const CandidateIndexRoute = CandidateIndexImport.update({
+  id: '/_index',
+  getParentRoute: () => CandidateRoute,
+} as any)
+
 const EmployerIndexRoute = EmployerIndexImport.update({
   id: '/employer/',
   path: '/employer/',
-  getParentRoute: () => rootRoute,
-} as any)
-
-const CandidateIndexRoute = CandidateIndexImport.update({
-  id: '/candidate/',
-  path: '/candidate/',
   getParentRoute: () => rootRoute,
 } as any)
 
@@ -108,6 +118,30 @@ const EmployerPostJobRoute = EmployerPostJobImport.update({
   id: '/employer/postJob',
   path: '/employer/postJob',
   getParentRoute: () => rootRoute,
+} as any)
+
+const CandidateViewJobsRoute = CandidateViewJobsImport.update({
+  id: '/viewJobs',
+  path: '/viewJobs',
+  getParentRoute: () => CandidateRoute,
+} as any)
+
+const CandidateSettingsRoute = CandidateSettingsImport.update({
+  id: '/settings',
+  path: '/settings',
+  getParentRoute: () => CandidateRoute,
+} as any)
+
+const CandidateDashboardRoute = CandidateDashboardImport.update({
+  id: '/dashboard',
+  path: '/dashboard',
+  getParentRoute: () => CandidateRoute,
+} as any)
+
+const CandidateApplicationRoute = CandidateApplicationImport.update({
+  id: '/application',
+  path: '/application',
+  getParentRoute: () => CandidateRoute,
 } as any)
 
 // Populate the FileRoutesByPath interface
@@ -177,6 +211,48 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ContactLazyImport
       parentRoute: typeof rootRoute
     }
+    '/candidate': {
+      id: '/candidate'
+      path: '/candidate'
+      fullPath: '/candidate'
+      preLoaderRoute: typeof CandidateImport
+      parentRoute: typeof rootRoute
+    }
+    '/candidate/_index': {
+      id: '/candidate/_index'
+      path: '/candidate'
+      fullPath: '/candidate'
+      preLoaderRoute: typeof CandidateIndexImport
+      parentRoute: typeof CandidateRoute
+    }
+    '/candidate/application': {
+      id: '/candidate/application'
+      path: '/application'
+      fullPath: '/candidate/application'
+      preLoaderRoute: typeof CandidateApplicationImport
+      parentRoute: typeof CandidateImport
+    }
+    '/candidate/dashboard': {
+      id: '/candidate/dashboard'
+      path: '/dashboard'
+      fullPath: '/candidate/dashboard'
+      preLoaderRoute: typeof CandidateDashboardImport
+      parentRoute: typeof CandidateImport
+    }
+    '/candidate/settings': {
+      id: '/candidate/settings'
+      path: '/settings'
+      fullPath: '/candidate/settings'
+      preLoaderRoute: typeof CandidateSettingsImport
+      parentRoute: typeof CandidateImport
+    }
+    '/candidate/viewJobs': {
+      id: '/candidate/viewJobs'
+      path: '/viewJobs'
+      fullPath: '/candidate/viewJobs'
+      preLoaderRoute: typeof CandidateViewJobsImport
+      parentRoute: typeof CandidateImport
+    }
     '/employer/postJob': {
       id: '/employer/postJob'
       path: '/employer/postJob'
@@ -191,13 +267,6 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof EmployerSettingsImport
       parentRoute: typeof rootRoute
     }
-    '/candidate/': {
-      id: '/candidate/'
-      path: '/candidate'
-      fullPath: '/candidate'
-      preLoaderRoute: typeof CandidateIndexImport
-      parentRoute: typeof rootRoute
-    }
     '/employer/': {
       id: '/employer/'
       path: '/employer'
@@ -210,6 +279,26 @@ declare module '@tanstack/react-router' {
 
 // Create and export the route tree
 
+interface CandidateRouteChildren {
+  CandidateIndexRoute: typeof CandidateIndexRoute
+  CandidateApplicationRoute: typeof CandidateApplicationRoute
+  CandidateDashboardRoute: typeof CandidateDashboardRoute
+  CandidateSettingsRoute: typeof CandidateSettingsRoute
+  CandidateViewJobsRoute: typeof CandidateViewJobsRoute
+}
+
+const CandidateRouteChildren: CandidateRouteChildren = {
+  CandidateIndexRoute: CandidateIndexRoute,
+  CandidateApplicationRoute: CandidateApplicationRoute,
+  CandidateDashboardRoute: CandidateDashboardRoute,
+  CandidateSettingsRoute: CandidateSettingsRoute,
+  CandidateViewJobsRoute: CandidateViewJobsRoute,
+}
+
+const CandidateRouteWithChildren = CandidateRoute._addFileChildren(
+  CandidateRouteChildren,
+)
+
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/login': typeof LoginRoute
@@ -220,9 +309,13 @@ export interface FileRoutesByFullPath {
   '/apply': typeof ApplyLazyRoute
   '/blog': typeof BlogLazyRoute
   '/contact': typeof ContactLazyRoute
+  '/candidate': typeof CandidateIndexRoute
+  '/candidate/application': typeof CandidateApplicationRoute
+  '/candidate/dashboard': typeof CandidateDashboardRoute
+  '/candidate/settings': typeof CandidateSettingsRoute
+  '/candidate/viewJobs': typeof CandidateViewJobsRoute
   '/employer/postJob': typeof EmployerPostJobRoute
   '/employer/settings': typeof EmployerSettingsRoute
-  '/candidate': typeof CandidateIndexRoute
   '/employer': typeof EmployerIndexRoute
 }
 
@@ -236,9 +329,13 @@ export interface FileRoutesByTo {
   '/apply': typeof ApplyLazyRoute
   '/blog': typeof BlogLazyRoute
   '/contact': typeof ContactLazyRoute
+  '/candidate': typeof CandidateIndexRoute
+  '/candidate/application': typeof CandidateApplicationRoute
+  '/candidate/dashboard': typeof CandidateDashboardRoute
+  '/candidate/settings': typeof CandidateSettingsRoute
+  '/candidate/viewJobs': typeof CandidateViewJobsRoute
   '/employer/postJob': typeof EmployerPostJobRoute
   '/employer/settings': typeof EmployerSettingsRoute
-  '/candidate': typeof CandidateIndexRoute
   '/employer': typeof EmployerIndexRoute
 }
 
@@ -253,9 +350,14 @@ export interface FileRoutesById {
   '/apply': typeof ApplyLazyRoute
   '/blog': typeof BlogLazyRoute
   '/contact': typeof ContactLazyRoute
+  '/candidate': typeof CandidateRouteWithChildren
+  '/candidate/_index': typeof CandidateIndexRoute
+  '/candidate/application': typeof CandidateApplicationRoute
+  '/candidate/dashboard': typeof CandidateDashboardRoute
+  '/candidate/settings': typeof CandidateSettingsRoute
+  '/candidate/viewJobs': typeof CandidateViewJobsRoute
   '/employer/postJob': typeof EmployerPostJobRoute
   '/employer/settings': typeof EmployerSettingsRoute
-  '/candidate/': typeof CandidateIndexRoute
   '/employer/': typeof EmployerIndexRoute
 }
 
@@ -271,9 +373,13 @@ export interface FileRouteTypes {
     | '/apply'
     | '/blog'
     | '/contact'
+    | '/candidate'
+    | '/candidate/application'
+    | '/candidate/dashboard'
+    | '/candidate/settings'
+    | '/candidate/viewJobs'
     | '/employer/postJob'
     | '/employer/settings'
-    | '/candidate'
     | '/employer'
   fileRoutesByTo: FileRoutesByTo
   to:
@@ -286,9 +392,13 @@ export interface FileRouteTypes {
     | '/apply'
     | '/blog'
     | '/contact'
+    | '/candidate'
+    | '/candidate/application'
+    | '/candidate/dashboard'
+    | '/candidate/settings'
+    | '/candidate/viewJobs'
     | '/employer/postJob'
     | '/employer/settings'
-    | '/candidate'
     | '/employer'
   id:
     | '__root__'
@@ -301,9 +411,14 @@ export interface FileRouteTypes {
     | '/apply'
     | '/blog'
     | '/contact'
+    | '/candidate'
+    | '/candidate/_index'
+    | '/candidate/application'
+    | '/candidate/dashboard'
+    | '/candidate/settings'
+    | '/candidate/viewJobs'
     | '/employer/postJob'
     | '/employer/settings'
-    | '/candidate/'
     | '/employer/'
   fileRoutesById: FileRoutesById
 }
@@ -318,9 +433,9 @@ export interface RootRouteChildren {
   ApplyLazyRoute: typeof ApplyLazyRoute
   BlogLazyRoute: typeof BlogLazyRoute
   ContactLazyRoute: typeof ContactLazyRoute
+  CandidateRoute: typeof CandidateRouteWithChildren
   EmployerPostJobRoute: typeof EmployerPostJobRoute
   EmployerSettingsRoute: typeof EmployerSettingsRoute
-  CandidateIndexRoute: typeof CandidateIndexRoute
   EmployerIndexRoute: typeof EmployerIndexRoute
 }
 
@@ -334,9 +449,9 @@ const rootRouteChildren: RootRouteChildren = {
   ApplyLazyRoute: ApplyLazyRoute,
   BlogLazyRoute: BlogLazyRoute,
   ContactLazyRoute: ContactLazyRoute,
+  CandidateRoute: CandidateRouteWithChildren,
   EmployerPostJobRoute: EmployerPostJobRoute,
   EmployerSettingsRoute: EmployerSettingsRoute,
-  CandidateIndexRoute: CandidateIndexRoute,
   EmployerIndexRoute: EmployerIndexRoute,
 }
 
@@ -359,9 +474,9 @@ export const routeTree = rootRoute
         "/apply",
         "/blog",
         "/contact",
+        "/candidate",
         "/employer/postJob",
         "/employer/settings",
-        "/candidate/",
         "/employer/"
       ]
     },
@@ -392,14 +507,41 @@ export const routeTree = rootRoute
     "/contact": {
       "filePath": "contact.lazy.tsx"
     },
+    "/candidate": {
+      "filePath": "candidate",
+      "children": [
+        "/candidate/_index",
+        "/candidate/application",
+        "/candidate/dashboard",
+        "/candidate/settings",
+        "/candidate/viewJobs"
+      ]
+    },
+    "/candidate/_index": {
+      "filePath": "candidate/_index.tsx",
+      "parent": "/candidate"
+    },
+    "/candidate/application": {
+      "filePath": "candidate/application.tsx",
+      "parent": "/candidate"
+    },
+    "/candidate/dashboard": {
+      "filePath": "candidate/dashboard.tsx",
+      "parent": "/candidate"
+    },
+    "/candidate/settings": {
+      "filePath": "candidate/settings.tsx",
+      "parent": "/candidate"
+    },
+    "/candidate/viewJobs": {
+      "filePath": "candidate/viewJobs.tsx",
+      "parent": "/candidate"
+    },
     "/employer/postJob": {
       "filePath": "employer/postJob.tsx"
     },
     "/employer/settings": {
       "filePath": "employer/settings.tsx"
-    },
-    "/candidate/": {
-      "filePath": "candidate/index.tsx"
     },
     "/employer/": {
       "filePath": "employer/index.tsx"
