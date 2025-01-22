@@ -10,6 +10,7 @@ export const EmployerLayout = () => {
 
   return (
     <div className="flex">
+      <h1 className="text-7xl">hello world</h1>
       <nav className="w-64 bg-gray-100">
         <Link href="/employer/postJob">Hello</Link>
         <button onClick={() => router.push("/dashboard")}>Dashboard</button>
@@ -31,9 +32,7 @@ export const EmployerLayout = () => {
         Welcome to
         {user?.role} dashboard'{" "}
       </h1>
-      <main className="flex-1">
-        <Outlet />
-      </main>
+      <main className="flex-1"></main>
     </div>
   );
 };

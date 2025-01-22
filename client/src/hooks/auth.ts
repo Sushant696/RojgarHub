@@ -1,10 +1,11 @@
-import useAuthStore from "../stores/authStore";
-import useRouter from "../lib/router";
-import { useQuery, useQueryClient } from "@tanstack/react-query";
-import { useMutation } from "@tanstack/react-query";
-import showNotification from "../utils/toastify";
-import { authApi } from "../api/user";
 import { toast } from "react-toastify";
+import { useMutation } from "@tanstack/react-query";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
+
+import { authApi } from "../api/user";
+import useRouter from "../lib/router";
+import useAuthStore from "../stores/authStore";
+import showNotification from "../utils/toastify";
 
 export const useLogin = () => {
   const setAccessToken = useAuthStore((state) => state.setAccessToken);
@@ -15,15 +16,17 @@ export const useLogin = () => {
   return useMutation({
     mutationFn: authApi.Login,
     onSuccess: (response) => {
-      const { accessToken, role, id, contact } = response.data.user;
+      const { accessToken, role, id, contact } = response.data.loggedInUser;
       setAccessToken(accessToken);
       setIsAuthenticated(true);
       setCurrentUser({ id, role, contact });
+      console.log(role);
       queryClient.invalidateQueries({ queryKey: ["verify"] });
+
       role === "employer"
         ? router.push("/employer")
         : router.push("/candidate");
-      showNotification("success", "successfully logged in");
+      showNotification("success", response.message);
     },
     onError: (error) => {
       console.log(error);

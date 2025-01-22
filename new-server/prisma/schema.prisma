@@ -36,7 +36,8 @@ model User {
   password  String
   role      UserRole  
   isActive  Boolean   @default(true)
-  
+  refreshToken String? 
+
   candidateProfile CandidateProfile?
   employerProfile  EmployerProfile?
   

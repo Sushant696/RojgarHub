@@ -19,6 +19,8 @@ export const ProtectedRoutes = ({ allowedRoles }: ProtectedRoutesProps) => {
     return;
   }
 
+  console.log(user.role, "user role");
+
   if (!allowedRoles.includes(user.role)) {
     showNotification("error", "Access Denied");
     router.back();

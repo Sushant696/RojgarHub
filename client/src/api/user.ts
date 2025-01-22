@@ -30,7 +30,6 @@ async function Login(formData: FormDataTypes) {
 }
 
 async function Register(formData: RegisterFormtypes, currentUser: string) {
-  console.log(currentUser);
   const response = await fetch(`http://localhost:5500/api/auth/register`, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
@@ -39,7 +38,7 @@ async function Register(formData: RegisterFormtypes, currentUser: string) {
       email: formData.email,
       contact: formData.contact,
       password: formData.password,
-      currentUser: currentUser,
+      role: currentUser.toUpperCase(),
     }),
   });
 

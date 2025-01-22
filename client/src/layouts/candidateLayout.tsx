@@ -7,7 +7,7 @@ export const CandidateLayout = () => {
   const router = useRouter();
   const user = useAuthStore((state) => state.user);
   const logout = useLogout();
-
+  console.log("hello");
   return (
     <div className="flex">
       <nav className="w-64 bg-gray-100">

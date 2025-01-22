@@ -1,70 +1,51 @@
 import { StatusCodes } from "http-status-codes";
-import db from "../../db/db.js";
+
+import * as authServices from "./auth.services.js";
 import { ApiError } from "../../utils/apiError.js";
-import { ApiResponse } from "../../utils/apiResponse.js";
-import asyncHandler from "../../utils/asyncHandler.js";
 import authRegisterSchema from "./auth.validator.js";
-import hash from "../../utils/hash.js";
+import asyncHandler from "../../utils/asyncHandler.js";
+import { ApiResponse } from "../../utils/apiResponse.js";
 
 const registerUser = asyncHandler(async (req, res) => {
   const validatedData = await authRegisterSchema.validate(req.body);
   if (
+    !validatedData.username ||
     !validatedData.password ||
+    !validatedData.role ||
     !validatedData.email ||
     !validatedData.contact
   ) {
     throw new ApiError(400, "All the fields are required.");
   }
-
-  const existinguser = await db.user.findUnique({
-    where: { contact: validatedData.contact, email: validatedData.email },
-  });
-
-  if (existinguser) {
-    throw new ApiError(
-      StatusCodes.CONFLICT,
-      "User with this email or phone already exist",
-    );
-  }
-
-  const hashedPassword = await hash.generate(validatedData.password);
-
-  const registerUserObj = {
-    username: validatedData.username,
-    role: validatedData.role,
-    email: validatedData.email,
-    contact: validatedData.contact,
-    password: hashedPassword,
-  };
-
-  const createdUser = await db.user.create({
-    data: registerUserObj,
-  });
-
+  const registerUserObj = { ...validatedData };
+  const createdUser = await authServices.register(registerUserObj);
   return res.json(
-    new ApiResponse(200, { createdUser }, "User Registered Successfully"),
+    new ApiResponse(
+      StatusCodes.OK,
+      { createdUser },
+      "User Registered Successfully",
+    ),
   );
 });
 
 const loginUser = asyncHandler(async (req, res) => {
   const { contact, password } = req.body;
-  console.log(contact, password);
-
   if (!contact || !password) {
-    throw new ApiError(400, "All the fields are necessary");
+    throw new ApiError(StatusCodes.CONFLICT, "All the fields are necessary");
   }
+  const loginUserObj = { contact, password };
+  const loggedInUser = await authServices.login(loginUserObj);
 
-  const user = await db.user.findUnique({ where: { contact } });
-  console.log(user);
-  if (!user) {
-    throw new ApiError(404, "User not found.");
-  }
+  res.cookie("accessToken", loggedInUser.tokens.accessToken, {
+    httpOnly: true,
+    secure: process.env.NODE_ENV === "production",
+    sameSite: "strict",
+    maxAge: 15 * 60 * 1000,
+  });
 
-  const isPasswordCorrect = await hash.compare(password, user.password);
-
-  if (!isPasswordCorrect) throw new ApiError(402, "Password is incorrect.");
-
-  return res.json(new ApiResponse(200, {}, "Login successfully"));
+  return res.json(
+    new ApiResponse(200, { ...loggedInUser }, "Login successfully"),
+  );
 });
 
 const logoutUser = asyncHandler(async (req, res) => {
@@ -77,7 +58,10 @@ const refreshAccessToken = asyncHandler(async (req, res) => {
 
 const forgotPassword = asyncHandler(async (req, res) => {
   return res.json(201, {}, "Password changed successfully");
-  // logout user
+});
+
+const verify = asyncHandler(async (req, res) => {
+  return res.json(new ApiResponse(400, {}, "user verified"));
 });
 
 export const authController = {
@@ -86,4 +70,5 @@ export const authController = {
   logoutUser,
   refreshAccessToken,
   forgotPassword,
+  verify,
 };

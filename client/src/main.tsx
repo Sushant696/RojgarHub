@@ -19,6 +19,8 @@ if (!rootElement.innerHTML) {
     <StrictMode>
       <RouterProvider router={router} />
       <ToastContainer />
+
+
     </StrictMode>,
   );
 }
