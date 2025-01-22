@@ -13,17 +13,16 @@ export const useLogin = () => {
   const setCurrentUser = useAuthStore((state) => state.setCurrentuser);
   const queryClient = useQueryClient();
   const router = useRouter();
+
   return useMutation({
     mutationFn: authApi.Login,
     onSuccess: (response) => {
-      const { accessToken, role, id, contact } = response.data.loggedInUser;
+      const { accessToken, role, id, contact } = response.data.user;
       setAccessToken(accessToken);
       setIsAuthenticated(true);
       setCurrentUser({ id, role, contact });
-      console.log(role);
       queryClient.invalidateQueries({ queryKey: ["verify"] });
-
-      role === "employer"
+      role === "EMPLOYER"
         ? router.push("/employer")
         : router.push("/candidate");
       showNotification("success", response.message);

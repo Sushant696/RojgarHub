@@ -4,7 +4,7 @@ import { EmployerLayout } from "../../layouts/EmployerLayout";
 
 export const Route = createFileRoute("/employer/")({
   component: () => (
-    <ProtectedRoutes allowedRoles={["employer"]}>
+    <ProtectedRoutes allowedRoles={["EMPLOYER"]}>
       <EmployerLayout />
     </ProtectedRoutes>
   ),

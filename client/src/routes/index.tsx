@@ -11,7 +11,7 @@ export const Route = createFileRoute("/")({
     if (isAuthenticated && user) {
       showNotification("success", "welcome back " + user?.role);
       throw redirect({
-        to: user?.role == "employer" ? "/employer" : "/candidate",
+        to: user?.role == "EMPLOYER" ? "/employer" : "/candidate",
       });
     }
   },

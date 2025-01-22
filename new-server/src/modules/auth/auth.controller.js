@@ -8,6 +8,7 @@ import { ApiResponse } from "../../utils/apiResponse.js";
 
 const registerUser = asyncHandler(async (req, res) => {
   const validatedData = await authRegisterSchema.validate(req.body);
+  console.log(validatedData);
   if (
     !validatedData.username ||
     !validatedData.password ||

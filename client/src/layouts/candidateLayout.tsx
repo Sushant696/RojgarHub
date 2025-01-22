@@ -30,9 +30,7 @@ export const CandidateLayout = () => {
         Welcome to
         {user?.role} dashboard'{" "}
       </h1>
-      <main className="flex-1">
-        <Outlet />
-      </main>
+      <main className="flex-1"></main>
     </div>
   );
 };

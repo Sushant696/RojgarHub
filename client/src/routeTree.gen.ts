@@ -17,16 +17,11 @@ import { Route as RegisterImport } from './routes/register'
 import { Route as PricingImport } from './routes/pricing'
 import { Route as LogoutImport } from './routes/logout'
 import { Route as LoginImport } from './routes/login'
-import { Route as CandidateImport } from './routes/candidate'
 import { Route as IndexImport } from './routes/index'
 import { Route as EmployerIndexImport } from './routes/employer/index'
+import { Route as CandidateIndexImport } from './routes/candidate/index'
 import { Route as EmployerSettingsImport } from './routes/employer/settings'
 import { Route as EmployerPostJobImport } from './routes/employer/postJob'
-import { Route as DynamicSettingsImport } from './routes/dynamic/settings'
-import { Route as DynamicSavedJobsImport } from './routes/dynamic/savedJobs'
-import { Route as DynamicApplyImport } from './routes/dynamic/apply'
-import { Route as DynamicIdImport } from './routes/dynamic/$id'
-import { Route as DashboardSettingsImport } from './routes/dashboard/settings'
 
 // Create Virtual Routes
 
@@ -85,12 +80,6 @@ const LoginRoute = LoginImport.update({
   getParentRoute: () => rootRoute,
 } as any)
 
-const CandidateRoute = CandidateImport.update({
-  id: '/candidate',
-  path: '/candidate',
-  getParentRoute: () => rootRoute,
-} as any)
-
 const IndexRoute = IndexImport.update({
   id: '/',
   path: '/',
@@ -100,6 +89,12 @@ const IndexRoute = IndexImport.update({
 const EmployerIndexRoute = EmployerIndexImport.update({
   id: '/employer/',
   path: '/employer/',
+  getParentRoute: () => rootRoute,
+} as any)
+
+const CandidateIndexRoute = CandidateIndexImport.update({
+  id: '/candidate/',
+  path: '/candidate/',
   getParentRoute: () => rootRoute,
 } as any)
 
@@ -115,36 +110,6 @@ const EmployerPostJobRoute = EmployerPostJobImport.update({
   getParentRoute: () => rootRoute,
 } as any)
 
-const DynamicSettingsRoute = DynamicSettingsImport.update({
-  id: '/dynamic/settings',
-  path: '/dynamic/settings',
-  getParentRoute: () => rootRoute,
-} as any)
-
-const DynamicSavedJobsRoute = DynamicSavedJobsImport.update({
-  id: '/dynamic/savedJobs',
-  path: '/dynamic/savedJobs',
-  getParentRoute: () => rootRoute,
-} as any)
-
-const DynamicApplyRoute = DynamicApplyImport.update({
-  id: '/dynamic/apply',
-  path: '/dynamic/apply',
-  getParentRoute: () => rootRoute,
-} as any)
-
-const DynamicIdRoute = DynamicIdImport.update({
-  id: '/dynamic/$id',
-  path: '/dynamic/$id',
-  getParentRoute: () => rootRoute,
-} as any)
-
-const DashboardSettingsRoute = DashboardSettingsImport.update({
-  id: '/dashboard/settings',
-  path: '/dashboard/settings',
-  getParentRoute: () => rootRoute,
-} as any)
-
 // Populate the FileRoutesByPath interface
 
 declare module '@tanstack/react-router' {
@@ -154,13 +119,6 @@ declare module '@tanstack/react-router' {
       path: '/'
       fullPath: '/'
       preLoaderRoute: typeof IndexImport
-      parentRoute: typeof rootRoute
-    }
-    '/candidate': {
-      id: '/candidate'
-      path: '/candidate'
-      fullPath: '/candidate'
-      preLoaderRoute: typeof CandidateImport
       parentRoute: typeof rootRoute
     }
     '/login': {
@@ -219,41 +177,6 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ContactLazyImport
       parentRoute: typeof rootRoute
     }
-    '/dashboard/settings': {
-      id: '/dashboard/settings'
-      path: '/dashboard/settings'
-      fullPath: '/dashboard/settings'
-      preLoaderRoute: typeof DashboardSettingsImport
-      parentRoute: typeof rootRoute
-    }
-    '/dynamic/$id': {
-      id: '/dynamic/$id'
-      path: '/dynamic/$id'
-      fullPath: '/dynamic/$id'
-      preLoaderRoute: typeof DynamicIdImport
-      parentRoute: typeof rootRoute
-    }
-    '/dynamic/apply': {
-      id: '/dynamic/apply'
-      path: '/dynamic/apply'
-      fullPath: '/dynamic/apply'
-      preLoaderRoute: typeof DynamicApplyImport
-      parentRoute: typeof rootRoute
-    }
-    '/dynamic/savedJobs': {
-      id: '/dynamic/savedJobs'
-      path: '/dynamic/savedJobs'
-      fullPath: '/dynamic/savedJobs'
-      preLoaderRoute: typeof DynamicSavedJobsImport
-      parentRoute: typeof rootRoute
-    }
-    '/dynamic/settings': {
-      id: '/dynamic/settings'
-      path: '/dynamic/settings'
-      fullPath: '/dynamic/settings'
-      preLoaderRoute: typeof DynamicSettingsImport
-      parentRoute: typeof rootRoute
-    }
     '/employer/postJob': {
       id: '/employer/postJob'
       path: '/employer/postJob'
@@ -266,6 +189,13 @@ declare module '@tanstack/react-router' {
       path: '/employer/settings'
       fullPath: '/employer/settings'
       preLoaderRoute: typeof EmployerSettingsImport
+      parentRoute: typeof rootRoute
+    }
+    '/candidate/': {
+      id: '/candidate/'
+      path: '/candidate'
+      fullPath: '/candidate'
+      preLoaderRoute: typeof CandidateIndexImport
       parentRoute: typeof rootRoute
     }
     '/employer/': {
@@ -282,7 +212,6 @@ declare module '@tanstack/react-router' {
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
-  '/candidate': typeof CandidateRoute
   '/login': typeof LoginRoute
   '/logout': typeof LogoutRoute
   '/pricing': typeof PricingRoute
@@ -291,19 +220,14 @@ export interface FileRoutesByFullPath {
   '/apply': typeof ApplyLazyRoute
   '/blog': typeof BlogLazyRoute
   '/contact': typeof ContactLazyRoute
-  '/dashboard/settings': typeof DashboardSettingsRoute
-  '/dynamic/$id': typeof DynamicIdRoute
-  '/dynamic/apply': typeof DynamicApplyRoute
-  '/dynamic/savedJobs': typeof DynamicSavedJobsRoute
-  '/dynamic/settings': typeof DynamicSettingsRoute
   '/employer/postJob': typeof EmployerPostJobRoute
   '/employer/settings': typeof EmployerSettingsRoute
+  '/candidate': typeof CandidateIndexRoute
   '/employer': typeof EmployerIndexRoute
 }
 
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
-  '/candidate': typeof CandidateRoute
   '/login': typeof LoginRoute
   '/logout': typeof LogoutRoute
   '/pricing': typeof PricingRoute
@@ -312,20 +236,15 @@ export interface FileRoutesByTo {
   '/apply': typeof ApplyLazyRoute
   '/blog': typeof BlogLazyRoute
   '/contact': typeof ContactLazyRoute
-  '/dashboard/settings': typeof DashboardSettingsRoute
-  '/dynamic/$id': typeof DynamicIdRoute
-  '/dynamic/apply': typeof DynamicApplyRoute
-  '/dynamic/savedJobs': typeof DynamicSavedJobsRoute
-  '/dynamic/settings': typeof DynamicSettingsRoute
   '/employer/postJob': typeof EmployerPostJobRoute
   '/employer/settings': typeof EmployerSettingsRoute
+  '/candidate': typeof CandidateIndexRoute
   '/employer': typeof EmployerIndexRoute
 }
 
 export interface FileRoutesById {
   __root__: typeof rootRoute
   '/': typeof IndexRoute
-  '/candidate': typeof CandidateRoute
   '/login': typeof LoginRoute
   '/logout': typeof LogoutRoute
   '/pricing': typeof PricingRoute
@@ -334,13 +253,9 @@ export interface FileRoutesById {
   '/apply': typeof ApplyLazyRoute
   '/blog': typeof BlogLazyRoute
   '/contact': typeof ContactLazyRoute
-  '/dashboard/settings': typeof DashboardSettingsRoute
-  '/dynamic/$id': typeof DynamicIdRoute
-  '/dynamic/apply': typeof DynamicApplyRoute
-  '/dynamic/savedJobs': typeof DynamicSavedJobsRoute
-  '/dynamic/settings': typeof DynamicSettingsRoute
   '/employer/postJob': typeof EmployerPostJobRoute
   '/employer/settings': typeof EmployerSettingsRoute
+  '/candidate/': typeof CandidateIndexRoute
   '/employer/': typeof EmployerIndexRoute
 }
 
@@ -348,7 +263,6 @@ export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
     | '/'
-    | '/candidate'
     | '/login'
     | '/logout'
     | '/pricing'
@@ -357,18 +271,13 @@ export interface FileRouteTypes {
     | '/apply'
     | '/blog'
     | '/contact'
-    | '/dashboard/settings'
-    | '/dynamic/$id'
-    | '/dynamic/apply'
-    | '/dynamic/savedJobs'
-    | '/dynamic/settings'
     | '/employer/postJob'
     | '/employer/settings'
+    | '/candidate'
     | '/employer'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
-    | '/candidate'
     | '/login'
     | '/logout'
     | '/pricing'
@@ -377,18 +286,13 @@ export interface FileRouteTypes {
     | '/apply'
     | '/blog'
     | '/contact'
-    | '/dashboard/settings'
-    | '/dynamic/$id'
-    | '/dynamic/apply'
-    | '/dynamic/savedJobs'
-    | '/dynamic/settings'
     | '/employer/postJob'
     | '/employer/settings'
+    | '/candidate'
     | '/employer'
   id:
     | '__root__'
     | '/'
-    | '/candidate'
     | '/login'
     | '/logout'
     | '/pricing'
@@ -397,20 +301,15 @@ export interface FileRouteTypes {
     | '/apply'
     | '/blog'
     | '/contact'
-    | '/dashboard/settings'
-    | '/dynamic/$id'
-    | '/dynamic/apply'
-    | '/dynamic/savedJobs'
-    | '/dynamic/settings'
     | '/employer/postJob'
     | '/employer/settings'
+    | '/candidate/'
     | '/employer/'
   fileRoutesById: FileRoutesById
 }
 
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
-  CandidateRoute: typeof CandidateRoute
   LoginRoute: typeof LoginRoute
   LogoutRoute: typeof LogoutRoute
   PricingRoute: typeof PricingRoute
@@ -419,19 +318,14 @@ export interface RootRouteChildren {
   ApplyLazyRoute: typeof ApplyLazyRoute
   BlogLazyRoute: typeof BlogLazyRoute
   ContactLazyRoute: typeof ContactLazyRoute
-  DashboardSettingsRoute: typeof DashboardSettingsRoute
-  DynamicIdRoute: typeof DynamicIdRoute
-  DynamicApplyRoute: typeof DynamicApplyRoute
-  DynamicSavedJobsRoute: typeof DynamicSavedJobsRoute
-  DynamicSettingsRoute: typeof DynamicSettingsRoute
   EmployerPostJobRoute: typeof EmployerPostJobRoute
   EmployerSettingsRoute: typeof EmployerSettingsRoute
+  CandidateIndexRoute: typeof CandidateIndexRoute
   EmployerIndexRoute: typeof EmployerIndexRoute
 }
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
-  CandidateRoute: CandidateRoute,
   LoginRoute: LoginRoute,
   LogoutRoute: LogoutRoute,
   PricingRoute: PricingRoute,
@@ -440,13 +334,9 @@ const rootRouteChildren: RootRouteChildren = {
   ApplyLazyRoute: ApplyLazyRoute,
   BlogLazyRoute: BlogLazyRoute,
   ContactLazyRoute: ContactLazyRoute,
-  DashboardSettingsRoute: DashboardSettingsRoute,
-  DynamicIdRoute: DynamicIdRoute,
-  DynamicApplyRoute: DynamicApplyRoute,
-  DynamicSavedJobsRoute: DynamicSavedJobsRoute,
-  DynamicSettingsRoute: DynamicSettingsRoute,
   EmployerPostJobRoute: EmployerPostJobRoute,
   EmployerSettingsRoute: EmployerSettingsRoute,
+  CandidateIndexRoute: CandidateIndexRoute,
   EmployerIndexRoute: EmployerIndexRoute,
 }
 
@@ -461,7 +351,6 @@ export const routeTree = rootRoute
       "filePath": "__root.tsx",
       "children": [
         "/",
-        "/candidate",
         "/login",
         "/logout",
         "/pricing",
@@ -470,21 +359,14 @@ export const routeTree = rootRoute
         "/apply",
         "/blog",
         "/contact",
-        "/dashboard/settings",
-        "/dynamic/$id",
-        "/dynamic/apply",
-        "/dynamic/savedJobs",
-        "/dynamic/settings",
         "/employer/postJob",
         "/employer/settings",
+        "/candidate/",
         "/employer/"
       ]
     },
     "/": {
       "filePath": "index.tsx"
-    },
-    "/candidate": {
-      "filePath": "candidate.tsx"
     },
     "/login": {
       "filePath": "login.tsx"
@@ -510,26 +392,14 @@ export const routeTree = rootRoute
     "/contact": {
       "filePath": "contact.lazy.tsx"
     },
-    "/dashboard/settings": {
-      "filePath": "dashboard/settings.tsx"
-    },
-    "/dynamic/$id": {
-      "filePath": "dynamic/$id.tsx"
-    },
-    "/dynamic/apply": {
-      "filePath": "dynamic/apply.tsx"
-    },
-    "/dynamic/savedJobs": {
-      "filePath": "dynamic/savedJobs.tsx"
-    },
-    "/dynamic/settings": {
-      "filePath": "dynamic/settings.tsx"
-    },
     "/employer/postJob": {
       "filePath": "employer/postJob.tsx"
     },
     "/employer/settings": {
       "filePath": "employer/settings.tsx"
+    },
+    "/candidate/": {
+      "filePath": "candidate/index.tsx"
     },
     "/employer/": {
       "filePath": "employer/index.tsx"

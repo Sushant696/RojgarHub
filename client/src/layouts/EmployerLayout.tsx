@@ -32,7 +32,9 @@ export const EmployerLayout = () => {
         Welcome to
         {user?.role} dashboard'{" "}
       </h1>
-      <main className="flex-1"></main>
+      <main className="flex-1">
+        <Outlet />
+      </main>
     </div>
   );
 };

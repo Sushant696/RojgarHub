@@ -1,4 +1,6 @@
 import axios from "axios";
+import api from "../lib/axios";
+import { apiURLs } from "../lib/apiURLs";
 
 interface FormDataTypes {
   phoneNo: string;
@@ -30,21 +32,24 @@ async function Login(formData: FormDataTypes) {
 }
 
 async function Register(formData: RegisterFormtypes, currentUser: string) {
-  const response = await fetch(`http://localhost:5500/api/auth/register`, {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({
+  const response = await api.post(
+    apiURLs.AUTH.register,
+    {
       username: formData.username,
       email: formData.email,
       contact: formData.contact,
       password: formData.password,
       role: currentUser.toUpperCase(),
-    }),
-  });
+    },
+    {
+      headers: { "Content-Type": "application/json" },
+    },
+  );
+  console.log(response);
 
-  const data = await response.json();
-  if (!data?.success) {
-    throw new Error(data?.message || "Something went wrong");
+  if (!response.status) {
+    console.log(response);
+    throw new Error(response.data?.message || "Something went wrong");
   }
 }
 

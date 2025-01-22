@@ -12,9 +12,9 @@ const queryClient = new QueryClient();
 const LayoutWrapper = () => {
   const user = useAuthStore((state) => state.user);
 
-  if (user?.role === "employer") {
+  if (user?.role === "EMPLOYER") {
     return <EmployerLayout />;
-  } else if (user?.role === "candidate") {
+  } else if (user?.role.  === "candidate") {
     return <CandidateLayout />;
   } else {
     return <PublicLayout />;
@@ -23,7 +23,7 @@ const LayoutWrapper = () => {
 
 export const Route = createRootRoute({
   notFoundComponent: () => {
-    return <p>Not found bro make a custom component for this </p>;
+    return <p>Not found bro make a custom component for this</p>;
   },
 
   component: () => (
