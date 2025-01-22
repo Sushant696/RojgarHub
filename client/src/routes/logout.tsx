@@ -1,8 +1,7 @@
-import { createFileRoute, redirect } from "@tanstack/react-router";
+import { createFileRoute } from "@tanstack/react-router";
 
 export const Route = createFileRoute("/logout")({
-  beforeLoad: () => {
-    throw redirect({ to: "/" });
-  },
-  component: () => <h1>loggin out</h1>,
+  component: () => <h1>loggin out, some loading will be shown </h1>,
 });
+
+

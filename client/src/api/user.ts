@@ -1,4 +1,6 @@
 import axios from "axios";
+import api from "../lib/axios";
+import { apiURLs } from "../lib/apiURLs";
 
 interface FormDataTypes {
   phoneNo: string;
@@ -12,40 +14,41 @@ interface RegisterFormtypes {
 }
 
 async function Login(formData: FormDataTypes) {
-  // const response = await fetch(`${process.env.API_URL}/api/auth`, {
-  const response = await fetch(`http://localhost:5500/api/auth/login`, {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({
+  const response = await api.post(
+    apiURLs.AUTH.login,
+    {
       contact: formData.phoneNo,
       password: formData.password,
-    }),
-  });
+    },
+    {
+      headers: { "Content-Type": "application/json" },
+      withCredentials: true,
+    },
+  );
 
-  const data = await response.json();
-  if (!data?.success) {
-    throw new Error(data.message || "Something went wrong!");
+  if (!response.statusText) {
+    throw new Error(response.data.message || "Something went wrong!");
   }
-  return data;
+  return response;
 }
 
 async function Register(formData: RegisterFormtypes, currentUser: string) {
-  console.log(currentUser);
-  const response = await fetch(`http://localhost:5500/api/auth/register`, {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({
+  const response = await api.post(
+    apiURLs.AUTH.register,
+    {
       username: formData.username,
       email: formData.email,
       contact: formData.contact,
       password: formData.password,
-      currentUser: currentUser,
-    }),
-  });
+      role: currentUser.toUpperCase(),
+    },
+    {
+      headers: { "Content-Type": "application/json" },
+    },
+  );
 
-  const data = await response.json();
-  if (!data?.success) {
-    throw new Error(data?.message || "Something went wrong");
+  if (!response.status) {
+    throw new Error(response.data?.message || "Something went wrong");
   }
 }
 

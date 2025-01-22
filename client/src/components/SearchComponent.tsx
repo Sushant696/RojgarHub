@@ -30,7 +30,6 @@ function SearchComponent() {
       industry: selectedValue,
       keywords,
     };
-    console.log(queryObject);
 
     // reset the fields after submission
     setSelectedValue("");
@@ -48,7 +47,6 @@ function SearchComponent() {
             type="text"
             value={keywords}
             onChange={(e) => {
-              console.log("touched");
               setKeywords(e.target.value);
             }}
             placeholder="Job keywords or title.."

@@ -1,7 +1,7 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { ProtectedRoutes } from "../../auth/protectedRoutes";
 
-export const Route = createFileRoute("/candidate/settings")({
+export const Route = createFileRoute("/candidate/viewJobs")({
   component: RouteComponent,
 });
 

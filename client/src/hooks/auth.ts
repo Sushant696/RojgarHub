@@ -1,10 +1,11 @@
-import useAuthStore from "../stores/authStore";
-import useRouter from "../lib/router";
-import { useQuery, useQueryClient } from "@tanstack/react-query";
-import { useMutation } from "@tanstack/react-query";
-import showNotification from "../utils/toastify";
-import { authApi } from "../api/user";
 import { toast } from "react-toastify";
+import { useMutation } from "@tanstack/react-query";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
+
+import { authApi } from "../api/user";
+import useRouter from "../lib/router";
+import useAuthStore from "../stores/authStore";
+import showNotification from "../utils/toastify";
 
 export const useLogin = () => {
   const setAccessToken = useAuthStore((state) => state.setAccessToken);
@@ -12,18 +13,21 @@ export const useLogin = () => {
   const setCurrentUser = useAuthStore((state) => state.setCurrentuser);
   const queryClient = useQueryClient();
   const router = useRouter();
+
   return useMutation({
     mutationFn: authApi.Login,
     onSuccess: (response) => {
-      const { accessToken, role, id, contact } = response.data.user;
+      console.log(response.data.data.user);
+      const { accessToken, role, id, contact } = response.data.data.user;
+
       setAccessToken(accessToken);
       setIsAuthenticated(true);
       setCurrentUser({ id, role, contact });
       queryClient.invalidateQueries({ queryKey: ["verify"] });
-      role === "employer"
+      role === "EMPLOYER"
         ? router.push("/employer")
         : router.push("/candidate");
-      showNotification("success", "successfully logged in");
+      showNotification("success", response.data.message);
     },
     onError: (error) => {
       console.log(error);

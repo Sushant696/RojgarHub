@@ -10,7 +10,7 @@ export const Route = createFileRoute("/login")({
   beforeLoad: () => {
     if (isAuthenticated && user) {
       throw redirect({
-        to: user?.role == "employer" ? "/employer" : "/candidate",
+        to: user?.role == "EMPLOYER" ? "/employer" : "/candidate",
         search: { returnTo: window.location.pathname },
       });
     }

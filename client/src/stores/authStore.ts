@@ -1,7 +1,7 @@
 import { create } from "zustand";
 import { authApi } from "../api/user";
-type UserRole = "employer" | "candidate";
 import { persist } from "zustand/middleware";
+import { UserRole } from "../types/auth";
 
 interface User {
   id: string;

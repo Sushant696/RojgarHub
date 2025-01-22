@@ -47,7 +47,7 @@ function Register({ onSwitch }: RegisterProps) {
       push("/login");
     },
     onError: (error) => {
-      showNotification("success", error.message || "Something went wrong.");
+      showNotification("error", error.message || "Something went wrong.");
     },
   });
 

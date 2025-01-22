@@ -5,7 +5,6 @@ import cookieParser from "cookie-parser";
 import rateLimit from "express-rate-limit";
 import bodyParser from "body-parser";
 
-import config from "./config/index.js";
 import mainRouter from "./modules/main.router.js";
 import { errorHandler } from "./middlewares/errorhandler.middlewares.js";
 
@@ -13,6 +12,7 @@ export const app = express();
 
 const corsOption = {
   origin: "http://localhost:5173",
+  credentials: true,
 };
 
 app.use(bodyParser.json());
