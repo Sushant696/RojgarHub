@@ -1,9 +1,11 @@
 import { StatusCodes } from "http-status-codes";
+import jwt from "jsonwebtoken";
 
 import db from "../../db/db.js";
 import hash from "../../utils/hash.js";
 import { ApiError } from "../../utils/apiError.js";
 import generateTokens from "../../utils/token.js";
+import config from "../../config/index.js";
 
 export const register = async (registerData) => {
   if (!registerData) {
@@ -77,11 +79,48 @@ export const logout = async (userId) => {
   if (!userId) {
     throw new ApiError(StatusCodes.UNAUTHORIZED, "Unauthorized access");
   }
-  console.log('here')
+  console.log("here");
   const loggedout = await db.user.update({
     where: { id: userId },
     data: { refreshToken: undefined },
   });
 
   return loggedout;
+};
+
+export const refreshAccessTokenService = async (token) => {
+  if (!token) {
+    throw new ApiError(StatusCodes.UNAUTHORIZED, "Unauthorized access");
+  }
+  let decodedToken;
+  try {
+    decodedToken = jwt.verify(token, config.jwt.refreshToken);
+  } catch (error) {
+    throw new ApiError(StatusCodes.CONFLICT, "Invalid or expired token");
+  }
+
+  if (!decodedToken || !decodedToken.userId) {
+    throw new ApiError(StatusCodes.CONFLICT, "Token payload missing userId");
+  }
+
+  const { accessToken, refreshToken } = generateTokens({
+    id: decodedToken.userId,
+    role: decodedToken.role,
+  });
+
+  let user;
+  try {
+    user = await db.user.update({
+      where: { id: decodedToken.userId },
+      data: { refreshToken: refreshToken },
+    });
+  } catch (err) {
+    console.error("Database update failed:", err);
+    throw new ApiError(
+      StatusCodes.INTERNAL_SERVER_ERROR,
+      "Database update failed",
+    );
+  }
+
+  return { user, tokens: { accessToken, refreshToken } };
 };

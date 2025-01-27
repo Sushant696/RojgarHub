@@ -8,5 +8,6 @@ authRouter.post("/register", authController.registerUser);
 authRouter.post("/login", authController.loginUser);
 authRouter.get("/logout", isAuthenticated, authController.logoutUser);
 authRouter.get("/verify", isAuthenticated, authController.verify);
+authRouter.get("/refresh", isAuthenticated, authController.refreshAccessToken);
 
 export default authRouter;
