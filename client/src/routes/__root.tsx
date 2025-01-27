@@ -3,22 +3,13 @@ import { TanStackRouterDevtools } from "@tanstack/router-devtools";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 
 import useAuthStore from "../stores/authStore";
-import { EmployerLayout } from "../layouts/EmployerLayout";
-import { CandidateLayout } from "../layouts/candidateLayout";
 import PublicLayout from "../layouts/publicLayout";
 
 const queryClient = new QueryClient();
 
 const LayoutWrapper = () => {
   const user = useAuthStore((state) => state.user);
-
-  if (user?.role === "EMPLOYER") {
-    return <EmployerLayout />;
-  } else if (user?.role === "CANDIDATE") {
-    return <CandidateLayout />;
-  } else {
-    return <PublicLayout />;
-  }
+  return <PublicLayout />;
 };
 
 export const Route = createRootRoute({

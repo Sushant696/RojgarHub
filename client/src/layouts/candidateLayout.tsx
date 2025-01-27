@@ -7,6 +7,9 @@ export const CandidateLayout = () => {
   const router = useRouter();
   const user = useAuthStore((state) => state.user);
   const logout = useLogout();
+  if (logout.isPending) {
+    return <h1 className="min-h-screen mx-0 ">Loading...</h1>;
+  }
 
   return (
     <div className="min-h-screen bg-gray-50">
@@ -28,10 +31,10 @@ export const CandidateLayout = () => {
             </button>
 
             <button
-              onClick={() => router.push("/candidate/viewJobs")}
+              onClick={() => router.push("/employer/new")}
               className="w-full text-left px-4 py-2 text-gray-700 hover:bg-gray-100 rounded-lg transition-colors"
             >
-              View Job
+              Unauthorized
             </button>
 
             <button

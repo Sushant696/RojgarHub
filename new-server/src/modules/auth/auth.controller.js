@@ -40,16 +40,36 @@ const loginUser = asyncHandler(async (req, res) => {
     httpOnly: true,
     secure: true,
     sameSite: "strict",
-    maxAge: 36 * 15 * 60 * 1000,
+    maxAge: 7 * 24 * 60 * 60 * 1000,
   });
 
+  res.cookie("accessToken", loggedInUser.tokens.accessToken, {
+    httpOnly: true,
+    secure: true,
+    sameSite: "strict",
+    maxAge: 30 * 60 * 1000,
+  });
   return res.json(
-    new ApiResponse(200, { ...loggedInUser }, "Login successfully"),
+    new ApiResponse(
+      200,
+      { ...loggedInUser.user, accessToken: loggedInUser.tokens.accessToken },
+      "Login successfully",
+    ),
   );
 });
 
 const logoutUser = asyncHandler(async (req, res) => {
-  return res.json(new ApiResponse(201, {}, "Logged out successfully"));
+  await authServices.logout(req?.user?.userId);
+  const options = {
+    httpOnly: true,
+    secure: process.env.NODE_ENV === "production",
+    sameSite: "none",
+    path: "/",
+  };
+  return res
+    .clearCookie("accessToken", options)
+    .clearCookie("refreshToken", options)
+    .json(new ApiResponse(StatusCodes.OK, {}, "Logged out successfully"));
 });
 
 const refreshAccessToken = asyncHandler(async (req, res) => {
@@ -61,7 +81,8 @@ const forgotPassword = asyncHandler(async (req, res) => {
 });
 
 const verify = asyncHandler(async (req, res) => {
-  return res.json(new ApiResponse(400, {}, "user verified"));
+  console.log(req.user);
+  return res.json(new ApiResponse(StatusCodes.OK, {}, "user verified"));
 });
 
 export const authController = {

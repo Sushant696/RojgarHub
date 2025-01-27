@@ -49,7 +49,6 @@ export const login = async (loginData) => {
   );
 
   if (!isPasswordCorrect) throw new ApiError(402, "Password is incorrect.");
-  // tokens generation and stuff will be done here
   const { accessToken, refreshToken } = generateTokens(user);
 
   const updatedUser = await db.user.update({
@@ -69,6 +68,20 @@ export const login = async (loginData) => {
     user: updatedUser,
     tokens: {
       accessToken,
+      refreshToken,
     },
   };
+};
+
+export const logout = async (userId) => {
+  if (!userId) {
+    throw new ApiError(StatusCodes.UNAUTHORIZED, "Unauthorized access");
+  }
+  console.log('here')
+  const loggedout = await db.user.update({
+    where: { id: userId },
+    data: { refreshToken: undefined },
+  });
+
+  return loggedout;
 };
