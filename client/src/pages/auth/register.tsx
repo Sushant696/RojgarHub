@@ -21,6 +21,7 @@ import useRouter from "../../lib/router";
 import { registerSchema } from "./schemas";
 import showNotification from "../../utils/toastify";
 import ToggleUser from "../../components/toggleButton";
+import DisplayErrorToast from "../../utils/displayErrorMessage";
 
 interface RegisterProps {
   onSwitch: () => void;
@@ -47,7 +48,7 @@ function Register({ onSwitch }: RegisterProps) {
       push("/login");
     },
     onError: (error) => {
-      showNotification("error", error.message || "Something went wrong.");
+      DisplayErrorToast(error);
     },
   });
 

@@ -1,19 +1,12 @@
 import { ApiError } from "../utils/apiError.js";
 
 export const errorHandler = (err, _, res, next) => {
-  console.log(err);
-  if (err instanceof ApiError) {
-    console.log(err);
-    res.status(err.statusCode).json({
-      success: false,
-      message: err.message,
-      errors: err.errors,
-    });
-  } else {
-    res.status(500).json({
-      success: false,
-      message: [err.message] | "An unexpected error occurred",
-      errors: [err.message],
-    });
+  if (!(err instanceof ApiError)) {
+    const statusCode = err.statusCode || 500;
+    const message = err.message || responseMessage.OTHER.SERVER_ERROR;
+
+    err = new ApiError(statusCode, message);
   }
+
+  return res.status(err.statusCode).json({ message: err.message });
 };

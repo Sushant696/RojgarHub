@@ -1,4 +1,3 @@
-import { toast } from "react-toastify";
 import { useMutation } from "@tanstack/react-query";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 
@@ -6,6 +5,7 @@ import { authApi } from "../api/user";
 import useRouter from "../lib/router";
 import useAuthStore from "../stores/authStore";
 import showNotification from "../utils/toastify";
+import DisplayErrorToast from "../utils/displayErrorMessage";
 
 export const useLogin = () => {
   const setAccessToken = useAuthStore((state) => state.setAccessToken);
@@ -26,9 +26,8 @@ export const useLogin = () => {
         : router.push("/candidate");
       showNotification("success", response.data.message);
     },
-    onError: (error) => {
-      console.log(error);
-      showNotification("error", error.message || "Sometime went wrong.");
+    onError: (error: any) => {
+      DisplayErrorToast(error);
     },
   });
 };
@@ -74,6 +73,7 @@ export const useLogout = () => {
     },
     onError: () => {
       setIsLoading(false);
+
     },
   });
 };
