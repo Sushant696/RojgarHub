@@ -12,11 +12,13 @@ interface AuthState {
   user: User | null;
   accessToken: string | null;
   isAuthenticated: boolean;
+  isLoading: boolean;
   setAccessToken: (token: string | null) => void;
   login: (phoneNo: string, password: string) => Promise<any>;
   logout: () => Promise<void>;
   setIsAuthenticated: (status: boolean) => void;
   setCurrentuser: (user: User | null) => Promise<void>;
+  setIsLoading: (status: boolean) => void;
 }
 
 const useAuthStore = create<AuthState>()(
@@ -26,12 +28,17 @@ const useAuthStore = create<AuthState>()(
       accessToken: null,
       isAuthenticated: false,
       token: null,
+      isLoading: false,
 
       setAccessToken: (token) => {
         set({ accessToken: token });
       },
       setIsAuthenticated: (status) => {
         set({ isAuthenticated: status });
+      },
+
+      setIsLoading: (status) => {
+        set({ isLoading: status });
       },
 
       login: async (phoneNo, password) => {

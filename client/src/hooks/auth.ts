@@ -1,4 +1,3 @@
-import { toast } from "react-toastify";
 import { useMutation } from "@tanstack/react-query";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 
@@ -6,6 +5,7 @@ import { authApi } from "../api/user";
 import useRouter from "../lib/router";
 import useAuthStore from "../stores/authStore";
 import showNotification from "../utils/toastify";
+import DisplayErrorToast from "../utils/displayErrorMessage";
 
 export const useLogin = () => {
   const setAccessToken = useAuthStore((state) => state.setAccessToken);
@@ -13,13 +13,10 @@ export const useLogin = () => {
   const setCurrentUser = useAuthStore((state) => state.setCurrentuser);
   const queryClient = useQueryClient();
   const router = useRouter();
-
   return useMutation({
     mutationFn: authApi.Login,
     onSuccess: (response) => {
-      console.log(response.data.data.user);
-      const { accessToken, role, id, contact } = response.data.data.user;
-
+      const { accessToken, role, id, contact } = response?.data?.data;
       setAccessToken(accessToken);
       setIsAuthenticated(true);
       setCurrentUser({ id, role, contact });
@@ -29,9 +26,8 @@ export const useLogin = () => {
         : router.push("/candidate");
       showNotification("success", response.data.message);
     },
-    onError: (error) => {
-      console.log(error);
-      showNotification("error", error.message || "Sometime went wrong.");
+    onError: (error: any) => {
+      DisplayErrorToast(error);
     },
   });
 };
@@ -45,28 +41,39 @@ export const useVerify = () => {
 };
 
 export const useLogout = () => {
-  const setAccessToken = useAuthStore((state) => state.setAccessToken);
-  const setIsAuthenticated = useAuthStore((state) => state.setIsAuthenticated);
-  const setUser = useAuthStore((state) => state.setCurrentuser);
+  const {
+    setAccessToken,
+    setIsAuthenticated,
+    setCurrentuser: setUser,
+    setIsLoading,
+  } = useAuthStore();
+
   const queryClient = useQueryClient();
   const router = useRouter();
 
   return useMutation({
     mutationFn: authApi.Logout,
     onMutate: () => {
-      toast.dismiss();
+      setIsLoading(true);
     },
-    // delay for clearing the states
-    onSuccess: () => {
-      router.push("/logout");
-      setTimeout(() => {
+    onSuccess: async () => {
+      try {
         setUser(null);
         setAccessToken(null);
         setIsAuthenticated(false);
-        queryClient.invalidateQueries({ queryKey: ["verify"] });
-        toast.dismiss();
+
+        await queryClient.resetQueries();
+        queryClient.clear();
+
+        await router.push("/");
         showNotification("success", "logged out successfully.");
-      }, 100);
+      } finally {
+        setIsLoading(false);
+      }
+    },
+    onError: () => {
+      setIsLoading(false);
+
     },
   });
 };

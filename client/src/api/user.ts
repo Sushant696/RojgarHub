@@ -26,9 +26,11 @@ async function Login(formData: FormDataTypes) {
     },
   );
 
+  console.log(response.statusText);
   if (!response.statusText) {
     throw new Error(response.data.message || "Something went wrong!");
   }
+  console.log(response.statusText);
   return response;
 }
 
@@ -58,7 +60,10 @@ async function Verify() {
 }
 
 async function Logout() {
-  const response = await axios.get("hello");
+  const response = await api.get(apiURLs.AUTH.logout, {
+    withCredentials: true,
+  });
+
   return response;
 }
 

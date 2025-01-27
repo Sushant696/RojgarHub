@@ -15,7 +15,6 @@ export default {
     accessTokenExpiry: process.env.ACCESS_TOKEN_EXPIRY,
     refreshToken: process.env.REFRESH_TOKEN,
     refreshTokenExpiry: process.env.REFRESH_TOKEN_EXPIRY,
-
   },
   cors:
     process.env.NODE_ENV === "production"

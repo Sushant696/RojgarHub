@@ -1,19 +1,12 @@
 import { ApiError } from "../utils/apiError.js";
 
 export const errorHandler = (err, _, res, next) => {
-  if (err instanceof ApiError) {
-    res.status(err.statusCode).json({
-      success: false,
-      message: err.message,
-      errors: err.errors,
-      stack: process.env.NODE_ENV === "development" ? err.stack : undefined,
-    });
-  } else {
-    res.status(500).json({
-      success: false,
-      message: [err.message] | "An unexpected error occurred",
-      errors: [err.message],
-      stack: process.env.NODE_ENV === "development" ? err.stack : undefined,
-    });
+  if (!(err instanceof ApiError)) {
+    const statusCode = err.statusCode || 500;
+    const message = err.message || responseMessage.OTHER.SERVER_ERROR;
+
+    err = new ApiError(statusCode, message);
   }
+
+  return res.status(err.statusCode).json({ message: err.message });
 };

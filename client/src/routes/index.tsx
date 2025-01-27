@@ -1,17 +1,15 @@
 import { createFileRoute, redirect } from "@tanstack/react-router";
 import Home from "../pages/home";
 import useAuthStore from "../stores/authStore";
-import showNotification from "../utils/toastify";
-
-const user = useAuthStore.getState().user;
-const isAuthenticated = useAuthStore.getState().isAuthenticated;
 
 export const Route = createFileRoute("/")({
-  beforeLoad: () => {
+  beforeLoad: async () => {
+    const user = useAuthStore.getState().user;
+    const isAuthenticated = useAuthStore.getState().isAuthenticated;
+
     if (isAuthenticated && user) {
-      showNotification("success", "welcome back " + user?.role);
       throw redirect({
-        to: user?.role == "EMPLOYER" ? "/employer" : "/candidate",
+        to: user?.role === "EMPLOYER" ? "/employer" : "/candidate",
       });
     }
   },
