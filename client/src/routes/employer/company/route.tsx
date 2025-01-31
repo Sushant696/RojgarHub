@@ -1,9 +1,9 @@
 import { createFileRoute } from "@tanstack/react-router";
 
-export const Route = createFileRoute("/employer/postJob")({
+export const Route = createFileRoute("/employer/company")({
   component: RouteComponent,
 });
 
 function RouteComponent() {
-  return <div>Post a job</div>;
+  return <div>Hello "/employer/company"!</div>;
 }

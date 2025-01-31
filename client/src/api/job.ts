@@ -15,11 +15,9 @@ async function test() {
     withCredentials: true,
   });
 
-  console.log(response.statusText);
   if (!response.statusText) {
     throw new Error(response.data.message || "Something went wrong!");
   }
-  console.log(response.statusText);
   return response;
 }
 

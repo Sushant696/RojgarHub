@@ -89,7 +89,6 @@ export const logout = async (userId) => {
 };
 
 export const refreshAccessTokenService = async (token) => {
-  console.log(token, "authservice");
   if (!token) {
     throw new ApiError(StatusCodes.UNAUTHORIZED, "Unauthorized access");
   }

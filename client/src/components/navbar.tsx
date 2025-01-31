@@ -3,8 +3,7 @@ import { Link } from "@tanstack/react-router";
 import useAuthStore from "../stores/authStore";
 
 function Navbar() {
-  const { isAuthenticated, user } = useAuthStore();
-  console.log(user);
+  const { isAuthenticated } = useAuthStore();
   return (
     <div className="bg-blue-200/20 backdrop-blur-xl py-1">
       <div className="flex container justify-between items-center">

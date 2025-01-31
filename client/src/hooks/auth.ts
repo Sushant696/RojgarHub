@@ -7,6 +7,7 @@ import useAuthStore from "../stores/authStore";
 import showNotification from "../utils/toastify";
 import DisplayErrorToast from "../utils/displayErrorMessage";
 import { test } from "../api/job";
+import { toast } from "react-toastify";
 
 export const useLogin = () => {
   const setIsAuthenticated = useAuthStore((state) => state.setIsAuthenticated);
@@ -60,9 +61,8 @@ export const useLogout = () => {
 
         await queryClient.resetQueries();
         queryClient.clear();
-
+        toast.dismiss();
         await router.push("/");
-        showNotification("success", "logged out successfully.");
       } finally {
         setIsLoading(false);
       }
@@ -77,7 +77,8 @@ export const useVerify = () => {
   return useQuery({
     queryKey: ["verify"],
     queryFn: authApi.verify,
-    retry: 1,
+    retry: false,
+    refetchOnWindowFocus: false,
     staleTime: 2 * 60 * 1000,
   });
 };
@@ -88,11 +89,10 @@ export const useRefresh = () => {
   const response = useQuery({
     queryKey: ["refresh"],
     queryFn: authApi.refresh,
-    retry: 1,
-    refetchOnWindowFocus: true,
+    retry: false,
+    refetchOnWindowFocus: false,
     staleTime: 2 * 60 * 1000,
   });
-  console.log(response);
   queryClient.invalidateQueries({ queryKey: ["verify"] });
   return response;
 };

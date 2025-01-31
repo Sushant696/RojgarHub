@@ -24,6 +24,11 @@ import { Route as EmployerIndexRouteImport } from './routes/employer/_index/rout
 import { Route as CandidateIndexRouteImport } from './routes/candidate/_index/route'
 import { Route as EmployerSettingsRouteImport } from './routes/employer/settings/route'
 import { Route as EmployerPostJobRouteImport } from './routes/employer/postJob/route'
+import { Route as EmployerMessagesRouteImport } from './routes/employer/messages/route'
+import { Route as EmployerDashboardRouteImport } from './routes/employer/dashboard/route'
+import { Route as EmployerCompanyRouteImport } from './routes/employer/company/route'
+import { Route as EmployerCandidatesRouteImport } from './routes/employer/candidates/route'
+import { Route as EmployerApplicationsRouteImport } from './routes/employer/applications/route'
 import { Route as CandidateVeiwJobsRouteImport } from './routes/candidate/veiwJobs/route'
 import { Route as CandidateSettingsRouteImport } from './routes/candidate/settings/route'
 import { Route as CandidateApplicationsRouteImport } from './routes/candidate/applications/route'
@@ -122,6 +127,36 @@ const EmployerSettingsRouteRoute = EmployerSettingsRouteImport.update({
 const EmployerPostJobRouteRoute = EmployerPostJobRouteImport.update({
   id: '/postJob',
   path: '/postJob',
+  getParentRoute: () => EmployerRouteRoute,
+} as any)
+
+const EmployerMessagesRouteRoute = EmployerMessagesRouteImport.update({
+  id: '/messages',
+  path: '/messages',
+  getParentRoute: () => EmployerRouteRoute,
+} as any)
+
+const EmployerDashboardRouteRoute = EmployerDashboardRouteImport.update({
+  id: '/dashboard',
+  path: '/dashboard',
+  getParentRoute: () => EmployerRouteRoute,
+} as any)
+
+const EmployerCompanyRouteRoute = EmployerCompanyRouteImport.update({
+  id: '/company',
+  path: '/company',
+  getParentRoute: () => EmployerRouteRoute,
+} as any)
+
+const EmployerCandidatesRouteRoute = EmployerCandidatesRouteImport.update({
+  id: '/candidates',
+  path: '/candidates',
+  getParentRoute: () => EmployerRouteRoute,
+} as any)
+
+const EmployerApplicationsRouteRoute = EmployerApplicationsRouteImport.update({
+  id: '/applications',
+  path: '/applications',
   getParentRoute: () => EmployerRouteRoute,
 } as any)
 
@@ -261,6 +296,41 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof EmployerIndexRouteImport
       parentRoute: typeof EmployerRouteImport
     }
+    '/employer/applications': {
+      id: '/employer/applications'
+      path: '/applications'
+      fullPath: '/employer/applications'
+      preLoaderRoute: typeof EmployerApplicationsRouteImport
+      parentRoute: typeof EmployerRouteImport
+    }
+    '/employer/candidates': {
+      id: '/employer/candidates'
+      path: '/candidates'
+      fullPath: '/employer/candidates'
+      preLoaderRoute: typeof EmployerCandidatesRouteImport
+      parentRoute: typeof EmployerRouteImport
+    }
+    '/employer/company': {
+      id: '/employer/company'
+      path: '/company'
+      fullPath: '/employer/company'
+      preLoaderRoute: typeof EmployerCompanyRouteImport
+      parentRoute: typeof EmployerRouteImport
+    }
+    '/employer/dashboard': {
+      id: '/employer/dashboard'
+      path: '/dashboard'
+      fullPath: '/employer/dashboard'
+      preLoaderRoute: typeof EmployerDashboardRouteImport
+      parentRoute: typeof EmployerRouteImport
+    }
+    '/employer/messages': {
+      id: '/employer/messages'
+      path: '/messages'
+      fullPath: '/employer/messages'
+      preLoaderRoute: typeof EmployerMessagesRouteImport
+      parentRoute: typeof EmployerRouteImport
+    }
     '/employer/postJob': {
       id: '/employer/postJob'
       path: '/postJob'
@@ -300,12 +370,22 @@ const CandidateRouteRouteWithChildren = CandidateRouteRoute._addFileChildren(
 
 interface EmployerRouteRouteChildren {
   EmployerIndexRouteRoute: typeof EmployerIndexRouteRoute
+  EmployerApplicationsRouteRoute: typeof EmployerApplicationsRouteRoute
+  EmployerCandidatesRouteRoute: typeof EmployerCandidatesRouteRoute
+  EmployerCompanyRouteRoute: typeof EmployerCompanyRouteRoute
+  EmployerDashboardRouteRoute: typeof EmployerDashboardRouteRoute
+  EmployerMessagesRouteRoute: typeof EmployerMessagesRouteRoute
   EmployerPostJobRouteRoute: typeof EmployerPostJobRouteRoute
   EmployerSettingsRouteRoute: typeof EmployerSettingsRouteRoute
 }
 
 const EmployerRouteRouteChildren: EmployerRouteRouteChildren = {
   EmployerIndexRouteRoute: EmployerIndexRouteRoute,
+  EmployerApplicationsRouteRoute: EmployerApplicationsRouteRoute,
+  EmployerCandidatesRouteRoute: EmployerCandidatesRouteRoute,
+  EmployerCompanyRouteRoute: EmployerCompanyRouteRoute,
+  EmployerDashboardRouteRoute: EmployerDashboardRouteRoute,
+  EmployerMessagesRouteRoute: EmployerMessagesRouteRoute,
   EmployerPostJobRouteRoute: EmployerPostJobRouteRoute,
   EmployerSettingsRouteRoute: EmployerSettingsRouteRoute,
 }
@@ -329,6 +409,11 @@ export interface FileRoutesByFullPath {
   '/candidate/applications': typeof CandidateApplicationsRouteRoute
   '/candidate/settings': typeof CandidateSettingsRouteRoute
   '/candidate/veiwJobs': typeof CandidateVeiwJobsRouteRoute
+  '/employer/applications': typeof EmployerApplicationsRouteRoute
+  '/employer/candidates': typeof EmployerCandidatesRouteRoute
+  '/employer/company': typeof EmployerCompanyRouteRoute
+  '/employer/dashboard': typeof EmployerDashboardRouteRoute
+  '/employer/messages': typeof EmployerMessagesRouteRoute
   '/employer/postJob': typeof EmployerPostJobRouteRoute
   '/employer/settings': typeof EmployerSettingsRouteRoute
 }
@@ -348,6 +433,11 @@ export interface FileRoutesByTo {
   '/candidate/applications': typeof CandidateApplicationsRouteRoute
   '/candidate/settings': typeof CandidateSettingsRouteRoute
   '/candidate/veiwJobs': typeof CandidateVeiwJobsRouteRoute
+  '/employer/applications': typeof EmployerApplicationsRouteRoute
+  '/employer/candidates': typeof EmployerCandidatesRouteRoute
+  '/employer/company': typeof EmployerCompanyRouteRoute
+  '/employer/dashboard': typeof EmployerDashboardRouteRoute
+  '/employer/messages': typeof EmployerMessagesRouteRoute
   '/employer/postJob': typeof EmployerPostJobRouteRoute
   '/employer/settings': typeof EmployerSettingsRouteRoute
 }
@@ -370,6 +460,11 @@ export interface FileRoutesById {
   '/candidate/settings': typeof CandidateSettingsRouteRoute
   '/candidate/veiwJobs': typeof CandidateVeiwJobsRouteRoute
   '/employer/_index': typeof EmployerIndexRouteRoute
+  '/employer/applications': typeof EmployerApplicationsRouteRoute
+  '/employer/candidates': typeof EmployerCandidatesRouteRoute
+  '/employer/company': typeof EmployerCompanyRouteRoute
+  '/employer/dashboard': typeof EmployerDashboardRouteRoute
+  '/employer/messages': typeof EmployerMessagesRouteRoute
   '/employer/postJob': typeof EmployerPostJobRouteRoute
   '/employer/settings': typeof EmployerSettingsRouteRoute
 }
@@ -391,6 +486,11 @@ export interface FileRouteTypes {
     | '/candidate/applications'
     | '/candidate/settings'
     | '/candidate/veiwJobs'
+    | '/employer/applications'
+    | '/employer/candidates'
+    | '/employer/company'
+    | '/employer/dashboard'
+    | '/employer/messages'
     | '/employer/postJob'
     | '/employer/settings'
   fileRoutesByTo: FileRoutesByTo
@@ -409,6 +509,11 @@ export interface FileRouteTypes {
     | '/candidate/applications'
     | '/candidate/settings'
     | '/candidate/veiwJobs'
+    | '/employer/applications'
+    | '/employer/candidates'
+    | '/employer/company'
+    | '/employer/dashboard'
+    | '/employer/messages'
     | '/employer/postJob'
     | '/employer/settings'
   id:
@@ -429,6 +534,11 @@ export interface FileRouteTypes {
     | '/candidate/settings'
     | '/candidate/veiwJobs'
     | '/employer/_index'
+    | '/employer/applications'
+    | '/employer/candidates'
+    | '/employer/company'
+    | '/employer/dashboard'
+    | '/employer/messages'
     | '/employer/postJob'
     | '/employer/settings'
   fileRoutesById: FileRoutesById
@@ -501,6 +611,11 @@ export const routeTree = rootRoute
       "filePath": "employer/route.tsx",
       "children": [
         "/employer/_index",
+        "/employer/applications",
+        "/employer/candidates",
+        "/employer/company",
+        "/employer/dashboard",
+        "/employer/messages",
         "/employer/postJob",
         "/employer/settings"
       ]
@@ -547,6 +662,26 @@ export const routeTree = rootRoute
     },
     "/employer/_index": {
       "filePath": "employer/_index/route.tsx",
+      "parent": "/employer"
+    },
+    "/employer/applications": {
+      "filePath": "employer/applications/route.tsx",
+      "parent": "/employer"
+    },
+    "/employer/candidates": {
+      "filePath": "employer/candidates/route.tsx",
+      "parent": "/employer"
+    },
+    "/employer/company": {
+      "filePath": "employer/company/route.tsx",
+      "parent": "/employer"
+    },
+    "/employer/dashboard": {
+      "filePath": "employer/dashboard/route.tsx",
+      "parent": "/employer"
+    },
+    "/employer/messages": {
+      "filePath": "employer/messages/route.tsx",
       "parent": "/employer"
     },
     "/employer/postJob": {

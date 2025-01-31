@@ -116,7 +116,6 @@ const verify = asyncHandler(async (req, res) => {
 });
 
 const test = asyncHandler(async (req, res) => {
-  console.log(req.user);
   return res.json(new ApiResponse(StatusCodes.OK, {}, "user verified"));
 });
 
