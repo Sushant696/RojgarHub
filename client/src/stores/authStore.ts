@@ -10,10 +10,8 @@ interface User {
 }
 interface AuthState {
   user: User | null;
-  accessToken: string | null;
   isAuthenticated: boolean;
   isLoading: boolean;
-  setAccessToken: (token: string | null) => void;
   login: (phoneNo: string, password: string) => Promise<any>;
   logout: () => Promise<void>;
   setIsAuthenticated: (status: boolean) => void;
@@ -25,14 +23,9 @@ const useAuthStore = create<AuthState>()(
   persist(
     (set) => ({
       user: null,
-      accessToken: null,
       isAuthenticated: false,
-      token: null,
       isLoading: false,
 
-      setAccessToken: (token) => {
-        set({ accessToken: token });
-      },
       setIsAuthenticated: (status) => {
         set({ isAuthenticated: status });
       },
@@ -47,7 +40,6 @@ const useAuthStore = create<AuthState>()(
           set({
             user: response.data.user,
             isAuthenticated: true,
-            accessToken: response.data.accessToken,
           });
         }
         return response;

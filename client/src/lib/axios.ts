@@ -1,19 +1,19 @@
 import axios from "axios";
 import useAuthStore from "../stores/authStore";
+import { apiURLs } from "./apiURLs";
+import { authApi } from "../api/user";
 
 const api = axios.create({
   baseURL: process.env.API_URL,
 });
 
-// Run before every request
 api.interceptors.request.use(
   (config) => {
-    const token = useAuthStore.getState().accessToken;
+    /* const token = useAuthStore.getState().accessToken;
 
-    // auto include auth headers
     if (token) {
       config.headers.Authorization = `Bearer ${token}`;
-    }
+    } */
     return config;
   },
   (error) => {
@@ -21,13 +21,25 @@ api.interceptors.request.use(
   },
 );
 
-// Run After every request
 api.interceptors.response.use(
   (response) => response,
-  (error) => {
-    if (error.response?.status === 401) {
-      useAuthStore.getState().logout();
-      window.location.href = "/login";
+  async (error) => {
+    const originalRequest = error.config;
+    if (
+      error.response.status === 401 &&
+      !originalRequest._retry &&
+      originalRequest.url !== apiURLs.AUTH.refresh
+    ) {
+      originalRequest._retry = true;
+      try {
+        await authApi.refresh();
+
+        return api(originalRequest);
+      } catch (refreshError) {
+        useAuthStore.getState().setCurrentuser(null);
+        useAuthStore.getState().setIsAuthenticated(false);
+        return Promise.reject(refreshError);
+      }
     }
     return Promise.reject(error);
   },

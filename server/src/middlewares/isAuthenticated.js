@@ -15,7 +15,7 @@ const isAuthenticated = asyncHandler(async (req, _, next) => {
   }
 
   jwt.verify(token, config.jwt.accessToken, (err, user) => {
-    if (err) throw new ApiError(StatusCodes.CONFLICT, "Invalid Token");
+    if (err) throw new ApiError(StatusCodes.UNAUTHORIZED, "Invalid Token");
     req.user = user;
     next();
   });

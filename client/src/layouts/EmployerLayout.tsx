@@ -1,83 +1,45 @@
-import { Link, Outlet } from "@tanstack/react-router";
-import useRouter from "../lib/router";
-import useAuthStore from "../stores/authStore";
-import { useLogout } from "../hooks/auth";
+import { Outlet } from "@tanstack/react-router";
+import { ArrowCircleLeft, ArrowCircleRight } from "iconsax-react";
+// import useAuthStore from "../stores/authStore";
+
+import TopBar from "@/components/employer/topbar";
+import SideBar from "@/components/employer/sideBar";
+import { useState } from "react";
 
 export const EmployerLayout = () => {
-  const router = useRouter();
-  const user = useAuthStore((state) => state.user);
-  const logout = useLogout();
+  // const user = useAuthStore((state) => state.user);
+  const [open, setOpen] = useState<boolean>(true);
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="">
+      <TopBar />
       <div className="flex">
-        {/* Sidebar Navigation */}
-        <nav className="w-64 min-h-screen bg-white shadow-lg p-6 space-y-6">
-          <div className="mb-8">
-            <h2 className="text-2xl font-bold text-gray-800">
-              Employer Portal
-            </h2>
-          </div>
-
-          <div className="space-y-2">
-            <Link
-              to="/candidate"
-              className="block px-4 py-2 text-gray-700 hover:bg-gray-100 rounded-lg transition-colors"
-            >
-              Hello
-            </Link>
-
-            <button
-              onClick={() => router.push("/employer/dashboard")}
-              className="w-full text-left px-4 py-2 text-gray-700 hover:bg-gray-100 rounded-lg transition-colors"
-            >
-              Dashboard
-            </button>
-
-            <button
-              onClick={() => router.push("/employer/postJob")}
-              className="w-full text-left px-4 py-2 text-gray-700 hover:bg-gray-100 rounded-lg transition-colors"
-            >
-              Post Job
-            </button>
-
-            <button
-              onClick={() => router.push("/applications")}
-              className="w-full text-left px-4 py-2 text-gray-700 hover:bg-gray-100 rounded-lg transition-colors"
-            >
-              Applications
-            </button>
-
-            <button
-              onClick={() => router.push("/settings")}
-              className="w-full text-left px-4 py-2 text-gray-700 hover:bg-gray-100 rounded-lg transition-colors"
-            >
-              Settings
-            </button>
-          </div>
-
-          <div className="pt-6 mt-6 border-t border-gray-200">
-            <button
-              onClick={() => logout.mutate()}
-              className="w-full px-4 py-2 text-red-600 hover:bg-red-50 rounded-lg transition-colors text-left"
-            >
-              Logout
-            </button>
-          </div>
-        </nav>
-
-        {/* Main Content Area */}
-        <div className="flex-1 p-8">
-          <div className="mb-8">
-            <h1 className="text-2xl font-semibold text-gray-800">
-              Welcome to {user?.role} dashboard
-            </h1>
-          </div>
-
-          <main>
-            <Outlet />
-          </main>
+        <SideBar open={open} />
+        <div className="relative top-[-14px] left-[18px]">
+          {!open ? (
+            <ArrowCircleLeft
+              onClick={() => {
+                setOpen(!open);
+              }}
+              className=""
+              size="32"
+              color="gray"
+              variant="Bold"
+            />
+          ) : (
+            <ArrowCircleRight
+              size={30}
+              onClick={() => {
+                setOpen(!open);
+              }}
+              variant="Bold"
+              color="gray"
+            />
+          )}
         </div>
+        <main className="rounded-sm bg-blue-50 w-full p-4">
+          <Outlet />
+        </main>
       </div>
     </div>
   );

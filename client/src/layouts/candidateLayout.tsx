@@ -11,6 +11,8 @@ export const CandidateLayout = () => {
     return <h1 className="min-h-screen mx-0 ">Loading...</h1>;
   }
 
+  
+
   return (
     <div className="min-h-screen bg-gray-50">
       <div className="flex">
@@ -44,6 +46,9 @@ export const CandidateLayout = () => {
               Applications
             </button>
 
+            <button className="w-full text-left px-4 py-2 text-gray-700 hover:bg-gray-100 rounded-lg transition-colors">
+              Settings
+            </button>
             <button
               onClick={() => router.push("/candidate/settings")}
               className="w-full text-left px-4 py-2 text-gray-700 hover:bg-gray-100 rounded-lg transition-colors"

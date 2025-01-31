@@ -10,7 +10,7 @@ import {
 
 import { useState } from "react";
 import { useFormik } from "formik";
-import { Mobile } from "iconsax-react";
+import { Eye, Mobile } from "iconsax-react";
 import { IoMail } from "react-icons/io5";
 import { ArrowLeft } from "iconsax-react";
 import { Link } from "@tanstack/react-router";
@@ -22,6 +22,7 @@ import { registerSchema } from "./schemas";
 import showNotification from "../../utils/toastify";
 import ToggleUser from "../../components/toggleButton";
 import DisplayErrorToast from "../../utils/displayErrorMessage";
+import { EyeOff } from "lucide-react";
 
 interface RegisterProps {
   onSwitch: () => void;
@@ -37,6 +38,9 @@ interface FormDataTypes {
 function Register({ onSwitch }: RegisterProps) {
   const { push } = useRouter();
   const [currentUser, setCurrentUser] = useState("candidate");
+  const [showPassword, setShowPassword] = useState<boolean>(false);
+
+  const [confirmPassword, setConfirmPassword] = useState<boolean>(false);
 
   const { mutate, isPending } = useMutation({
     mutationKey: ["register"],
@@ -83,7 +87,7 @@ function Register({ onSwitch }: RegisterProps) {
         <div className="w-full px-2">
           <div className="flex flex-col lg:flex-row w-full bg-white rounded-xl shadow-lg overflow-hidden">
             <div className="lg:w-6/12 p-4 lg:p-6">
-              <div className="max-w-md mx-auto">
+              <div className="max-w-lg mx-auto">
                 <div className="text-center mb-4">
                   <h3 className="emphasized-text font-bold text-gray-800 text-xl">
                     Create Your Account
@@ -91,9 +95,9 @@ function Register({ onSwitch }: RegisterProps) {
                   <p className="small-text text-gray-500 mt-1 small-text">
                     Please fill in your details to register
                   </p>
-                  <div className="mt-3 mb-4">
-                    <ToggleUser setCurrentUser={setCurrentUser} />
-                  </div>
+                </div>
+                <div className="flex justify-center mt-3 mb-4">
+                  <ToggleUser setCurrentUser={setCurrentUser} />
                 </div>
 
                 <form onSubmit={formik.handleSubmit} className="space-y-5">
@@ -178,14 +182,30 @@ function Register({ onSwitch }: RegisterProps) {
                       <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
                         <FaLock className="text-gray-600" size={16} />
                       </div>
-                      <input
-                        type="password"
-                        id="password"
-                        onChange={formik.handleChange}
-                        value={formik.values.password}
-                        className="block w-full pl-10 pr-3 py-2 border border-gray-300 rounded-lg small-text"
-                        placeholder="Create your password"
-                      />
+                      <div className="flex items-center px-2 border border-gray-300 rounded-lg">
+                        <input
+                          type={showPassword ? "text" : "password"}
+                          id="password"
+                          onChange={formik.handleChange}
+                          value={formik.values.password}
+                          className="block w-full pl-10 pr-3 py-2  focus:outline-none small-text"
+                          placeholder="Create your password"
+                        />
+
+                        {showPassword ? (
+                          <Eye
+                            onClick={() => {
+                              setShowPassword(!showPassword);
+                            }}
+                          />
+                        ) : (
+                          <EyeOff
+                            onClick={() => {
+                              setShowPassword(!showPassword);
+                            }}
+                          />
+                        )}
+                      </div>
                     </div>
                   </div>
 
@@ -200,15 +220,39 @@ function Register({ onSwitch }: RegisterProps) {
                       <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
                         <FaLock className="text-gray-600" size={16} />
                       </div>
-                      <input
-                        type="password"
-                        id="confirmPassword"
-                        onChange={formik.handleChange}
-                        value={formik.values.confirmPassword}
-                        className="block w-full pl-10 pr-3 py-2 border border-gray-300 rounded-lg small-text"
-                        placeholder="Confirm your password"
-                      />
+                      <div className="flex items-center px-2 border border-gray-300 rounded-lg">
+                        <input
+                          type={showPassword ? "text" : "password"}
+                          id="confirmPassword"
+                          name="confirmPassword"
+                          onChange={formik.handleChange}
+                          onBlur={formik.handleBlur}
+                          value={formik.values.confirmPassword}
+                          className="block w-full pl-10 pr-3 py-2 focus:outline-none small-text"
+                          placeholder="Confirm your password"
+                        />
+
+                        {showPassword ? (
+                          <Eye
+                            onClick={() => {
+                              setShowPassword(!showPassword);
+                            }}
+                          />
+                        ) : (
+                          <EyeOff
+                            onClick={() => {
+                              setShowPassword(!showPassword);
+                            }}
+                          />
+                        )}
+                      </div>
                     </div>
+                    {formik.touched.confirmPassword &&
+                      formik.errors.confirmPassword && (
+                        <p className=" mt-2 text-red-500 text-sm">
+                          {formik.errors.confirmPassword}
+                        </p>
+                      )}
                   </div>
 
                   <button

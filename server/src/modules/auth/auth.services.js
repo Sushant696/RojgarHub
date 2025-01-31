@@ -50,7 +50,8 @@ export const login = async (loginData) => {
     user.password,
   );
 
-  if (!isPasswordCorrect) throw new ApiError(402, "Password is incorrect.");
+  if (!isPasswordCorrect)
+    throw new ApiError(StatusCodes.UNAUTHORIZED, "Password is incorrect.");
   const { accessToken, refreshToken } = generateTokens(user);
 
   const updatedUser = await db.user.update({
@@ -79,7 +80,6 @@ export const logout = async (userId) => {
   if (!userId) {
     throw new ApiError(StatusCodes.UNAUTHORIZED, "Unauthorized access");
   }
-  console.log("here");
   const loggedout = await db.user.update({
     where: { id: userId },
     data: { refreshToken: undefined },
@@ -96,11 +96,14 @@ export const refreshAccessTokenService = async (token) => {
   try {
     decodedToken = jwt.verify(token, config.jwt.refreshToken);
   } catch (error) {
-    throw new ApiError(StatusCodes.CONFLICT, "Invalid or expired token");
+    throw new ApiError(StatusCodes.UNAUTHORIZED, "Invalid or expired token");
   }
 
   if (!decodedToken || !decodedToken.userId) {
-    throw new ApiError(StatusCodes.CONFLICT, "Token payload missing userId");
+    throw new ApiError(
+      StatusCodes.UNAUTHORIZED,
+      "Token payload missing userId",
+    );
   }
 
   const { accessToken, refreshToken } = generateTokens({
@@ -108,9 +111,16 @@ export const refreshAccessTokenService = async (token) => {
     role: decodedToken.role,
   });
 
-  let user;
+  const user = await db.user.findUnique({
+    where: { id: decodedToken.userId },
+  });
+
+  if (!user) {
+    throw new ApiError(StatusCodes.UNAUTHORIZED, "User no longer exists");
+  }
+
   try {
-    user = await db.user.update({
+    await db.user.update({
       where: { id: decodedToken.userId },
       data: { refreshToken: refreshToken },
     });

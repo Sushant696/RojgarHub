@@ -5,5 +5,5 @@ export const Route = createFileRoute("/employer/settings")({
 });
 
 function RouteComponent() {
-  return <div>Hello "/employer/settings"!</div>;
+  return <div>Employer Settings</div>;
 }

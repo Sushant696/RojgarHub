@@ -1,35 +1,40 @@
-import ToggleButton from "@mui/material/ToggleButton";
-import ToggleButtonGroup from "@mui/material/ToggleButtonGroup";
-import { useState } from "react";
-import { useEffect } from "react";
+import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { useEffect, useState } from "react";
 
 interface ToggleUserProps {
-  setCurrentUser: (userType: string) => void
+  setCurrentUser: (userType: string) => void;
 }
 
-
 export default function ToggleUser({ setCurrentUser }: ToggleUserProps) {
-  const [alignment, setAlignment] = useState("left");
+  const [alignment, setAlignment] = useState("candidate");
 
   useEffect(() => {
-    const userType = alignment === "left" ? "candidate" : "employer";
-    setCurrentUser(userType);
+    setCurrentUser(alignment);
   }, [alignment, setCurrentUser]);
 
   return (
-    <ToggleButtonGroup
+    <Tabs
       value={alignment}
-      exclusive
-      color="primary"
-      onChange={(_, newAlignment) => newAlignment && setAlignment(newAlignment)}
-      aria-label="text alignment"
+      onValueChange={(value) => setAlignment(value)}
+      className="w-full"
     >
-      <ToggleButton value="left" aria-label="right aligned">
-        Candidate
-      </ToggleButton>
-      <ToggleButton value="right" aria-label="justified">
-        Employer
-      </ToggleButton>
-    </ToggleButtonGroup>
+      <TabsList className="flex w-full gap-2 py-8 rounded-lg bg-gray-100 dark:bg-gray-800">
+        {/* Candidate Tab */}
+        <TabsTrigger
+          value="candidate"
+          className="flex-1 m-1 py-2 regular-text font-medium transition-all duration-200 rounded-md shadow-sm focus:outline-none data-[state=active]:bg-blue-600 data-[state=active]:text-white hover:bg-blue-500 hover:text-white dark:data-[state=active]:bg-blue-700 dark:hover:bg-blue-700"
+        >
+          Candidate
+        </TabsTrigger>
+
+        {/* Employer Tab */}
+        <TabsTrigger
+          value="employer"
+          className="flex-1 m-1 py-2 regular-text font-medium transition-all duration-200 rounded-md shadow-sm focus:outline-none data-[state=active]:bg-blue-600 data-[state=active]:text-white hover:bg-blue-500 hover:text-white dark:data-[state=active]:bg-blue-700 dark:hover:bg-blue-700"
+        >
+          Employer
+        </TabsTrigger>
+      </TabsList>
+    </Tabs>
   );
 }

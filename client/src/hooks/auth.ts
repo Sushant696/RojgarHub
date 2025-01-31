@@ -6,9 +6,10 @@ import useRouter from "../lib/router";
 import useAuthStore from "../stores/authStore";
 import showNotification from "../utils/toastify";
 import DisplayErrorToast from "../utils/displayErrorMessage";
+import { test } from "../api/job";
+import { toast } from "react-toastify";
 
 export const useLogin = () => {
-  const setAccessToken = useAuthStore((state) => state.setAccessToken);
   const setIsAuthenticated = useAuthStore((state) => state.setIsAuthenticated);
   const setCurrentUser = useAuthStore((state) => state.setCurrentuser);
   const queryClient = useQueryClient();
@@ -16,8 +17,7 @@ export const useLogin = () => {
   return useMutation({
     mutationFn: authApi.Login,
     onSuccess: (response) => {
-      const { accessToken, role, id, contact } = response?.data?.data;
-      setAccessToken(accessToken);
+      const { role, id, contact } = response?.data?.data;
       setIsAuthenticated(true);
       setCurrentUser({ id, role, contact });
       queryClient.invalidateQueries({ queryKey: ["verify"] });
@@ -32,17 +32,15 @@ export const useLogin = () => {
   });
 };
 
-export const useVerify = () => {
+export const useTest = () => {
   return useQuery({
-    queryKey: ["verify"],
-    queryFn: authApi.Verify,
+    queryKey: ["test"],
+    queryFn: test,
     retry: false,
   });
 };
-
 export const useLogout = () => {
   const {
-    setAccessToken,
     setIsAuthenticated,
     setCurrentuser: setUser,
     setIsLoading,
@@ -59,21 +57,42 @@ export const useLogout = () => {
     onSuccess: async () => {
       try {
         setUser(null);
-        setAccessToken(null);
         setIsAuthenticated(false);
 
         await queryClient.resetQueries();
         queryClient.clear();
-
+        toast.dismiss();
         await router.push("/");
-        showNotification("success", "logged out successfully.");
       } finally {
         setIsLoading(false);
       }
     },
     onError: () => {
       setIsLoading(false);
-
     },
   });
+};
+
+export const useVerify = () => {
+  return useQuery({
+    queryKey: ["verify"],
+    queryFn: authApi.verify,
+    retry: false,
+    refetchOnWindowFocus: false,
+    staleTime: 2 * 60 * 1000,
+  });
+};
+
+export const useRefresh = () => {
+  const queryClient = useQueryClient();
+
+  const response = useQuery({
+    queryKey: ["refresh"],
+    queryFn: authApi.refresh,
+    retry: false,
+    refetchOnWindowFocus: false,
+    staleTime: 2 * 60 * 1000,
+  });
+  queryClient.invalidateQueries({ queryKey: ["verify"] });
+  return response;
 };

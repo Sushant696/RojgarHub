@@ -5,6 +5,7 @@ import { ApiError } from "../../utils/apiError.js";
 import { authRegisterSchema, authLoginSchema } from "./auth.validator.js";
 import asyncHandler from "../../utils/asyncHandler.js";
 import { ApiResponse } from "../../utils/apiResponse.js";
+import config from "../../config/index.js";
 
 const registerUser = asyncHandler(async (req, res) => {
   const validatedData = await authRegisterSchema.validate(req.body);
@@ -32,7 +33,7 @@ const loginUser = asyncHandler(async (req, res) => {
   const validatedLoginData = await authLoginSchema.validate(req.body);
   const { contact, password } = validatedLoginData;
   if (!contact || !password) {
-    throw new ApiError(StatusCodes.CONFLICT, "All the fields are necessary");
+    throw new ApiError(StatusCodes.BAD_REQUEST, "All the fields are necessary");
   }
   const loginUserObj = { contact, password };
   const loggedInUser = await authServices.login(loginUserObj);
@@ -41,14 +42,14 @@ const loginUser = asyncHandler(async (req, res) => {
     httpOnly: true,
     secure: true,
     sameSite: "strict",
-    maxAge: 7 * 24 * 60 * 60 * 1000,
+    maxAge: 7 * 60 * 60 * 1000,
   });
 
   res.cookie("accessToken", loggedInUser.tokens.accessToken, {
     httpOnly: true,
     secure: true,
     sameSite: "strict",
-    maxAge: 30 * 60 * 1000,
+    maxAge: 60 * 1000,
   });
   return res.json(
     new ApiResponse(
@@ -87,14 +88,14 @@ const refreshAccessToken = asyncHandler(async (req, res) => {
     httpOnly: true,
     secure: true,
     sameSite: "strict",
-    maxAge: 7 * 24 * 60 * 60 * 1000,
+    maxAge: 7 * 60 * 60 * 1000,
   });
 
   res.cookie("accessToken", tokens.accessToken, {
     httpOnly: true,
     secure: true,
     sameSite: "strict",
-    maxAge: 30 * 60 * 1000,
+    maxAge: 60 * 1000,
   });
 
   return res.json(
@@ -111,7 +112,10 @@ const forgotPassword = asyncHandler(async (req, res) => {
 });
 
 const verify = asyncHandler(async (req, res) => {
-  console.log(req.user);
+  return res.json(new ApiResponse(StatusCodes.OK, {}, "user verified"));
+});
+
+const test = asyncHandler(async (req, res) => {
   return res.json(new ApiResponse(StatusCodes.OK, {}, "user verified"));
 });
 
@@ -122,4 +126,5 @@ export const authController = {
   refreshAccessToken,
   forgotPassword,
   verify,
+  test,
 };

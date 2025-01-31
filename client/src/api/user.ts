@@ -1,6 +1,5 @@
-import axios from "axios";
-import api from "../lib/axios";
 import { apiURLs } from "../lib/apiURLs";
+import api from "../lib/axios";
 
 interface FormDataTypes {
   phoneNo: string;
@@ -26,11 +25,9 @@ async function Login(formData: FormDataTypes) {
     },
   );
 
-  console.log(response.statusText);
   if (!response.statusText) {
     throw new Error(response.data.message || "Something went wrong!");
   }
-  console.log(response.statusText);
   return response;
 }
 
@@ -53,12 +50,6 @@ async function Register(formData: RegisterFormtypes, currentUser: string) {
     throw new Error(response.data?.message || "Something went wrong");
   }
 }
-
-async function Verify() {
-  const response = await axios.get("hello");
-  return response;
-}
-
 async function Logout() {
   const response = await api.get(apiURLs.AUTH.logout, {
     withCredentials: true,
@@ -67,4 +58,18 @@ async function Logout() {
   return response;
 }
 
-export const authApi = { Login, Register, Verify, Logout };
+async function refresh() {
+  const response = await api.get(apiURLs.AUTH.refresh, {
+    withCredentials: true,
+  });
+  return response;
+}
+
+async function verify() {
+  const response = await api.get(apiURLs.AUTH.verify, {
+    withCredentials: true,
+  });
+  return response;
+}
+
+export const authApi = { Login, Register, Logout, refresh, verify };

@@ -2,14 +2,17 @@ import { createRootRoute } from "@tanstack/react-router";
 import { TanStackRouterDevtools } from "@tanstack/router-devtools";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 
-import useAuthStore from "../stores/authStore";
 import PublicLayout from "../layouts/publicLayout";
+import AuthProvider from "../auth/authProvider";
 
 const queryClient = new QueryClient();
-
 const LayoutWrapper = () => {
-  const user = useAuthStore((state) => state.user);
-  return <PublicLayout />;
+  return (
+    <>
+      <AuthProvider /> {/* Add this here */}
+      <PublicLayout />
+    </>
+  );
 };
 
 export const Route = createRootRoute({
