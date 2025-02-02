@@ -80,6 +80,7 @@ model EmployerProfile {
   location         String?
   websiteLink      String?
   companyDescription String?  @db.Text
+  address          String 
 
   jobs             Job[]
 

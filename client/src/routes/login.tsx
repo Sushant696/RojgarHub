@@ -11,7 +11,7 @@ export const Route = createFileRoute("/login")({
 
     if (isAuthenticated && user) {
       throw redirect({
-        to: user?.role == "EMPLOYER" ? "/employer" : "/candidate",
+        to: user?.role == "EMPLOYER" ? "/employer/dashboard" : "/candidate",
       });
     }
   },

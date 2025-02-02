@@ -30,6 +30,7 @@ function SearchComponent() {
       industry: selectedValue,
       keywords,
     };
+    console.log(queryObject);
 
     // reset the fields after submission
     setSelectedValue("");

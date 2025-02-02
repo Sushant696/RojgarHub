@@ -12,11 +12,15 @@ export const EmployerLayout = () => {
 
   return (
     <div className="">
-      <TopBar />
+      <div className="sticky top-0">
+        <TopBar />
+      </div>
       <div className="flex">
-        <SideBar open={open} />
+        <div className=" sticky top-20">
+          <SideBar open={open} />
+        </div>
         <div className="relative top-[-14px] left-[18px]">
-          {!open ? (
+          {open ? (
             <ArrowCircleLeft
               onClick={() => {
                 setOpen(!open);
@@ -37,7 +41,7 @@ export const EmployerLayout = () => {
             />
           )}
         </div>
-        <main className="rounded-sm bg-blue-50 w-full p-4">
+        <main className="rounded-sm bg-[#F2F4FA] w-full overflow-hidden p-4">
           <Outlet />
         </main>
       </div>
