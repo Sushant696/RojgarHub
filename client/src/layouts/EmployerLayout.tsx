@@ -19,13 +19,13 @@ export const EmployerLayout = () => {
         <div className=" sticky top-20">
           <SideBar open={open} />
         </div>
-        <div className="relative top-[-14px] left-[18px]">
+        <div className="fixed z-0 top-20 left-56">
           {open ? (
             <ArrowCircleLeft
               onClick={() => {
                 setOpen(!open);
               }}
-              className=""
+              className="fixed z-0 top-[72px] left-[226px]"
               size="32"
               color="gray"
               variant="Bold"
@@ -33,6 +33,7 @@ export const EmployerLayout = () => {
           ) : (
             <ArrowCircleRight
               size={30}
+              className="fixed z-0 top-[70px] left-[50px]"
               onClick={() => {
                 setOpen(!open);
               }}

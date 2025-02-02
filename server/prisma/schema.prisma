@@ -94,8 +94,10 @@ model Job {
   employerId      String
 
   title           String
+  image           String
   description     String    @db.Text
   requirements    Json      
+  type            String
   location        String
   salaryRange     String?
   status          JobStatus @default(OPEN)
@@ -114,7 +116,7 @@ model JobApplication {
   candidate     CandidateProfile @relation(fields: [candidateId], references: [id])
   candidateId   String
 
-  coverLetter   String?   @db.Text
+  cv            String?   @db.Text
   status        ApplicationStatus @default(PENDING)
 
   createdAt     DateTime  @default(now())

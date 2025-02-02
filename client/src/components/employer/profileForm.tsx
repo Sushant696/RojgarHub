@@ -20,6 +20,7 @@ function ProfileForm() {
               accept="image/*"
               className="w-full"
             />
+
           </div>
           <Button className="bg-blue-500 rounded-lg hover:bg-blue-600 transition-colors duration-200">
             Create Job

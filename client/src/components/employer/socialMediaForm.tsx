@@ -1,3 +1,4 @@
+import { Button } from "../ui/button";
 import { Input } from "../ui/input";
 import { Label } from "../ui/label";
 
@@ -35,6 +36,13 @@ function SocialMediaform() {
               placeholder="https://yourcompany.com"
               className="w-full"
             />
+          </div>
+
+          {/* Submit Button */}
+          <div className="flex justify-end">
+            <Button className="bg-blue-600 hover:bg-blue-700">
+              Save Changes
+            </Button>
           </div>
         </div>
       </div>
