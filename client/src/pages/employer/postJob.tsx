@@ -62,7 +62,7 @@ function PostJob() {
               htmlFor="image"
               className="text-sm font-medium text-gray-600 mb-2 block"
             >
-              Company Logo
+              Job Image
             </Label>
             <SingleDropzone
               onFileSelect={handleImageUpload}
@@ -78,7 +78,7 @@ function PostJob() {
                 htmlFor="title"
                 className="text-sm font-medium text-gray-600"
               >
-                Job Title
+                Job Title*
               </Label>
               <Input
                 id="title"
@@ -99,7 +99,7 @@ function PostJob() {
                 htmlFor="type"
                 className="text-sm font-medium text-gray-600"
               >
-                Employment Type
+                Employment Type*
               </Label>
               <Select
                 onValueChange={(value) => formik.setFieldValue("type", value)}
@@ -128,7 +128,7 @@ function PostJob() {
               htmlFor="salaryMin"
               className="text-sm font-medium text-gray-600"
             >
-              Salary Range
+              Salary Range*
             </Label>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div className="relative">
@@ -167,7 +167,7 @@ function PostJob() {
               htmlFor="location"
               className="text-sm font-medium text-gray-600"
             >
-              Location
+              Location*
             </Label>
             <div className="relative">
               <MapPin className="absolute left-3 top-2.5 h-5 w-5 text-gray-400" />
@@ -192,7 +192,7 @@ function PostJob() {
               htmlFor="jobDescription"
               className="text-sm font-medium text-gray-600"
             >
-              Job Description
+              Job Description*
             </Label>
             <Textarea
               id="jobDescription"
@@ -214,7 +214,7 @@ function PostJob() {
               htmlFor="requirements"
               className="text-sm font-medium text-gray-600"
             >
-              Requirements & Qualifications
+              Requirements & Qualifications*
             </Label>
             <RichText
               value={formik.values.requirements}

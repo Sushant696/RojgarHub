@@ -24,20 +24,28 @@ const PostJob = asyncHandler(async (req, res) => {
     new ApiResponse(StatusCodes.OK, createdJob, "Job Created successfully"),
   );
 });
+const getAllJobs = asyncHandler(async (req, res) => {
+  const jobs = await jobServices.getJobs();
+  console.log(jobs);
+
+  return res.json(
+    new ApiResponse(StatusCodes.OK, { jobs }, "Job Fetched successfully"),
+  );
+});
+
+const getJobById = asyncHandler(async (req, res) => {
+  const jobId = req.params?.jobId;
+  const job = await jobServices.getJobById(jobId);
+  return res.json(
+    new ApiResponse(StatusCodes.OK, { job }, "Job fetched successfully"),
+  );
+});
 
 const deleteJob = asyncHandler(async (req, res) => {
   return new ApiResponse(StatusCodes.OK, {}, "Job deleted successfully");
 });
 
 const editJob = asyncHandler(async (req, res) => {
-  return new ApiResponse(StatusCodes.OK, {}, "Job deleted successfully");
-});
-
-const getAllJobs = asyncHandler(async (req, res) => {
-  return new ApiResponse(StatusCodes.OK, {}, "Job deleted successfully");
-});
-
-const getJobById = asyncHandler(async (req, res) => {
   return new ApiResponse(StatusCodes.OK, {}, "Job deleted successfully");
 });
 

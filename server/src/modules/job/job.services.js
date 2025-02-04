@@ -43,3 +43,18 @@ export const postJobService = async (postJobData, imagePath, userId) => {
   console.log(job, "job");
   return job;
 };
+
+export const getJobs = async () => {
+  const job = await db.job.findMany();
+  return job;
+};
+
+export const getJobById = async (jobId) => {
+  const job = await db.job.findFirst({
+    where: { id: jobId },
+  });
+  if (!job) {
+    throw new ApiError(404, "Requested Job not found");
+  }
+  return job;
+};

@@ -11,5 +11,6 @@ export const apiURLs = {
     deleteJob: "/api/job/",
     editJob: "/api/job/",
     get: "/api/job",
+    getById: "/api/job/",
   },
 };
