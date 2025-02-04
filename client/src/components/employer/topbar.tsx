@@ -23,8 +23,8 @@ function TopBar() {
   const router = useRouter();
 
   return (
-    <div className="w-full bg-white border-b border-gray-100">
-      <div className="px-3 py-2 mb-3 flex items-center justify-between">
+    <div className="w-full bg-white">
+      <div className="px-3 py-2 flex items-center justify-between">
         <div className="flex items-center space-x-2">
           <img
             src="/tempLogo.png"

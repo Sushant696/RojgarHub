@@ -80,7 +80,7 @@ model EmployerProfile {
   location         String?
   websiteLink      String?
   companyDescription String?  @db.Text
-  address          String 
+  address          String?
 
   jobs             Job[]
 
@@ -90,16 +90,17 @@ model EmployerProfile {
 
 model Job {
   id              String    @id @default(uuid())
-  employer        EmployerProfile @relation(fields: [employerId], references: [id])
+  employer        EmployerProfile  @relation(fields: [employerId], references: [id])
   employerId      String
 
   title           String
-  image           String
-  description     String    @db.Text
+  image           String?
+  jobDescription  String    @db.Text
   requirements    Json      
   type            String
   location        String
-  salaryRange     String?
+  salaryMin       Int?  
+  salaryMax       Int? 
   status          JobStatus @default(OPEN)
   
   applications    JobApplication[]

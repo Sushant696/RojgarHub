@@ -1,15 +1,10 @@
-import Yup, { object, string } from "yup";
+import * as Yup from "yup";
 
-const postJobSchema = Yup.object().shape({
+const jobPostingSchema = Yup.object().shape({
   title: Yup.string().required("Job title is required"),
   jobDescription: Yup.string().required("Job description is required"),
   salaryMin: Yup.number().required("Minimum salary is required"),
-  salaryMax: Yup.number()
-    .required("Maximum salary is required")
-    .moreThan(
-      Yup.ref("salaryMin"),
-      "Max salary must be greater than min salary",
-    ),
+  salaryMax: Yup.number().required("Maximum salary is required"),
   location: Yup.string().required("Location is required"),
   type: Yup.string()
     .required("Job type is required")
@@ -20,4 +15,6 @@ const postJobSchema = Yup.object().shape({
   requirements: Yup.string().required("Requirements are required"),
 });
 
-export const JobValidatorSchema = { postJobSchema };
+export default jobPostingSchema;
+
+export type JobPostingTypes = Yup.InferType<typeof jobPostingSchema>;

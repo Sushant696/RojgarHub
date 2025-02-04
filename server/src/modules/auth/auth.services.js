@@ -29,6 +29,22 @@ export const register = async (registerData) => {
   const userToCreate = { ...registerData, password: hashedPassword };
 
   const createdUser = await db.user.create({ data: userToCreate });
+
+  if (registerData.role === "EMPLOYER") {
+    await db.employerProfile.create({
+      data: {
+        userId: createdUser.id,
+        companyName: registerData.username,
+      },
+    });
+  } else {
+    await db.candidateProfile.create({
+      data: {
+        userId: createdUser.id,
+        fullName: registerData.username,
+      },
+    });
+  }
   return createdUser;
 };
 

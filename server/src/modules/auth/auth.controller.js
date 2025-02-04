@@ -5,7 +5,6 @@ import { ApiError } from "../../utils/apiError.js";
 import { authRegisterSchema, authLoginSchema } from "./auth.validator.js";
 import asyncHandler from "../../utils/asyncHandler.js";
 import { ApiResponse } from "../../utils/apiResponse.js";
-import config from "../../config/index.js";
 
 const registerUser = asyncHandler(async (req, res) => {
   const validatedData = await authRegisterSchema.validate(req.body);

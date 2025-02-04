@@ -10,7 +10,7 @@ import {
 
 import { useState } from "react";
 import { useFormik } from "formik";
-import { Eye, Mobile } from "iconsax-react";
+import { Building3, Eye, Mobile } from "iconsax-react";
 import { IoMail } from "react-icons/io5";
 import { ArrowLeft } from "iconsax-react";
 import { Link } from "@tanstack/react-router";
@@ -29,7 +29,7 @@ interface RegisterProps {
 }
 
 interface FormDataTypes {
-  username: string;
+  username?: string;
   email: string;
   contact: string;
   password: string;
@@ -39,8 +39,6 @@ function Register({ onSwitch }: RegisterProps) {
   const { push } = useRouter();
   const [currentUser, setCurrentUser] = useState("candidate");
   const [showPassword, setShowPassword] = useState<boolean>(false);
-
-  const [confirmPassword, setConfirmPassword] = useState<boolean>(false);
 
   const { mutate, isPending } = useMutation({
     mutationKey: ["register"],
@@ -106,19 +104,34 @@ function Register({ onSwitch }: RegisterProps) {
                       htmlFor="username"
                       className="block small-text font-medium text-gray-700 mb-1"
                     >
-                      Full Name
+                      {currentUser === "candidate"
+                        ? "Username"
+                        : "Company Name"}
                     </label>
                     <div className="relative">
                       <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                        <FaUser className="text-gray-600" size={16} />
+                        {currentUser === "candidate" ? (
+                          <FaUser className="text-gray-600" size={16} />
+                        ) : (
+                          <Building3
+                            variant="Bold"
+                            className="text-gray-600"
+                            size={16}
+                          />
+                        )}
                       </div>
                       <input
                         type="text"
-                        id="username"
+                        id={"username"}
+                        name={"username"}
                         onChange={formik.handleChange}
                         value={formik.values.username}
                         className="block w-full pl-10 pr-3 py-2 border border-gray-300 rounded-lg small-text"
-                        placeholder="Enter your Full Name"
+                        placeholder={
+                          currentUser === "candidate"
+                            ? "Enter your Full Name"
+                            : "Enter Your Company Name"
+                        }
                       />
                     </div>
                   </div>
@@ -231,7 +244,6 @@ function Register({ onSwitch }: RegisterProps) {
                           className="block w-full pl-10 pr-3 py-2 focus:outline-none small-text"
                           placeholder="Confirm your password"
                         />
-
                         {showPassword ? (
                           <Eye
                             onClick={() => {

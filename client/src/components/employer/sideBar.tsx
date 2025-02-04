@@ -35,13 +35,13 @@ function SideBar({ open }: SideBarProps) {
   return (
     <nav
       className={clsx(
-        "bg-white border-gray-200 sticky top-20 max-h-[90vh]",
+        "bg-white sticky top-20 max-h-[90vh]",
         open ? "w-60" : "w-16",
       )}
     >
       <div className="flex flex-col h-5/6">
         {/* Navigation Items */}
-        <div className={clsx("flex-1 space-y-4 py-6", open ? "px-3" : "px-2")}>
+        <div className={clsx("flex-1 space-y-4 py-4", open ? "px-3" : "px-2")}>
           {navItems.map((item) => (
             <button
               key={item.path}

@@ -6,10 +6,11 @@ interface FormDataTypes {
   password: string;
 }
 interface RegisterFormtypes {
-  username: string;
+  username?: string;
   email: string;
   contact: string;
   password: string;
+  companyName?: string;
 }
 
 async function Login(formData: FormDataTypes) {
