@@ -6,7 +6,6 @@ import useRouter from "../lib/router";
 import useAuthStore from "../stores/authStore";
 import showNotification from "../utils/toastify";
 import DisplayErrorToast from "../utils/displayErrorMessage";
-import { test } from "../api/job";
 import { toast } from "react-toastify";
 
 export const useLogin = () => {
@@ -32,13 +31,6 @@ export const useLogin = () => {
   });
 };
 
-export const useTest = () => {
-  return useQuery({
-    queryKey: ["test"],
-    queryFn: test,
-    retry: false,
-  });
-};
 export const useLogout = () => {
   const {
     setIsAuthenticated,

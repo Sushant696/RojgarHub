@@ -1,9 +1,6 @@
+import PostJob from "@/pages/employer/postJob";
 import { createFileRoute } from "@tanstack/react-router";
 
 export const Route = createFileRoute("/employer/postJob")({
-  component: RouteComponent,
+  component: PostJob,
 });
-
-function RouteComponent() {
-  return <div>Post a job</div>;
-}

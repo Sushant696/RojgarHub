@@ -6,5 +6,11 @@ export const apiURLs = {
     verify: "/api/auth/verify",
     refresh: "/api/auth/refresh",
   },
-  Jobs: { test: "/api/auth/test" },
+  Jobs: {
+    postJob: "/api/job/",
+    deleteJob: "/api/job/",
+    editJob: "/api/job/",
+    get: "/api/job",
+    getById: "/api/job/",
+  },
 };

@@ -1,3 +1,4 @@
+import Loading from "@/components/isLoading";
 import { useVerify } from "../hooks/auth";
 
 const AuthProvider = () => {
@@ -5,8 +6,8 @@ const AuthProvider = () => {
 
   if (isLoading) {
     return (
-      <div className="min-h-screen flex justify-center items-center mx-auto">
-        loading...
+      <div className="">
+        <Loading />
       </div>
     );
   }

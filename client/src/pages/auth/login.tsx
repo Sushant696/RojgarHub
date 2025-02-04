@@ -13,6 +13,7 @@ import { useFormik } from "formik";
 
 import { userLoginSchema } from "./schemas";
 import { useLogin } from "../../hooks/auth";
+import Loading from "@/components/isLoading";
 
 interface LoginProps {
   onSwitch: () => void;
@@ -39,7 +40,11 @@ function Login({ onSwitch }: LoginProps) {
   });
 
   if (loginMutation.isPending) {
-    return <h1>Loading..</h1>;
+    return (
+      <h1>
+        <Loading />
+      </h1>
+    );
   }
 
   return (

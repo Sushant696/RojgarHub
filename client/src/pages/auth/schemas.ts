@@ -1,7 +1,16 @@
 import * as Yup from "yup";
 
 export const registerSchema = Yup.object({
-  username: Yup.string().required("Full Name is required"),
+  username: Yup.string().when("$isCandidate", {
+    is: true,
+    then: (schema) => schema.required("Full Name is required"),
+    otherwise: (schema) => schema.notRequired(),
+  }),
+  companyName: Yup.string().when("$isCandidate", {
+    is: false,
+    then: (schema) => schema.required("Company Name is required"),
+    otherwise: (schema) => schema.notRequired(),
+  }),
   email: Yup.string().email("Invalid email").required("Email is required"),
   contact: Yup.string()
     .matches(/^[0-9]+$/, "Only numbers allowed")

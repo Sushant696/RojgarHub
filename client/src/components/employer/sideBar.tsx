@@ -1,14 +1,16 @@
 import useRouter from "@/lib/router";
 import { useLogout } from "@/hooks/auth";
+import { LogOut } from "lucide-react";
 import {
-  Home,
-  FilePlus,
-  ListChecks,
-  LogOut,
-  MessageSquare,
-  Users,
-  Building2,
-} from "lucide-react";
+  Home2,
+  People,
+  FolderAdd,
+  Note1,
+  Messages3,
+  Building4,
+} from "iconsax-react";
+import clsx from "clsx";
+import { useLocation } from "@tanstack/react-router";
 
 interface SideBarProps {
   open: boolean;
@@ -17,69 +19,76 @@ interface SideBarProps {
 function SideBar({ open }: SideBarProps) {
   const router = useRouter();
   const logout = useLogout();
+  const location = useLocation();
 
   const navItems = [
-    { icon: Home, label: "Dashboard", path: "/employer/dashboard" },
-    { icon: FilePlus, label: "Post Job", path: "/employer/postJob" },
-    { icon: ListChecks, label: "Applications", path: "/employer/applications" },
-    { icon: Users, label: "Candidates", path: "/employer/candidates" },
-    // { icon: BarChart3, label: "Analytics", path: "/employer/analytics" },
-    { icon: MessageSquare, label: "Messages", path: "/employer/messages" },
-    { icon: Building2, label: "Company", path: "/employer/company" },
+    { icon: Home2, label: "Dashboard", path: "/employer/dashboard" },
+    { icon: FolderAdd, label: "Post Job", path: "/employer/postJob" },
+    { icon: Note1, label: "Applications", path: "/employer/applications" },
+    { icon: People, label: "Candidates", path: "/employer/candidates" },
+    { icon: Messages3, label: "Messages", path: "/employer/messages" },
+    { icon: Building4, label: "Company", path: "/employer/company" },
   ];
 
-  if (!open) {
-    return (
-      <nav className="w-16 min-h-screen bg-white">
-        <div className="space-y-4">
+  const isActive = (path: string) => location.pathname === path;
+
+  return (
+    <nav
+      className={clsx(
+        "bg-white sticky top-20 max-h-[90vh]",
+        open ? "w-60" : "w-16",
+      )}
+    >
+      <div className="flex flex-col h-5/6">
+        {/* Navigation Items */}
+        <div className={clsx("flex-1 space-y-4 py-4", open ? "px-3" : "px-2")}>
           {navItems.map((item) => (
             <button
               key={item.path}
               onClick={() => router.push(item.path)}
-              className="w-full flex items-center justify-center p-2 text-gray-700 hover:bg-gray-50 rounded-lg transition-colors"
+              className={clsx(
+                "w-full flex items-center space-x-3 p-2 rounded-lg transition-colors duration-200",
+                isActive(item.path)
+                  ? "bg-blue-600 font-semibold"
+                  : "text-gray-700 hover:bg-gray-100",
+              )}
               title={item.label}
             >
-              <item.icon size={25} />
+              <item.icon
+                variant="Bulk"
+                className={clsx(
+                  isActive(item.path) ? "text-white" : "text-gray-700", // Icon color
+                  open ? "w-8 h-8" : "w-6 h-6 mx-auto",
+                )}
+              />
+              {open && (
+                <span
+                  className={clsx(
+                    "text-sm font-medium",
+                    isActive(item.path) ? "text-white" : "text-gray-700", // Text color
+                  )}
+                >
+                  {item.label}
+                </span>
+              )}
             </button>
           ))}
         </div>
 
-        <div className="pt-6 mt-6 border-t border-gray-200">
+        {/* Logout Button */}
+        <div className="py-6 border-t border-gray-200">
           <button
             onClick={() => logout.mutate()}
-            className="w-full flex items-center justify-center p-2 text-red-600 hover:bg-red-50 rounded-lg transition-colors"
+            className={clsx(
+              "w-full flex items-center space-x-3 p-2 text-red-600 hover:bg-red-50 rounded-lg transition-colors duration-200",
+              open ? "px-4" : "px-2 justify-center",
+            )}
             title="Logout"
           >
-            <LogOut size={25} />
+            <LogOut size={open ? 24 : 20} />
+            {open && <span className="text-sm font-medium">Logout</span>}
           </button>
         </div>
-      </nav>
-    );
-  }
-
-  return (
-    <nav className="w-60 min-h-screen bg-white px-6 space-y-6">
-      <div className="py-6 space-y-4">
-        {navItems.map((item) => (
-          <button
-            key={item.path}
-            onClick={() => router.push(item.path)}
-            className="w-full flex items-center space-x-3 px-4 py-2 text-gray-700 hover:bg-gray-50 rounded-lg transition-colors"
-          >
-            <item.icon size={24} />
-            <span className="small-text font-medium">{item.label}</span>
-          </button>
-        ))}
-      </div>
-
-      <div className="pt-6 mt-6 border-t border-gray-200">
-        <button
-          onClick={() => logout.mutate()}
-          className="w-full flex items-center space-x-3 px-4 py-2 text-red-600 hover:bg-red-50 rounded-lg transition-colors"
-        >
-          <LogOut size={24} />
-          <span className="text-sm font-medium">Logout</span>
-        </button>
       </div>
     </nav>
   );

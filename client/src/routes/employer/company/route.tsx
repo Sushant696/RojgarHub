@@ -1,9 +1,6 @@
+import Company from "@/pages/employer/company";
 import { createFileRoute } from "@tanstack/react-router";
 
 export const Route = createFileRoute("/employer/company")({
-  component: RouteComponent,
+  component: Company,
 });
-
-function RouteComponent() {
-  return <div>Hello "/employer/company"!</div>;
-}
