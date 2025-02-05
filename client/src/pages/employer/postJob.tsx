@@ -16,7 +16,7 @@ import RichText from "@/components/ui/richText";
 import { useState } from "react";
 import { usePostJob } from "@/hooks/jobs";
 import Loading from "@/components/isLoading";
-import { Building2, MapPin, Briefcase, DollarSign } from "lucide-react";
+import { MapPin, DollarSign } from "lucide-react";
 
 function PostJob() {
   const [preview, setPreview] = useState<string | null>(null);

@@ -10,8 +10,6 @@ const PostJob = asyncHandler(async (req, res) => {
     req.body,
   );
   const userId = req.user?.userId;
-  console.log(userId);
-  console.log(req.file, "files");
   const image = req.file?.path;
 
   const createdJob = await jobServices.postJobService(
@@ -25,8 +23,8 @@ const PostJob = asyncHandler(async (req, res) => {
   );
 });
 const getAllJobs = asyncHandler(async (req, res) => {
-  const jobs = await jobServices.getJobs();
-  console.log(jobs);
+  const userId = req.user?.userId;
+  const jobs = await jobServices.getJobs(userId);
 
   return res.json(
     new ApiResponse(StatusCodes.OK, { jobs }, "Job Fetched successfully"),

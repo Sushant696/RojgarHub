@@ -5,6 +5,10 @@ import upload from "../../utils/multer.js";
 
 const jobRouter = Router();
 
+// jobRouter.get("/", jobController.getAllJobs);
+jobRouter.get("/:id", jobController.getJobById);
+
+// protected routes
 jobRouter.post(
   "/",
   isAuthenticated,
@@ -21,7 +25,5 @@ jobRouter.patch(
   jobController.editJob,
 );
 
-jobRouter.get("/", jobController.getAllJobs);
-jobRouter.get("/:id", jobController.getJobById);
-
+jobRouter.get("/", isAuthenticated, jobController.getAllJobs);
 export default jobRouter;

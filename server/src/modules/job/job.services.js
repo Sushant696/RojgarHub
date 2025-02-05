@@ -13,15 +13,12 @@ export const postJobService = async (postJobData, imagePath, userId) => {
   }
 
   const jobImageRef = await uploadOnCloudinary(imagePath);
-  console.log(jobImageRef.url);
 
   const employer = await db.employerProfile.findFirst({
     where: {
       userId: userId,
     },
   });
-
-  console.log(employer, "employer");
 
   if (!employer) {
     throw new ApiError(StatusCodes.NOT_FOUND, "Employer profile not found.");
@@ -40,16 +37,27 @@ export const postJobService = async (postJobData, imagePath, userId) => {
   const job = await db.job.create({
     data: postJobObj,
   });
-  console.log(job, "job");
   return job;
 };
 
-export const getJobs = async () => {
-  const job = await db.job.findMany();
+export const getJobs = async (employerId) => {
+  const job = await db.job.findMany({
+    where: {
+      employer: { userId: employerId },
+    },
+    include: {
+      applications: true,
+    },
+    orderBy: {
+      createdAt: "desc",
+    },
+  });
+
   return job;
 };
 
 export const getJobById = async (jobId) => {
+
   const job = await db.job.findFirst({
     where: { id: jobId },
   });

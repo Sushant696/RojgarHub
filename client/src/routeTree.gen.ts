@@ -28,10 +28,11 @@ import { Route as EmployerMessagesRouteImport } from './routes/employer/messages
 import { Route as EmployerDashboardRouteImport } from './routes/employer/dashboard/route'
 import { Route as EmployerCompanyRouteImport } from './routes/employer/company/route'
 import { Route as EmployerCandidatesRouteImport } from './routes/employer/candidates/route'
-import { Route as EmployerApplicationsRouteImport } from './routes/employer/applications/route'
 import { Route as CandidateVeiwJobsRouteImport } from './routes/candidate/veiwJobs/route'
 import { Route as CandidateSettingsRouteImport } from './routes/candidate/settings/route'
 import { Route as CandidateApplicationsRouteImport } from './routes/candidate/applications/route'
+import { Route as EmployerApplicationsIndexImport } from './routes/employer/applications/index'
+import { Route as EmployerApplicationsApplicationIdImport } from './routes/employer/applications/$applicationId'
 
 // Create Virtual Routes
 
@@ -154,12 +155,6 @@ const EmployerCandidatesRouteRoute = EmployerCandidatesRouteImport.update({
   getParentRoute: () => EmployerRouteRoute,
 } as any)
 
-const EmployerApplicationsRouteRoute = EmployerApplicationsRouteImport.update({
-  id: '/applications',
-  path: '/applications',
-  getParentRoute: () => EmployerRouteRoute,
-} as any)
-
 const CandidateVeiwJobsRouteRoute = CandidateVeiwJobsRouteImport.update({
   id: '/veiwJobs',
   path: '/veiwJobs',
@@ -179,6 +174,19 @@ const CandidateApplicationsRouteRoute = CandidateApplicationsRouteImport.update(
     getParentRoute: () => CandidateRouteRoute,
   } as any,
 )
+
+const EmployerApplicationsIndexRoute = EmployerApplicationsIndexImport.update({
+  id: '/applications/',
+  path: '/applications/',
+  getParentRoute: () => EmployerRouteRoute,
+} as any)
+
+const EmployerApplicationsApplicationIdRoute =
+  EmployerApplicationsApplicationIdImport.update({
+    id: '/applications/$applicationId',
+    path: '/applications/$applicationId',
+    getParentRoute: () => EmployerRouteRoute,
+  } as any)
 
 // Populate the FileRoutesByPath interface
 
@@ -296,13 +304,6 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof EmployerIndexRouteImport
       parentRoute: typeof EmployerRouteImport
     }
-    '/employer/applications': {
-      id: '/employer/applications'
-      path: '/applications'
-      fullPath: '/employer/applications'
-      preLoaderRoute: typeof EmployerApplicationsRouteImport
-      parentRoute: typeof EmployerRouteImport
-    }
     '/employer/candidates': {
       id: '/employer/candidates'
       path: '/candidates'
@@ -345,6 +346,20 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof EmployerSettingsRouteImport
       parentRoute: typeof EmployerRouteImport
     }
+    '/employer/applications/$applicationId': {
+      id: '/employer/applications/$applicationId'
+      path: '/applications/$applicationId'
+      fullPath: '/employer/applications/$applicationId'
+      preLoaderRoute: typeof EmployerApplicationsApplicationIdImport
+      parentRoute: typeof EmployerRouteImport
+    }
+    '/employer/applications/': {
+      id: '/employer/applications/'
+      path: '/applications'
+      fullPath: '/employer/applications'
+      preLoaderRoute: typeof EmployerApplicationsIndexImport
+      parentRoute: typeof EmployerRouteImport
+    }
   }
 }
 
@@ -370,24 +385,27 @@ const CandidateRouteRouteWithChildren = CandidateRouteRoute._addFileChildren(
 
 interface EmployerRouteRouteChildren {
   EmployerIndexRouteRoute: typeof EmployerIndexRouteRoute
-  EmployerApplicationsRouteRoute: typeof EmployerApplicationsRouteRoute
   EmployerCandidatesRouteRoute: typeof EmployerCandidatesRouteRoute
   EmployerCompanyRouteRoute: typeof EmployerCompanyRouteRoute
   EmployerDashboardRouteRoute: typeof EmployerDashboardRouteRoute
   EmployerMessagesRouteRoute: typeof EmployerMessagesRouteRoute
   EmployerPostJobRouteRoute: typeof EmployerPostJobRouteRoute
   EmployerSettingsRouteRoute: typeof EmployerSettingsRouteRoute
+  EmployerApplicationsApplicationIdRoute: typeof EmployerApplicationsApplicationIdRoute
+  EmployerApplicationsIndexRoute: typeof EmployerApplicationsIndexRoute
 }
 
 const EmployerRouteRouteChildren: EmployerRouteRouteChildren = {
   EmployerIndexRouteRoute: EmployerIndexRouteRoute,
-  EmployerApplicationsRouteRoute: EmployerApplicationsRouteRoute,
   EmployerCandidatesRouteRoute: EmployerCandidatesRouteRoute,
   EmployerCompanyRouteRoute: EmployerCompanyRouteRoute,
   EmployerDashboardRouteRoute: EmployerDashboardRouteRoute,
   EmployerMessagesRouteRoute: EmployerMessagesRouteRoute,
   EmployerPostJobRouteRoute: EmployerPostJobRouteRoute,
   EmployerSettingsRouteRoute: EmployerSettingsRouteRoute,
+  EmployerApplicationsApplicationIdRoute:
+    EmployerApplicationsApplicationIdRoute,
+  EmployerApplicationsIndexRoute: EmployerApplicationsIndexRoute,
 }
 
 const EmployerRouteRouteWithChildren = EmployerRouteRoute._addFileChildren(
@@ -409,13 +427,14 @@ export interface FileRoutesByFullPath {
   '/candidate/applications': typeof CandidateApplicationsRouteRoute
   '/candidate/settings': typeof CandidateSettingsRouteRoute
   '/candidate/veiwJobs': typeof CandidateVeiwJobsRouteRoute
-  '/employer/applications': typeof EmployerApplicationsRouteRoute
   '/employer/candidates': typeof EmployerCandidatesRouteRoute
   '/employer/company': typeof EmployerCompanyRouteRoute
   '/employer/dashboard': typeof EmployerDashboardRouteRoute
   '/employer/messages': typeof EmployerMessagesRouteRoute
   '/employer/postJob': typeof EmployerPostJobRouteRoute
   '/employer/settings': typeof EmployerSettingsRouteRoute
+  '/employer/applications/$applicationId': typeof EmployerApplicationsApplicationIdRoute
+  '/employer/applications': typeof EmployerApplicationsIndexRoute
 }
 
 export interface FileRoutesByTo {
@@ -433,13 +452,14 @@ export interface FileRoutesByTo {
   '/candidate/applications': typeof CandidateApplicationsRouteRoute
   '/candidate/settings': typeof CandidateSettingsRouteRoute
   '/candidate/veiwJobs': typeof CandidateVeiwJobsRouteRoute
-  '/employer/applications': typeof EmployerApplicationsRouteRoute
   '/employer/candidates': typeof EmployerCandidatesRouteRoute
   '/employer/company': typeof EmployerCompanyRouteRoute
   '/employer/dashboard': typeof EmployerDashboardRouteRoute
   '/employer/messages': typeof EmployerMessagesRouteRoute
   '/employer/postJob': typeof EmployerPostJobRouteRoute
   '/employer/settings': typeof EmployerSettingsRouteRoute
+  '/employer/applications/$applicationId': typeof EmployerApplicationsApplicationIdRoute
+  '/employer/applications': typeof EmployerApplicationsIndexRoute
 }
 
 export interface FileRoutesById {
@@ -460,13 +480,14 @@ export interface FileRoutesById {
   '/candidate/settings': typeof CandidateSettingsRouteRoute
   '/candidate/veiwJobs': typeof CandidateVeiwJobsRouteRoute
   '/employer/_index': typeof EmployerIndexRouteRoute
-  '/employer/applications': typeof EmployerApplicationsRouteRoute
   '/employer/candidates': typeof EmployerCandidatesRouteRoute
   '/employer/company': typeof EmployerCompanyRouteRoute
   '/employer/dashboard': typeof EmployerDashboardRouteRoute
   '/employer/messages': typeof EmployerMessagesRouteRoute
   '/employer/postJob': typeof EmployerPostJobRouteRoute
   '/employer/settings': typeof EmployerSettingsRouteRoute
+  '/employer/applications/$applicationId': typeof EmployerApplicationsApplicationIdRoute
+  '/employer/applications/': typeof EmployerApplicationsIndexRoute
 }
 
 export interface FileRouteTypes {
@@ -486,13 +507,14 @@ export interface FileRouteTypes {
     | '/candidate/applications'
     | '/candidate/settings'
     | '/candidate/veiwJobs'
-    | '/employer/applications'
     | '/employer/candidates'
     | '/employer/company'
     | '/employer/dashboard'
     | '/employer/messages'
     | '/employer/postJob'
     | '/employer/settings'
+    | '/employer/applications/$applicationId'
+    | '/employer/applications'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -509,13 +531,14 @@ export interface FileRouteTypes {
     | '/candidate/applications'
     | '/candidate/settings'
     | '/candidate/veiwJobs'
-    | '/employer/applications'
     | '/employer/candidates'
     | '/employer/company'
     | '/employer/dashboard'
     | '/employer/messages'
     | '/employer/postJob'
     | '/employer/settings'
+    | '/employer/applications/$applicationId'
+    | '/employer/applications'
   id:
     | '__root__'
     | '/'
@@ -534,13 +557,14 @@ export interface FileRouteTypes {
     | '/candidate/settings'
     | '/candidate/veiwJobs'
     | '/employer/_index'
-    | '/employer/applications'
     | '/employer/candidates'
     | '/employer/company'
     | '/employer/dashboard'
     | '/employer/messages'
     | '/employer/postJob'
     | '/employer/settings'
+    | '/employer/applications/$applicationId'
+    | '/employer/applications/'
   fileRoutesById: FileRoutesById
 }
 
@@ -611,13 +635,14 @@ export const routeTree = rootRoute
       "filePath": "employer/route.tsx",
       "children": [
         "/employer/_index",
-        "/employer/applications",
         "/employer/candidates",
         "/employer/company",
         "/employer/dashboard",
         "/employer/messages",
         "/employer/postJob",
-        "/employer/settings"
+        "/employer/settings",
+        "/employer/applications/$applicationId",
+        "/employer/applications/"
       ]
     },
     "/login": {
@@ -664,10 +689,6 @@ export const routeTree = rootRoute
       "filePath": "employer/_index/route.tsx",
       "parent": "/employer"
     },
-    "/employer/applications": {
-      "filePath": "employer/applications/route.tsx",
-      "parent": "/employer"
-    },
     "/employer/candidates": {
       "filePath": "employer/candidates/route.tsx",
       "parent": "/employer"
@@ -690,6 +711,14 @@ export const routeTree = rootRoute
     },
     "/employer/settings": {
       "filePath": "employer/settings/route.tsx",
+      "parent": "/employer"
+    },
+    "/employer/applications/$applicationId": {
+      "filePath": "employer/applications/$applicationId.tsx",
+      "parent": "/employer"
+    },
+    "/employer/applications/": {
+      "filePath": "employer/applications/index.tsx",
       "parent": "/employer"
     }
   }
