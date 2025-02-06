@@ -57,9 +57,11 @@ export const getJobs = async (employerId) => {
 };
 
 export const getJobById = async (jobId) => {
+  console.log(jobId);
 
   const job = await db.job.findFirst({
     where: { id: jobId },
+    include: { applications: true },
   });
   if (!job) {
     throw new ApiError(404, "Requested Job not found");

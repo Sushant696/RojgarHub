@@ -31,8 +31,9 @@ import { Route as EmployerCandidatesRouteImport } from './routes/employer/candid
 import { Route as CandidateVeiwJobsRouteImport } from './routes/candidate/veiwJobs/route'
 import { Route as CandidateSettingsRouteImport } from './routes/candidate/settings/route'
 import { Route as CandidateApplicationsRouteImport } from './routes/candidate/applications/route'
-import { Route as EmployerApplicationsIndexImport } from './routes/employer/applications/index'
-import { Route as EmployerApplicationsApplicationIdImport } from './routes/employer/applications/$applicationId'
+import { Route as EmployerJobManagementIndexImport } from './routes/employer/job-management/index'
+import { Route as EmployerJobManagementApplicationIdImport } from './routes/employer/job-management/$applicationId'
+import { Route as EmployerJobManagementUpdateJobIdImport } from './routes/employer/job-management/update/$jobId'
 
 // Create Virtual Routes
 
@@ -175,16 +176,25 @@ const CandidateApplicationsRouteRoute = CandidateApplicationsRouteImport.update(
   } as any,
 )
 
-const EmployerApplicationsIndexRoute = EmployerApplicationsIndexImport.update({
-  id: '/applications/',
-  path: '/applications/',
-  getParentRoute: () => EmployerRouteRoute,
-} as any)
+const EmployerJobManagementIndexRoute = EmployerJobManagementIndexImport.update(
+  {
+    id: '/job-management/',
+    path: '/job-management/',
+    getParentRoute: () => EmployerRouteRoute,
+  } as any,
+)
 
-const EmployerApplicationsApplicationIdRoute =
-  EmployerApplicationsApplicationIdImport.update({
-    id: '/applications/$applicationId',
-    path: '/applications/$applicationId',
+const EmployerJobManagementApplicationIdRoute =
+  EmployerJobManagementApplicationIdImport.update({
+    id: '/job-management/$applicationId',
+    path: '/job-management/$applicationId',
+    getParentRoute: () => EmployerRouteRoute,
+  } as any)
+
+const EmployerJobManagementUpdateJobIdRoute =
+  EmployerJobManagementUpdateJobIdImport.update({
+    id: '/job-management/update/$jobId',
+    path: '/job-management/update/$jobId',
     getParentRoute: () => EmployerRouteRoute,
   } as any)
 
@@ -346,18 +356,25 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof EmployerSettingsRouteImport
       parentRoute: typeof EmployerRouteImport
     }
-    '/employer/applications/$applicationId': {
-      id: '/employer/applications/$applicationId'
-      path: '/applications/$applicationId'
-      fullPath: '/employer/applications/$applicationId'
-      preLoaderRoute: typeof EmployerApplicationsApplicationIdImport
+    '/employer/job-management/$applicationId': {
+      id: '/employer/job-management/$applicationId'
+      path: '/job-management/$applicationId'
+      fullPath: '/employer/job-management/$applicationId'
+      preLoaderRoute: typeof EmployerJobManagementApplicationIdImport
       parentRoute: typeof EmployerRouteImport
     }
-    '/employer/applications/': {
-      id: '/employer/applications/'
-      path: '/applications'
-      fullPath: '/employer/applications'
-      preLoaderRoute: typeof EmployerApplicationsIndexImport
+    '/employer/job-management/': {
+      id: '/employer/job-management/'
+      path: '/job-management'
+      fullPath: '/employer/job-management'
+      preLoaderRoute: typeof EmployerJobManagementIndexImport
+      parentRoute: typeof EmployerRouteImport
+    }
+    '/employer/job-management/update/$jobId': {
+      id: '/employer/job-management/update/$jobId'
+      path: '/job-management/update/$jobId'
+      fullPath: '/employer/job-management/update/$jobId'
+      preLoaderRoute: typeof EmployerJobManagementUpdateJobIdImport
       parentRoute: typeof EmployerRouteImport
     }
   }
@@ -391,8 +408,9 @@ interface EmployerRouteRouteChildren {
   EmployerMessagesRouteRoute: typeof EmployerMessagesRouteRoute
   EmployerPostJobRouteRoute: typeof EmployerPostJobRouteRoute
   EmployerSettingsRouteRoute: typeof EmployerSettingsRouteRoute
-  EmployerApplicationsApplicationIdRoute: typeof EmployerApplicationsApplicationIdRoute
-  EmployerApplicationsIndexRoute: typeof EmployerApplicationsIndexRoute
+  EmployerJobManagementApplicationIdRoute: typeof EmployerJobManagementApplicationIdRoute
+  EmployerJobManagementIndexRoute: typeof EmployerJobManagementIndexRoute
+  EmployerJobManagementUpdateJobIdRoute: typeof EmployerJobManagementUpdateJobIdRoute
 }
 
 const EmployerRouteRouteChildren: EmployerRouteRouteChildren = {
@@ -403,9 +421,10 @@ const EmployerRouteRouteChildren: EmployerRouteRouteChildren = {
   EmployerMessagesRouteRoute: EmployerMessagesRouteRoute,
   EmployerPostJobRouteRoute: EmployerPostJobRouteRoute,
   EmployerSettingsRouteRoute: EmployerSettingsRouteRoute,
-  EmployerApplicationsApplicationIdRoute:
-    EmployerApplicationsApplicationIdRoute,
-  EmployerApplicationsIndexRoute: EmployerApplicationsIndexRoute,
+  EmployerJobManagementApplicationIdRoute:
+    EmployerJobManagementApplicationIdRoute,
+  EmployerJobManagementIndexRoute: EmployerJobManagementIndexRoute,
+  EmployerJobManagementUpdateJobIdRoute: EmployerJobManagementUpdateJobIdRoute,
 }
 
 const EmployerRouteRouteWithChildren = EmployerRouteRoute._addFileChildren(
@@ -433,8 +452,9 @@ export interface FileRoutesByFullPath {
   '/employer/messages': typeof EmployerMessagesRouteRoute
   '/employer/postJob': typeof EmployerPostJobRouteRoute
   '/employer/settings': typeof EmployerSettingsRouteRoute
-  '/employer/applications/$applicationId': typeof EmployerApplicationsApplicationIdRoute
-  '/employer/applications': typeof EmployerApplicationsIndexRoute
+  '/employer/job-management/$applicationId': typeof EmployerJobManagementApplicationIdRoute
+  '/employer/job-management': typeof EmployerJobManagementIndexRoute
+  '/employer/job-management/update/$jobId': typeof EmployerJobManagementUpdateJobIdRoute
 }
 
 export interface FileRoutesByTo {
@@ -458,8 +478,9 @@ export interface FileRoutesByTo {
   '/employer/messages': typeof EmployerMessagesRouteRoute
   '/employer/postJob': typeof EmployerPostJobRouteRoute
   '/employer/settings': typeof EmployerSettingsRouteRoute
-  '/employer/applications/$applicationId': typeof EmployerApplicationsApplicationIdRoute
-  '/employer/applications': typeof EmployerApplicationsIndexRoute
+  '/employer/job-management/$applicationId': typeof EmployerJobManagementApplicationIdRoute
+  '/employer/job-management': typeof EmployerJobManagementIndexRoute
+  '/employer/job-management/update/$jobId': typeof EmployerJobManagementUpdateJobIdRoute
 }
 
 export interface FileRoutesById {
@@ -486,8 +507,9 @@ export interface FileRoutesById {
   '/employer/messages': typeof EmployerMessagesRouteRoute
   '/employer/postJob': typeof EmployerPostJobRouteRoute
   '/employer/settings': typeof EmployerSettingsRouteRoute
-  '/employer/applications/$applicationId': typeof EmployerApplicationsApplicationIdRoute
-  '/employer/applications/': typeof EmployerApplicationsIndexRoute
+  '/employer/job-management/$applicationId': typeof EmployerJobManagementApplicationIdRoute
+  '/employer/job-management/': typeof EmployerJobManagementIndexRoute
+  '/employer/job-management/update/$jobId': typeof EmployerJobManagementUpdateJobIdRoute
 }
 
 export interface FileRouteTypes {
@@ -513,8 +535,9 @@ export interface FileRouteTypes {
     | '/employer/messages'
     | '/employer/postJob'
     | '/employer/settings'
-    | '/employer/applications/$applicationId'
-    | '/employer/applications'
+    | '/employer/job-management/$applicationId'
+    | '/employer/job-management'
+    | '/employer/job-management/update/$jobId'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -537,8 +560,9 @@ export interface FileRouteTypes {
     | '/employer/messages'
     | '/employer/postJob'
     | '/employer/settings'
-    | '/employer/applications/$applicationId'
-    | '/employer/applications'
+    | '/employer/job-management/$applicationId'
+    | '/employer/job-management'
+    | '/employer/job-management/update/$jobId'
   id:
     | '__root__'
     | '/'
@@ -563,8 +587,9 @@ export interface FileRouteTypes {
     | '/employer/messages'
     | '/employer/postJob'
     | '/employer/settings'
-    | '/employer/applications/$applicationId'
-    | '/employer/applications/'
+    | '/employer/job-management/$applicationId'
+    | '/employer/job-management/'
+    | '/employer/job-management/update/$jobId'
   fileRoutesById: FileRoutesById
 }
 
@@ -641,8 +666,9 @@ export const routeTree = rootRoute
         "/employer/messages",
         "/employer/postJob",
         "/employer/settings",
-        "/employer/applications/$applicationId",
-        "/employer/applications/"
+        "/employer/job-management/$applicationId",
+        "/employer/job-management/",
+        "/employer/job-management/update/$jobId"
       ]
     },
     "/login": {
@@ -713,12 +739,16 @@ export const routeTree = rootRoute
       "filePath": "employer/settings/route.tsx",
       "parent": "/employer"
     },
-    "/employer/applications/$applicationId": {
-      "filePath": "employer/applications/$applicationId.tsx",
+    "/employer/job-management/$applicationId": {
+      "filePath": "employer/job-management/$applicationId.tsx",
       "parent": "/employer"
     },
-    "/employer/applications/": {
-      "filePath": "employer/applications/index.tsx",
+    "/employer/job-management/": {
+      "filePath": "employer/job-management/index.tsx",
+      "parent": "/employer"
+    },
+    "/employer/job-management/update/$jobId": {
+      "filePath": "employer/job-management/update/$jobId.tsx",
       "parent": "/employer"
     }
   }

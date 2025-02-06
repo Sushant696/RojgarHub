@@ -22,6 +22,7 @@ const PostJob = asyncHandler(async (req, res) => {
     new ApiResponse(StatusCodes.OK, createdJob, "Job Created successfully"),
   );
 });
+
 const getAllJobs = asyncHandler(async (req, res) => {
   const userId = req.user?.userId;
   const jobs = await jobServices.getJobs(userId);

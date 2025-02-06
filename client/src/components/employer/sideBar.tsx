@@ -24,7 +24,7 @@ function SideBar({ open }: SideBarProps) {
   const navItems = [
     { icon: Home2, label: "Dashboard", path: "/employer/dashboard" },
     { icon: FolderAdd, label: "Post Job", path: "/employer/postJob" },
-    { icon: Note1, label: "Applications", path: "/employer/applications" },
+    { icon: Note1, label: "Job Management", path: "/employer/job-management" },
     { icon: People, label: "Candidates", path: "/employer/candidates" },
     { icon: Messages3, label: "Messages", path: "/employer/messages" },
     { icon: Building4, label: "Company", path: "/employer/company" },

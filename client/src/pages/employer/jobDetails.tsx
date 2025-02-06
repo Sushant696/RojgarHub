@@ -1,30 +1,74 @@
+import { useState } from "react";
 import { useLoaderData } from "@tanstack/react-router";
 import {
   CalendarDays,
   MapPin,
   BriefcaseIcon,
-  DollarSign,
+  Banknote,
   Clock,
   Building2,
+  FileUser,
 } from "lucide-react";
+import { Copy, CopySuccess } from "iconsax-react";
+import DOMPurify from "dompurify";
+
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { getTimeAgo } from "@/utils/getTimeAgo";
+import { Button } from "@/components/ui/button";
+import useRouter from "@/lib/router";
 
 function ApplicationDetails() {
+  const [copied, setCopied] = useState(false);
   const { job } = useLoaderData({
-    from: "/employer/applications/$applicationId",
+    from: "/employer/job-management/$applicationId",
   });
-  console.log(job);
+
+  const router = useRouter();
+
+  async function handleCopy() {
+    try {
+      await navigator.clipboard.writeText(job.employerId);
+      setCopied(true);
+      setTimeout(() => {
+        setCopied(false);
+      }, 2000);
+    } catch (error) {
+      console.error(error);
+    }
+  }
+
+  const sanitizedData = () => ({
+    __html: DOMPurify.sanitize(job.requirements),
+  });
 
   return (
     <div className="mx-auto px-4 py-8">
       {/* Header Section */}
       <div className="flex justify-between items-start mb-6">
-        <div>
-          <h1 className="text-3xl font-semibold text-gray-900">{job.title}</h1>
+        <div className="flex-1">
+          <div className="flex justify-between items-start">
+            <h1 className="text-3xl font-semibold text-gray-900">
+              {job.title}
+            </h1>
+            <div className="flex gap-2">
+              <Button
+                variant="outline"
+                onClick={() => {
+                  router.push("/employer/update");
+                }}
+              >
+                Edit
+              </Button>
+              <Button variant="destructive">Mark as Closed</Button>
+            </div>
+          </div>
           <div className="flex items-center gap-4 mt-2">
-            <Badge variant="secondary" className="text-sm">
+            <Badge
+              variant="secondary"
+              className="text-sm px-3 py-1 bg-blue-50 text-blue-600 border border-blue-200 flex items-center gap-1.5"
+            >
+              <div className="w-2 h-2 rounded-full bg-blue-500 animate-pulse" />
               {job.status}
             </Badge>
             <span className="text-sm text-gray-500 flex items-center gap-1">
@@ -36,10 +80,9 @@ function ApplicationDetails() {
         <img
           src={job.image}
           alt={job.title}
-          className="w-32 h-32 rounded-lg object-cover border border-gray-200 shadow-sm"
+          className="w-40 h-32 ml-6 rounded-lg object-cover border border-gray-200 shadow-sm"
         />
       </div>
-
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
         {/* Main Content */}
         <div className="lg:col-span-2 space-y-6">
@@ -60,7 +103,7 @@ function ApplicationDetails() {
             </CardHeader>
             <CardContent>
               <p className="text-gray-600 whitespace-pre-wrap">
-                {job.requirements}
+                <div dangerouslySetInnerHTML={sanitizedData()} />
               </p>
             </CardContent>
           </Card>
@@ -97,13 +140,13 @@ function ApplicationDetails() {
                 </div>
 
                 <div className="flex items-start space-x-3">
-                  <DollarSign className="w-5 h-5 text-blue-500 mt-1" />
+                  <Banknote className="w-5 h-5 text-blue-500 mt-1" />
                   <div>
                     <p className="text-sm font-medium text-gray-600">
                       Salary Range
                     </p>
                     <p className="text-gray-900">
-                      ${job.salaryMin.toLocaleString()} - $
+                      Rs {job.salaryMin.toLocaleString()} -
                       {job.salaryMax.toLocaleString()}
                     </p>
                   </div>
@@ -135,10 +178,46 @@ function ApplicationDetails() {
                 Employer Details
               </CardTitle>
             </CardHeader>
+
             <CardContent>
-              <p className="text-sm text-gray-600">
-                Employer ID: {job.employerId}
-              </p>
+              <div className="flex items-center justify-between border p-3 border-gray-300 rounded-lg">
+                <p className="text-sm text-gray-600">
+                  Employer ID:
+                  <span className="ml-1 text-black/70">{job.employerId}</span>
+                </p>
+
+                <button
+                  onClick={handleCopy}
+                  className={`flex items-center gap-2 px-3 py-1.5 rounded-lg transition ${
+                    copied
+                      ? "bg-green-100 text-green-600"
+                      : "bg-gray-100 hover:bg-gray-200"
+                  }`}
+                >
+                  {copied ? (
+                    <>
+                      <CopySuccess size="20" className="text-green-500" />
+                    </>
+                  ) : (
+                    <>
+                      <Copy size="20" className="text-gray-600" />
+                    </>
+                  )}
+                </button>
+              </div>
+            </CardContent>
+          </Card>
+        </div>
+        <div className="lg:col-span-full space-y-6">
+          <Card>
+            <CardHeader className="flex ">
+              <CardTitle className="flex items-center gap-2">
+                <FileUser className="w-5 h-5" />
+                Applicants Overview
+              </CardTitle>{" "}
+            </CardHeader>
+            <CardContent>
+              <p className="text-gray-600 whitespace-pre-wrap"></p>
             </CardContent>
           </Card>
         </div>

@@ -6,6 +6,7 @@ interface SingleDropzoneProps {
   onFileSelect: (file: File | null) => void;
   preview: string | null;
   setPreview: (file: string | null) => void;
+  url?: string | null;
 }
 
 export function SingleDropzone({

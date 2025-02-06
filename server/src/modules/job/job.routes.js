@@ -5,8 +5,7 @@ import upload from "../../utils/multer.js";
 
 const jobRouter = Router();
 
-// jobRouter.get("/", jobController.getAllJobs);
-jobRouter.get("/:id", jobController.getJobById);
+jobRouter.get("/:jobId", jobController.getJobById);
 
 // protected routes
 jobRouter.post(

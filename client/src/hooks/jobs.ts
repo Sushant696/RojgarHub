@@ -1,7 +1,6 @@
 import { useMutation, useQuery } from "@tanstack/react-query";
 
 import showNotification from "../utils/toastify";
-import DisplayErrorToast from "../utils/displayErrorMessage";
 import { jobAction } from "@/api/job";
 
 export const usePostJob = () => {
@@ -9,10 +8,25 @@ export const usePostJob = () => {
     mutationKey: ["postJob"],
     mutationFn: jobAction.postJob,
     onSuccess(response) {
+      console.log(response, "useJobPost");
       showNotification("success", response.data.message);
     },
     onError: (error: any) => {
-      DisplayErrorToast(error);
+      showNotification("error", error.message);
+    },
+  });
+};
+
+export const useUpdateJob = () => {
+  return useMutation({
+    mutationKey: ["updateJob"],
+    mutationFn: jobAction.updateJob,
+    onSuccess(response) {
+      console.log(response, "useUpdateJob");
+      showNotification("success", response.data.message);
+    },
+    onError: (error: any) => {
+      showNotification("error", error.message);
     },
   });
 };
