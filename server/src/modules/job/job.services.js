@@ -40,6 +40,48 @@ export const postJobService = async (postJobData, imagePath, userId) => {
   return job;
 };
 
+export const updateJob = async (jobId, updateJobData, imagePath, userId) => {
+  if (!updateJobData) {
+    throw new ApiError(StatusCodes.BAD_REQUEST, "Job data is missing.");
+  }
+
+  let jobImageRef;
+  if (imagePath) {
+    if (typeof imagePath === "string" && imagePath.startsWith("/")) {
+      jobImageRef = await uploadOnCloudinary(imagePath);
+    } else {
+      jobImageRef = { url: imagePath };
+    }
+  }
+
+  const employer = await db.employerProfile.findFirst({
+    where: {
+      userId: userId,
+    },
+  });
+
+  if (!employer) {
+    throw new ApiError(StatusCodes.NOT_FOUND, "Employer profile not found.");
+  }
+
+  const updateJobObj = {
+    ...updateJobData,
+    image: jobImageRef?.url || null,
+    employer: {
+      connect: {
+        id: employer.id,
+      },
+    },
+  };
+
+  const job = await db.job.update({
+    where: { id: jobId },
+    data: updateJobObj,
+  });
+
+  return job;
+};
+
 export const getJobs = async (employerId) => {
   const job = await db.job.findMany({
     where: {

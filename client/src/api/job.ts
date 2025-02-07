@@ -18,15 +18,18 @@ async function postJob(formData: JobPostingTypes) {
   }
 }
 
-async function updateJob(formData: JobPostingTypes) {
+async function updateJob(formData: any) {
   try {
-    const response = await api.patch(apiURLs.Jobs.editJob, formData, {
-      headers: { "Content-Type": "multipart/form-data" },
-      withCredentials: true,
-    });
+    const response = await api.patch(
+      `${apiURLs.Jobs.editJob}/${formData.id}`,
+      formData.values,
+      {
+        headers: { "Content-Type": "multipart/form-data" },
+        withCredentials: true,
+      },
+    );
     return response.data;
   } catch (error: any) {
-    console.error("Error posting job:", error.response?.data || error.message);
     throw new Error(error.response?.data?.message || "Something went wrong!");
   }
 }
@@ -44,7 +47,6 @@ async function getAllJobs() {
 }
 
 async function getJobById(jobId: string) {
-  console.log(jobId);
   try {
     const response = await api.get(`${apiURLs.Jobs.getById}/${jobId}`, {
       withCredentials: true,
@@ -73,7 +75,7 @@ async function toogleJobStatus(jobId: string) {
 async function deleteJob(jobId: string) {
   console.log(jobId);
   try {
-    const response = await api.get(`${apiURLs.Jobs.deleteJob}/${jobId}`, {
+    const response = await api.delete(`${apiURLs.Jobs.deleteJob}/${jobId}`, {
       withCredentials: true,
     });
     return response.data;

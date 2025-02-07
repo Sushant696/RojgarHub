@@ -16,7 +16,7 @@ jobRouter.post(
 );
 
 jobRouter.patch(
-  "/",
+  "/:jobId",
   isAuthenticated,
   upload.single("image"),
   jobController.editJob,

@@ -4,6 +4,7 @@ import * as jobServices from "./job.services.js";
 import asyncHandler from "../../utils/asyncHandler.js";
 import { ApiResponse } from "../../utils/apiResponse.js";
 import { JobValidatorSchema } from "./job.validator.js";
+import db from "../../db/db.js";
 
 const PostJob = asyncHandler(async (req, res) => {
   const validatedPostJobData = await JobValidatorSchema.postJobSchema.validate(
@@ -23,6 +24,41 @@ const PostJob = asyncHandler(async (req, res) => {
   );
 });
 
+const editJob = asyncHandler(async (req, res) => {
+  const data = req.body;
+  const image = req.file;
+  const userId = req.user.userId;
+  const jobId = req.params.jobId;
+
+  let imagePath;
+  if (image) {
+    imagePath = image.path;
+  } else {
+    const existingJob = await db.job.findUnique({
+      where: { id: jobId },
+    });
+    imagePath = existingJob?.image;
+  }
+
+  const updatedData = await jobServices.updateJob(
+    jobId,
+    {
+      ...data,
+      salaryMin: parseInt(data.salaryMin),
+      salaryMax: parseInt(data.salaryMax),
+    },
+    imagePath,
+    userId,
+  );
+
+  return res.json(
+    new ApiResponse(
+      StatusCodes.OK,
+      { updatedData },
+      "Job Updated successfully",
+    ),
+  );
+});
 const getAllJobs = asyncHandler(async (req, res) => {
   const userId = req.user?.userId;
   const jobs = await jobServices.getJobs(userId);
@@ -57,10 +93,6 @@ const toggleJobStatus = asyncHandler(async (req, res) => {
   return res.json(
     new ApiResponse(StatusCodes.OK, { job }, "Job toggled successfully"),
   );
-});
-
-const editJob = asyncHandler(async (req, res) => {
-  return new ApiResponse(StatusCodes.OK, {}, "Job deleted successfully");
 });
 
 export const jobController = {

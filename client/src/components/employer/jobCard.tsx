@@ -9,7 +9,7 @@ import {
   XCircle,
   Trash2,
 } from "lucide-react";
-
+import { useState } from "react";
 import { getTimeAgo } from "@/utils/getTimeAgo";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
@@ -22,8 +22,7 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import useRouter from "@/lib/router";
-import { jobAction } from "@/api/job";
-import { useJobStatusToggle } from "@/hooks/jobs";
+import { useDeleteJob, useJobStatusToggle } from "@/hooks/jobs";
 
 interface JobCardProps {
   job: {
@@ -42,24 +41,59 @@ interface JobCardProps {
 
 const JobCard = ({ job }: JobCardProps) => {
   const router = useRouter();
-  const jobToogle = useJobStatusToggle();
+  const jobToggle = useJobStatusToggle();
+  const jobDelete = useDeleteJob();
+  const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
 
   const handleEdit = () => {
     router.push("/employer/job-management/update/" + job.id);
-    console.log("Edit job:", job.id);
   };
 
   const handleMarkClosed = async () => {
-    jobToogle.mutate(job.id);
-    console.log("Mark job as closed:");
+    jobToggle.mutate(job.id);
   };
 
   const handleDelete = () => {
-    console.log("Delete job:", job.id);
+    console.log("delete");
+    jobDelete.mutate(job.id);
+    setShowDeleteConfirm(false);
   };
 
+  if (showDeleteConfirm) {
+    return (
+      <Card className="relative border border-red-100 bg-red-50">
+        <CardContent className="p-6">
+          <div className="text-center">
+            <h3 className="text-lg font-semibold text-red-600 mb-2">
+              Delete Job Posting?
+            </h3>
+            <p className="text-sm text-gray-600 mb-4">
+              This action cannot be undone.
+            </p>
+            <div className="flex justify-center gap-3">
+              <Button
+                variant="outline"
+                onClick={() => setShowDeleteConfirm(false)}
+                className="w-24"
+              >
+                Cancel
+              </Button>
+              <Button
+                variant="destructive"
+                onClick={handleDelete}
+                className="w-24"
+              >
+                Delete
+              </Button>
+            </div>
+          </div>
+        </CardContent>
+      </Card>
+    );
+  }
+
   return (
-    <Card className="group transition-all duration-300 border border-gray-50">
+    <Card className="group hover:shadow-md transition-all duration-300 border border-gray-100">
       <CardContent className="p-0">
         <div className="relative">
           <img
@@ -101,7 +135,7 @@ const JobCard = ({ job }: JobCardProps) => {
                 </DropdownMenuItem>
                 <DropdownMenuSeparator />
                 <DropdownMenuItem
-                  onClick={handleDelete}
+                  onClick={() => setShowDeleteConfirm(true)}
                   className="text-red-600 focus:text-red-600 cursor-pointer"
                 >
                   <Trash2 className="mr-2 h-4 w-4" />
@@ -113,11 +147,11 @@ const JobCard = ({ job }: JobCardProps) => {
         </div>
 
         <div className="p-6">
-          <h3 className="text-xl font-semibold text-gray-900 mb-3 line-clamp-1 transition-colors">
+          <h3 className="text-xl font-semibold text-gray-900 mb-3 line-clamp-1 group-hover:text-blue-600 transition-colors">
             {job.title}
           </h3>
 
-          <div className="space-y-3 mb-4">
+          <div className="grid grid-cols-2 gap-3 mb-4">
             <div className="flex items-center text-gray-600">
               <MapPin className="w-4 h-4 mr-2 text-blue-500" />
               <span className="text-sm">{job.location}</span>
@@ -133,14 +167,16 @@ const JobCard = ({ job }: JobCardProps) => {
             <div className="flex items-center text-gray-600">
               <DollarSign className="w-4 h-4 mr-2 text-blue-500" />
               <span className="text-sm">
-                ${job.salaryMin.toLocaleString()} - $
+                ${job?.salaryMin?.toLocaleString()} - $
                 {job.salaryMax.toLocaleString()}
               </span>
             </div>
 
             <div className="flex items-center text-gray-600">
               <Users className="w-4 h-4 mr-2 text-blue-500" />
-              <span className="text-sm">{job.applications.length} </span>
+              <span className="text-sm">
+                {job.applications.length} Application
+              </span>
             </div>
           </div>
 
@@ -152,9 +188,7 @@ const JobCard = ({ job }: JobCardProps) => {
             <Button
               variant="outline"
               className="group/button hover:bg-blue-600 hover:text-white transition-all duration-300"
-              onClick={() => {
-                router.push(job.id);
-              }}
+              onClick={() => router.push(job.id)}
             >
               View Applications
               <ArrowRight className="w-4 h-4 ml-2 group-hover/button:translate-x-1 transition-transform" />

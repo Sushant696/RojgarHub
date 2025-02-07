@@ -1,12 +1,8 @@
-import {
-  QueryClient,
-  useMutation,
-  useQuery,
-  useQueryClient,
-} from "@tanstack/react-query";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 
 import showNotification from "../utils/toastify";
 import { jobAction } from "@/api/job";
+import { toast } from "react-toastify";
 
 export const usePostJob = () => {
   return useMutation({
@@ -23,12 +19,15 @@ export const usePostJob = () => {
 };
 
 export const useUpdateJob = () => {
+  const queryClient = useQueryClient();
+
   return useMutation({
     mutationKey: ["updateJob"],
     mutationFn: jobAction.updateJob,
-    onSuccess(response) {
-      console.log(response, "useUpdateJob");
-      showNotification("success", response.data.message);
+    onSuccess: (response, { id }) => {
+      toast.success(response.data.message);
+      showNotification("success", "Job updated Successfully");
+      queryClient.invalidateQueries({ queryKey: ["jobById", id] });
     },
     onError: (error: any) => {
       showNotification("error", error.message);

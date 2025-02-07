@@ -9,7 +9,7 @@ import {
   Building2,
   FileUser,
 } from "lucide-react";
-import { Copy, CopySuccess } from "iconsax-react";
+import { Briefcase, Copy, CopySuccess } from "iconsax-react";
 import DOMPurify from "dompurify";
 
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -17,12 +17,16 @@ import { Badge } from "@/components/ui/badge";
 import { getTimeAgo } from "@/utils/getTimeAgo";
 import { Button } from "@/components/ui/button";
 import useRouter from "@/lib/router";
+import { useJobStatusToggle } from "@/hooks/jobs";
+import clsx from "clsx";
 
 function ApplicationDetails() {
   const [copied, setCopied] = useState(false);
   const { job } = useLoaderData({
     from: "/employer/job-management/$applicationId",
   });
+
+  const jobStatusToogle = useJobStatusToggle();
 
   const router = useRouter();
 
@@ -36,6 +40,11 @@ function ApplicationDetails() {
     } catch (error) {
       console.error(error);
     }
+  }
+
+  function handleJobStatusToggle() {
+    jobStatusToogle.mutate(job.id);
+    router.push("/employer/job-management");
   }
 
   const sanitizedData = () => ({
@@ -55,12 +64,21 @@ function ApplicationDetails() {
               <Button
                 variant="outline"
                 onClick={() => {
-                  router.push("/employer/update");
+                  router.push(`/employer/job-management/update/${job.id}`);
                 }}
               >
                 Edit
               </Button>
-              <Button variant="destructive">Mark as Closed</Button>
+              <Button
+                className={clsx` ${job.status === "OPEN" ? "bg-red-500 hover:bg-red-600" : "bg-green-500 hover:bg-green-600"}`}
+                onClick={handleJobStatusToggle}
+              >
+                {job.status === "OPEN" ? (
+                  <h1>Mark as Closed</h1>
+                ) : (
+                  <h1>Mark as Open</h1>
+                )}
+              </Button>
             </div>
           </div>
           <div className="flex items-center gap-4 mt-2">
@@ -174,25 +192,24 @@ function ApplicationDetails() {
           <Card>
             <CardHeader>
               <CardTitle className="flex items-center gap-2">
-                <Building2 className="w-5 h-5" />
-                Employer Details
+                <Briefcase className="w-5 h-5" />
+                Job Details
               </CardTitle>
             </CardHeader>
 
             <CardContent>
               <div className="flex items-center justify-between border p-3 border-gray-300 rounded-lg">
                 <p className="text-sm text-gray-600">
-                  Employer ID:
-                  <span className="ml-1 text-black/70">{job.employerId}</span>
+                  Job ID:
+                  <span className="ml-1 text-black/70">{job.id}</span>
                 </p>
 
                 <button
                   onClick={handleCopy}
-                  className={`flex items-center gap-2 px-3 py-1.5 rounded-lg transition ${
-                    copied
+                  className={`flex items-center gap-2 px-3 py-1.5 rounded-lg transition ${copied
                       ? "bg-green-100 text-green-600"
                       : "bg-gray-100 hover:bg-gray-200"
-                  }`}
+                    }`}
                 >
                   {copied ? (
                     <>

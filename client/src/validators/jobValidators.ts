@@ -15,6 +15,22 @@ const jobPostingSchema = Yup.object().shape({
   requirements: Yup.string().required("Requirements are required"),
 });
 
+export const UpdatePostSchema = Yup.object({
+  salaryMin: Yup.number().min(0, "Salary cannot be negative"),
+  salaryMax: Yup.number()
+    .min(0, "Salary cannot be negative")
+    .test(
+      "is-greater",
+      "Maximum salary must be greater than minimum salary",
+      function(value) {
+        const { salaryMin } = this.parent;
+        if (salaryMin && value) {
+          return value > salaryMin;
+        }
+        return true;
+      },
+    ),
+});
 export default jobPostingSchema;
 
 export type JobPostingTypes = Yup.InferType<typeof jobPostingSchema>;
