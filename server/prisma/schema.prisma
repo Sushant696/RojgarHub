@@ -103,8 +103,7 @@ model Job {
   salaryMax       Int? 
   status          JobStatus @default(OPEN)
   
-  applications    JobApplication[]
-
+  applications    JobApplication[] @relation("JobToApplications")
   createdAt       DateTime  @default(now())
   updatedAt       DateTime  @updatedAt
 }
@@ -112,8 +111,9 @@ model Job {
 model JobApplication {
  
   id            String    @id @default(uuid())
-  job           Job       @relation(fields: [jobId], references: [id])
+job             Job    @relation("JobToApplications", fields: [jobId], references: [id], onDelete: Cascade)
   jobId         String
+
   candidate     CandidateProfile @relation(fields: [candidateId], references: [id])
   candidateId   String
 

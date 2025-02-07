@@ -41,7 +41,22 @@ const getJobById = asyncHandler(async (req, res) => {
 });
 
 const deleteJob = asyncHandler(async (req, res) => {
-  return new ApiResponse(StatusCodes.OK, {}, "Job deleted successfully");
+  const jobId = req.params?.jobId;
+
+  const DeletedJob = await jobServices.deleteJob(jobId);
+
+  return res.json(
+    new ApiResponse(StatusCodes.OK, { DeletedJob }, "Job deleted successfully"),
+  );
+});
+
+const toggleJobStatus = asyncHandler(async (req, res) => {
+  const jobId = req.params?.jobId;
+  const job = await jobServices.toogleJob(jobId);
+
+  return res.json(
+    new ApiResponse(StatusCodes.OK, { job }, "Job toggled successfully"),
+  );
 });
 
 const editJob = asyncHandler(async (req, res) => {
@@ -54,4 +69,5 @@ export const jobController = {
   deleteJob,
   getAllJobs,
   getJobById,
+  toggleJobStatus,
 };

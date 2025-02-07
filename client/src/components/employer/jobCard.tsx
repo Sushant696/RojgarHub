@@ -22,6 +22,8 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import useRouter from "@/lib/router";
+import { jobAction } from "@/api/job";
+import { useJobStatusToggle } from "@/hooks/jobs";
 
 interface JobCardProps {
   job: {
@@ -40,14 +42,16 @@ interface JobCardProps {
 
 const JobCard = ({ job }: JobCardProps) => {
   const router = useRouter();
+  const jobToogle = useJobStatusToggle();
 
   const handleEdit = () => {
     router.push("/employer/job-management/update/" + job.id);
     console.log("Edit job:", job.id);
   };
 
-  const handleMarkClosed = () => {
-    console.log("Mark job as closed:", job.id);
+  const handleMarkClosed = async () => {
+    jobToogle.mutate(job.id);
+    console.log("Mark job as closed:");
   };
 
   const handleDelete = () => {

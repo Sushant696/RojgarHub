@@ -19,6 +19,7 @@ export default function Jobs() {
     setShowCount(value);
     setIsSelectOpen(false);
   };
+  console.log(data.jobs[0]);
 
   return (
     <div className="mx-auto px-4 py-8 max-h-fit">
@@ -52,9 +53,8 @@ export default function Jobs() {
                   {showCount === "all" ? "All" : showCount}
                 </span>
                 <ChevronDown
-                  className={`w-4 h-4 transition-transform duration-200 ${
-                    isSelectOpen ? "rotate-180" : ""
-                  }`}
+                  className={`w-4 h-4 transition-transform duration-200 ${isSelectOpen ? "rotate-180" : ""
+                    }`}
                 />
               </button>
 
@@ -83,7 +83,10 @@ export default function Jobs() {
                 0,
                 showCount === "all" ? data?.jobs.length : Number(showCount),
               )
-              .map((job: any) => <JobCard key={job.id} job={job} />)}
+              .map(
+                (job: any) =>
+                  job.status === "OPEN" && <JobCard key={job.id} job={job} />,
+              )}
           </div>
         </CardContent>
       </Card>

@@ -5,7 +5,6 @@ import { JobPostingTypes } from "@/validators/jobValidators";
 import DisplayErrorToast from "@/utils/displayErrorMessage";
 import showNotification from "@/utils/toastify";
 
-
 async function postJob(formData: JobPostingTypes) {
   try {
     const response = await api.post(apiURLs.Jobs.postJob, formData, {
@@ -58,4 +57,38 @@ async function getJobById(jobId: string) {
   }
 }
 
-export const jobAction = { postJob, getAllJobs, updateJob, getJobById };
+async function toogleJobStatus(jobId: string) {
+  try {
+    const response = await api.get(`${apiURLs.Jobs.toggleJob}/${jobId}`, {
+      withCredentials: true,
+    });
+    return response.data;
+  } catch (error: any) {
+    console.log(error);
+    DisplayErrorToast(error);
+    throw new Error(error.response?.data?.message || "Something went wrong!");
+  }
+}
+
+async function deleteJob(jobId: string) {
+  console.log(jobId);
+  try {
+    const response = await api.get(`${apiURLs.Jobs.deleteJob}/${jobId}`, {
+      withCredentials: true,
+    });
+    return response.data;
+  } catch (error: any) {
+    DisplayErrorToast(error);
+    showNotification("error", error?.respone?.data?.message);
+    throw new Error(error.response?.data?.message || "Something went wrong!");
+  }
+}
+
+export const jobAction = {
+  postJob,
+  getAllJobs,
+  updateJob,
+  getJobById,
+  toogleJobStatus,
+  deleteJob,
+};

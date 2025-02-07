@@ -15,14 +15,16 @@ jobRouter.post(
   jobController.PostJob,
 );
 
-jobRouter.delete("/", isAuthenticated, jobController.deleteJob);
-
 jobRouter.patch(
   "/",
   isAuthenticated,
   upload.single("image"),
   jobController.editJob,
 );
+
+jobRouter.delete("/:jobId", isAuthenticated, jobController.deleteJob);
+
+jobRouter.get("/toogle/:jobId", isAuthenticated, jobController.toggleJobStatus);
 
 jobRouter.get("/", isAuthenticated, jobController.getAllJobs);
 export default jobRouter;
