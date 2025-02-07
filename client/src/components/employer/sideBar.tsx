@@ -24,7 +24,7 @@ function SideBar({ open }: SideBarProps) {
   const navItems = [
     { icon: Home2, label: "Dashboard", path: "/employer/dashboard" },
     { icon: FolderAdd, label: "Post Job", path: "/employer/postJob" },
-    { icon: Note1, label: "Applications", path: "/employer/applications" },
+    { icon: Note1, label: "Job Management", path: "/employer/job-management" },
     { icon: People, label: "Candidates", path: "/employer/candidates" },
     { icon: Messages3, label: "Messages", path: "/employer/messages" },
     { icon: Building4, label: "Company", path: "/employer/company" },
@@ -33,12 +33,7 @@ function SideBar({ open }: SideBarProps) {
   const isActive = (path: string) => location.pathname === path;
 
   return (
-    <nav
-      className={clsx(
-        "bg-white sticky top-20 max-h-[90vh]",
-        open ? "w-60" : "w-16",
-      )}
-    >
+    <nav className={clsx("bg-white sticky top-20", open ? "w-60" : "w-16")}>
       <div className="flex flex-col h-5/6">
         {/* Navigation Items */}
         <div className={clsx("flex-1 space-y-4 py-4", open ? "px-3" : "px-2")}>

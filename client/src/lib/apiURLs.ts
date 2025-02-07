@@ -12,5 +12,6 @@ export const apiURLs = {
     editJob: "/api/job/",
     get: "/api/job",
     getById: "/api/job/",
+    toggleJob: "/api/job/toogle",
   },
 };

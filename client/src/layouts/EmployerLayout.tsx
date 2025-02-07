@@ -9,7 +9,7 @@ export const EmployerLayout = () => {
   const [open, setOpen] = useState<boolean>(true);
 
   return (
-    <div className="">
+    <div className="max-h-screen">
       <div className="sticky top-0 z-40">
         <TopBar />
       </div>
@@ -40,7 +40,7 @@ export const EmployerLayout = () => {
             />
           )}
         </div>
-        <main className="rounded-sm bg-[#F2F4FA] w-full overflow-hidden px-4">
+        <main className="rounded-sm bg-[#F2F4FA] w-full max-h-fit overflow-hidden px-4">
           <Outlet />
         </main>
       </div>

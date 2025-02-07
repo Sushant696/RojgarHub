@@ -36,7 +36,12 @@ function TopBar() {
         <div className="flex items-center gap-4">
           <TopBarSearch />
           <div>
-            <Button className="bg-blue-500 rounded-lg hover:bg-blue-600 transition-colors duration-200">
+            <Button
+              onClick={() => {
+                router.push("/employer/postJob");
+              }}
+              className="bg-blue-500 rounded-lg hover:bg-blue-600 transition-colors duration-200"
+            >
               Create Job
               <Edit size="20" color="white" variant="Bulk" className="ml-2" />
             </Button>
