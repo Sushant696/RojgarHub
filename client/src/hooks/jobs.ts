@@ -73,3 +73,17 @@ export const useJobStatusToggle = () => {
     },
   });
 };
+
+export const useGetJobCandidates = () => {
+  return useQuery({
+    queryKey: ["employerCandidates"],
+    queryFn: jobAction.getJobCandidates,
+  });
+};
+
+export const useGetJobApplications = () => {
+  return useQuery({
+    queryKey: ["employerCandidates"],
+    queryFn: jobAction.getJobApplication,
+  });
+};

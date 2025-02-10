@@ -86,6 +86,31 @@ async function deleteJob(jobId: string) {
   }
 }
 
+async function getJobCandidates() {
+  try {
+    const response = await api.delete(apiURLs.Jobs.candidates, {
+      withCredentials: true,
+    });
+    return response.data;
+  } catch (error: any) {
+    DisplayErrorToast(error);
+    showNotification("error", error?.respone?.data?.message);
+    throw new Error(error.response?.data?.message || "Something went wrong!");
+  }
+}
+
+async function getJobApplication() {
+  try {
+    const response = await api.get(`${apiURLs.Jobs.applications}`, {
+      withCredentials: true,
+    });
+    return response.data;
+  } catch (error: any) {
+    DisplayErrorToast(error);
+    showNotification("error", error?.respone?.data?.message);
+    throw new Error(error.response?.data?.message || "Something went wrong!");
+  }
+}
 export const jobAction = {
   postJob,
   getAllJobs,
@@ -93,4 +118,6 @@ export const jobAction = {
   getJobById,
   toogleJobStatus,
   deleteJob,
+  getJobApplication,
+  getJobCandidates,
 };

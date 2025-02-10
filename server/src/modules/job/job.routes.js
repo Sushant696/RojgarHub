@@ -7,7 +7,6 @@ const jobRouter = Router();
 
 jobRouter.get("/:jobId", jobController.getJobById);
 
-// protected routes
 jobRouter.post(
   "/",
   isAuthenticated,
@@ -26,5 +25,13 @@ jobRouter.delete("/:jobId", isAuthenticated, jobController.deleteJob);
 
 jobRouter.get("/toogle/:jobId", isAuthenticated, jobController.toggleJobStatus);
 
+// application for specific job
+jobRouter.get(
+  "/applications/:jobId",
+  isAuthenticated,
+  jobController.getApplicationsByJob,
+);
+
 jobRouter.get("/", isAuthenticated, jobController.getAllJobs);
+
 export default jobRouter;
