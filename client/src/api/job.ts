@@ -88,13 +88,11 @@ async function deleteJob(jobId: string) {
 
 async function getJobCandidates() {
   try {
-    const response = await api.delete(apiURLs.Jobs.candidates, {
+    const response = await api.get(apiURLs.Jobs.candidates, {
       withCredentials: true,
     });
     return response.data;
   } catch (error: any) {
-    DisplayErrorToast(error);
-    showNotification("error", error?.respone?.data?.message);
     throw new Error(error.response?.data?.message || "Something went wrong!");
   }
 }

@@ -1,0 +1,41 @@
+import * as yup from "yup";
+
+const applicationSchema = yup.object().shape({
+  fullName: yup.string().required("Full name is required"),
+  phone: yup
+    .string()
+    .matches(/^\+?\d{10,15}$/, "Invalid phone number")
+    .nullable(),
+  skills: yup.array().of(yup.string()).nullable(),
+  location: yup.string().nullable(),
+  education: yup
+    .array()
+    .of(
+      yup.object().shape({
+        degree: yup.string().required("Degree is required"),
+        institution: yup.string().required("Institution is required"),
+        year: yup
+          .number()
+          .integer("Year must be an integer")
+          .min(1900, "Year must be valid")
+          .max(new Date().getFullYear(), "Year cannot be in the future")
+          .required("Year is required"),
+      }),
+    )
+    .nullable(),
+  experience: yup
+    .array()
+    .of(
+      yup.object().shape({
+        company: yup.string().required("Company name is required"),
+        position: yup.string().required("Position is required"),
+        duration: yup.string().required("Duration is required"),
+        description: yup.string().nullable(),
+      }),
+    )
+    .nullable(),
+  resumeUrl: yup.string().url("Invalid URL").nullable(),
+  websiteLink: yup.string().url("Invalid URL").nullable(),
+});
+
+export default applicationSchema;
