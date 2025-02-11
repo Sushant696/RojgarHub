@@ -6,8 +6,6 @@ import {
   BriefcaseIcon,
   Banknote,
   Clock,
-  Building2,
-  FileUser,
 } from "lucide-react";
 import { Briefcase, Copy, CopySuccess } from "iconsax-react";
 import DOMPurify from "dompurify";
@@ -19,8 +17,9 @@ import { Button } from "@/components/ui/button";
 import useRouter from "@/lib/router";
 import { useJobStatusToggle } from "@/hooks/jobs";
 import clsx from "clsx";
+import ApplicationsOverview from "./home/applicationOverview";
 
-function ApplicationDetails() {
+function JobDetails() {
   const [copied, setCopied] = useState(false);
   const { job } = useLoaderData({
     from: "/employer/job-management/$applicationId",
@@ -193,7 +192,7 @@ function ApplicationDetails() {
             <CardHeader>
               <CardTitle className="flex items-center gap-2">
                 <Briefcase className="w-5 h-5" />
-                Job Details
+                Job ID
               </CardTitle>
             </CardHeader>
 
@@ -225,22 +224,10 @@ function ApplicationDetails() {
             </CardContent>
           </Card>
         </div>
-        <div className="lg:col-span-full space-y-6">
-          <Card>
-            <CardHeader className="flex ">
-              <CardTitle className="flex items-center gap-2">
-                <FileUser className="w-5 h-5" />
-                Applicants Overview
-              </CardTitle>{" "}
-            </CardHeader>
-            <CardContent>
-              <p className="text-gray-600 whitespace-pre-wrap"></p>
-            </CardContent>
-          </Card>
-        </div>
+        <ApplicationsOverview applications={job.applications} />
       </div>
     </div>
   );
 }
 
-export default ApplicationDetails;
+export default JobDetails;

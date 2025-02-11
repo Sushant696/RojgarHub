@@ -103,7 +103,11 @@ export const getJobById = async (jobId) => {
 
   const job = await db.job.findFirst({
     where: { id: jobId },
-    include: { applications: true },
+    include: {
+      applications: {
+        include: { candidate: true },
+      },
+    },
   });
   if (!job) {
     throw new ApiError(404, "Requested Job not found");
@@ -148,4 +152,36 @@ export const deleteJob = async (jobId) => {
   });
 
   return deletedJob;
+};
+
+export const applicationsByJob = async (jobId, userId) => {
+  const existingJob = await db.job.findMany({
+    where: {
+      id: jobId,
+      employer: { userId },
+    },
+    include: { applications: true },
+  });
+
+  if (!existingJob) {
+    throw new ApiError(404, "No applications found");
+  }
+  console.log(existingJob);
+  return existingJob;
+};
+
+export const candidatesByJob = async (jobId, userId) => {
+  const existingJob = await db.job.findMany({
+    where: {
+      id: jobId,
+      employer: { userId },
+    },
+    include: { applications: true },
+  });
+
+  if (!existingJob) {
+    throw new ApiError(404, "No applications found");
+  }
+  console.log(existingJob);
+  return existingJob;
 };

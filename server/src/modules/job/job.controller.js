@@ -95,6 +95,27 @@ const toggleJobStatus = asyncHandler(async (req, res) => {
   );
 });
 
+const getApplicationsByJob = asyncHandler(async (req, res) => {
+  const jobId = req.params?.jobId;
+  const userId = req?.user?.userId;
+  const job = await jobServices.applicationsByJob(jobId, userId);
+
+  return res.json(
+    new ApiResponse(StatusCodes.OK, { job }, "Job toggled successfully"),
+  );
+});
+
+const getCandidatesByJob = asyncHandler(async (req, res) => {
+  const jobId = req.params?.jobId;
+  const userId = req?.user?.userId;
+  const job = await jobServices.applicationsByJob(jobId, userId);
+
+  return res.json(
+    new ApiResponse(StatusCodes.OK, { job }, "Job toggled successfully"),
+  );
+});
+
+
 export const jobController = {
   PostJob,
   editJob,
@@ -102,4 +123,6 @@ export const jobController = {
   getAllJobs,
   getJobById,
   toggleJobStatus,
+  getApplicationsByJob,
+  getCandidatesByJob,
 };

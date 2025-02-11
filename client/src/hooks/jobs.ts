@@ -56,7 +56,7 @@ export const useDeleteJob = () => {
   return useMutation({
     mutationFn: (jobId: string) => jobAction.deleteJob(jobId),
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["getAllJobs"] });
+      queryClient.invalidateQueries({ queryKey: ["employerJobs"] });
       queryClient.invalidateQueries({ queryKey: ["jobById"] });
     },
   });
@@ -68,8 +68,24 @@ export const useJobStatusToggle = () => {
   return useMutation({
     mutationFn: (jobId: string) => jobAction.toogleJobStatus(jobId),
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["getAllJobs"] });
+      queryClient.invalidateQueries({ queryKey: ["employerJobs"] });
       queryClient.invalidateQueries({ queryKey: ["jobById"] });
     },
+  });
+};
+
+export const useGetJobCandidates = () => {
+  return useQuery({
+    queryKey: ["employerCandidates"],
+    queryFn: jobAction.getJobCandidates,
+    retry: false,
+  });
+};
+
+export const useGetJobApplications = () => {
+  return useQuery({
+    queryKey: ["employerCandidates"],
+    queryFn: jobAction.getJobApplication,
+    retry: false,
   });
 };

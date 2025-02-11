@@ -1,16 +1,16 @@
 import { useState } from "react";
 import { HomeIcon, ChevronDown } from "lucide-react";
 
-import { useGetAllJobs } from "@/hooks/jobs";
 import { Card, CardContent } from "@/components/ui/card";
 import Loading from "@/components/isLoading";
 import JobCard from "@/components/employer/jobCard";
+import { useGetEmployerJobs } from "@/hooks/employer";
 
 export default function Jobs() {
   const [showCount, setShowCount] = useState<number | string>(10);
   const [isSelectOpen, setIsSelectOpen] = useState(false);
 
-  const { data, isLoading, isError } = useGetAllJobs();
+  const { data, isLoading, isError } = useGetEmployerJobs();
 
   if (isLoading) return <Loading />;
   if (isError) return <div>Error fetching jobs.</div>;
@@ -53,8 +53,9 @@ export default function Jobs() {
                   {showCount === "all" ? "All" : showCount}
                 </span>
                 <ChevronDown
-                  className={`w-4 h-4 transition-transform duration-200 ${isSelectOpen ? "rotate-180" : ""
-                    }`}
+                  className={`w-4 h-4 transition-transform duration-200 ${
+                    isSelectOpen ? "rotate-180" : ""
+                  }`}
                 />
               </button>
 

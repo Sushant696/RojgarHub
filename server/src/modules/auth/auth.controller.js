@@ -48,7 +48,7 @@ const loginUser = asyncHandler(async (req, res) => {
     httpOnly: true,
     secure: true,
     sameSite: "strict",
-    maxAge: 60 * 1000,
+    maxAge: 30 * 60 * 1000,
   });
   return res.json(
     new ApiResponse(
@@ -94,7 +94,7 @@ const refreshAccessToken = asyncHandler(async (req, res) => {
     httpOnly: true,
     secure: true,
     sameSite: "strict",
-    maxAge: 60 * 1000,
+    maxAge: 30 * 60 * 1000,
   });
 
   return res.json(

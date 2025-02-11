@@ -109,15 +109,24 @@ model Job {
 }
 
 model JobApplication {
- 
   id            String    @id @default(uuid())
-job             Job    @relation("JobToApplications", fields: [jobId], references: [id], onDelete: Cascade)
+
+  job           Job       @relation("JobToApplications", fields: [jobId], references: [id], onDelete: Cascade)
   jobId         String
 
   candidate     CandidateProfile @relation(fields: [candidateId], references: [id])
   candidateId   String
 
-  cv            String?   @db.Text
+  fullName      String
+  phone         String?
+  bio           String?   @db.Text
+  skills        Json?     
+  location      String?
+  education     Json?     
+  experience    Json?   
+  resumeUrl     String?
+  websiteLink   String?
+
   status        ApplicationStatus @default(PENDING)
 
   createdAt     DateTime  @default(now())
@@ -125,3 +134,4 @@ job             Job    @relation("JobToApplications", fields: [jobId], reference
 
   @@unique([jobId, candidateId])  
 }
+
