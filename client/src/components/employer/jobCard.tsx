@@ -54,7 +54,6 @@ const JobCard = ({ job }: JobCardProps) => {
   };
 
   const handleDelete = () => {
-    console.log("delete");
     jobDelete.mutate(job.id);
     setShowDeleteConfirm(false);
   };

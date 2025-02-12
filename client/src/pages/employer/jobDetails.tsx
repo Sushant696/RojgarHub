@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { useLoaderData } from "@tanstack/react-router";
+import { useParams } from "@tanstack/react-router";
 import {
   CalendarDays,
   MapPin,
@@ -15,16 +15,18 @@ import { Badge } from "@/components/ui/badge";
 import { getTimeAgo } from "@/utils/getTimeAgo";
 import { Button } from "@/components/ui/button";
 import useRouter from "@/lib/router";
-import { useJobStatusToggle } from "@/hooks/jobs";
+import { useGetJobById, useJobStatusToggle } from "@/hooks/jobs";
 import clsx from "clsx";
 import ApplicationsOverview from "./home/applicationOverview";
 
 function JobDetails() {
   const [copied, setCopied] = useState(false);
-  const { job } = useLoaderData({
-    from: "/employer/job-management/$applicationId",
-  });
 
+  const { jobId } = useParams({
+    from: "/employer/job-management/$jobId",
+  });
+  const { data, isLoading, isError } = useGetJobById(jobId);
+  const job = data?.data?.job || {};
   const jobStatusToogle = useJobStatusToggle();
 
   const router = useRouter();
@@ -49,10 +51,11 @@ function JobDetails() {
   const sanitizedData = () => ({
     __html: DOMPurify.sanitize(job.requirements),
   });
+  if (isLoading) return <div>Loading...</div>;
+  if (isError) return <div>Error fetching job data</div>;
 
   return (
     <div className="mx-auto px-4 py-8">
-      {/* Header Section */}
       <div className="flex justify-between items-start mb-6">
         <div className="flex-1">
           <div className="flex justify-between items-start">

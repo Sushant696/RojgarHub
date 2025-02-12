@@ -38,10 +38,11 @@ const getApplicationById = asyncHandler(async (req, res) => {
 
 const updateApplicationStatus = asyncHandler(async (req, res) => {
   const { applicationId } = req.params;
-  const { status } = req.body;
+  const { status, candidateId } = req.body;
 
   const updatedApplication = await applicationServices.updateApplicationStatus(
     applicationId,
+    candidateId,
     status,
   );
 

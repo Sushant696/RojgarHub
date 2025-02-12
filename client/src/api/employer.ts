@@ -30,7 +30,6 @@ async function getCandidateByEmployer() {
     const response = await api.get(apiURLs.Employer.candidates, {
       withCredentials: true,
     });
-    console.log(response);
     return response.data?.data;
   } catch (error: any) {
     console.error("Error fetching job:", error.response?.data || error.message);

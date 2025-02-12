@@ -3,7 +3,6 @@ import { useGetEmployerCandidates } from "@/hooks/employer";
 
 function Candidates() {
   const { data, isLoading, isError } = useGetEmployerCandidates();
-  console.log(data, "logged data");
   if (isLoading) {
     return <Loading />;
   }

@@ -21,4 +21,7 @@ export const apiURLs = {
     jobs: "/api/employer/jobs",
     candidates: "/api/employer/candidates",
   },
+  Application: {
+    applicationStatus: "/api/application/status",
+  },
 };

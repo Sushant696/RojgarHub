@@ -66,14 +66,12 @@ async function toogleJobStatus(jobId: string) {
     });
     return response.data;
   } catch (error: any) {
-    console.log(error);
     DisplayErrorToast(error);
     throw new Error(error.response?.data?.message || "Something went wrong!");
   }
 }
 
 async function deleteJob(jobId: string) {
-  console.log(jobId);
   try {
     const response = await api.delete(`${apiURLs.Jobs.deleteJob}/${jobId}`, {
       withCredentials: true,

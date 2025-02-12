@@ -99,7 +99,6 @@ export const getJobs = async (employerId) => {
 };
 
 export const getJobById = async (jobId) => {
-  console.log(jobId);
 
   const job = await db.job.findFirst({
     where: { id: jobId },
@@ -141,7 +140,6 @@ export const deleteJob = async (jobId) => {
     where: { id: jobId },
     include: { applications: true },
   });
-  console.log(existingJob);
   if (!existingJob) {
     throw new ApiError(404, "Requested Job not found");
   }
@@ -166,7 +164,6 @@ export const applicationsByJob = async (jobId, userId) => {
   if (!existingJob) {
     throw new ApiError(404, "No applications found");
   }
-  console.log(existingJob);
   return existingJob;
 };
 
@@ -182,6 +179,5 @@ export const candidatesByJob = async (jobId, userId) => {
   if (!existingJob) {
     throw new ApiError(404, "No applications found");
   }
-  console.log(existingJob);
   return existingJob;
 };

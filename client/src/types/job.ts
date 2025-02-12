@@ -1,7 +1,21 @@
 // types/job.ts
 
 export type JobStatus = "OPEN" | "CLOSED";
-export type ApplicationStatus = "PENDING" | "ACCEPTED" | "REJECTED";
+export type ApplicationStatus =
+  | "PENDING"
+  | "ACCEPTED"
+  | "REVIEWING"
+  | "REJECTED";
+
+export const ApplicationStatusValues: Record<
+  ApplicationStatus,
+  ApplicationStatus
+> = {
+  PENDING: "PENDING",
+  ACCEPTED: "ACCEPTED",
+  REVIEWING: "REVIEWING",
+  REJECTED: "REJECTED",
+};
 
 export interface Education {
   year: number;

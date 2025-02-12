@@ -23,7 +23,7 @@ enum JobStatus {
 
 enum ApplicationStatus {
   PENDING
-  REVIEWED
+  REVIEWING
   ACCEPTED
   REJECTED
 }

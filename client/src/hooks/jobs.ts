@@ -9,7 +9,6 @@ export const usePostJob = () => {
     mutationKey: ["postJob"],
     mutationFn: jobAction.postJob,
     onSuccess(response) {
-      console.log(response, "useJobPost");
       showNotification("success", response.data.message);
     },
     onError: (error: any) => {
@@ -44,7 +43,7 @@ export const useGetAllJobs = () => {
 
 export const useGetJobById = (jobId: string) => {
   return useQuery({
-    queryKey: ["jobById", jobId],
+    queryKey: ["jobById"],
     queryFn: () => jobAction.getJobById(jobId),
     enabled: !!jobId,
   });

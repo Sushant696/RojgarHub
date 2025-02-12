@@ -31,7 +31,6 @@ export const createApplication = async (data, jobId) => {
   });
 
   const { candidateId, ...applicationData } = data;
-  console.log(job);
   if (!job) {
     throw new ApiError(StatusCodes.NOT_FOUND, "Job Not Found.");
   }
@@ -49,7 +48,7 @@ export const createApplication = async (data, jobId) => {
       job: {
         connect: {
           id: jobId,
-        },
+        }, 
       },
       candidate: {
         connect: {
@@ -71,7 +70,24 @@ export const getApplicationById = async (applicationId) => {
 };
 
 // Update application status
-export const updateApplicationStatus = async (applicationId, status) => {
+export const updateApplicationStatus = async (
+  applicationId,
+  candidateId,
+  status,
+) => {
+
+  const existingApplication = await db.jobApplication.findUnique({
+    where: {
+      id: applicationId,
+      candidate: {
+        id: candidateId,
+      },
+    },
+  });
+  if (!existingApplication) {
+    throw new ApiError(StatusCodes.CONFLICT, "Application Not Found");
+  }
+
   return await db.jobApplication.update({
     where: { id: applicationId },
     data: { status },

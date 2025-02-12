@@ -14,7 +14,13 @@ import {
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Separator } from "@/components/ui/separator";
-import { Application } from "@/types/job";
+import {
+  Application,
+  ApplicationStatus,
+  ApplicationStatusValues,
+} from "@/types/job";
+import { CloseCircle } from "iconsax-react";
+import { useUpdateApplicationStatus } from "@/hooks/application";
 
 interface applicationDetailsModalProps {
   application: Application;
@@ -33,14 +39,25 @@ const ApplicationDetailsModal = ({
     });
   };
 
+  const { mutate } = useUpdateApplicationStatus();
+
+  function handleBeingReviewedStatus(
+    applicationId: string,
+    candidateId: string,
+    status: ApplicationStatus,
+    jobId: string,
+  ) {
+    mutate({ applicationId, candidateId, status, jobId });
+  }
+
   return (
     <div className="fixed inset-0 bg-black/40 flex items-center justify-center p-4">
-      <div className="bg-white rounded-lg w-full max-w-4xl max-h-[70vh] overflow-y-auto">
+      <div className="bg-white rounded-lg w-full max-w-4xl max-h-[75vh] overflow-y-auto">
         <div className="sticky top-0 bg-white p-4 border-b flex justify-between items-center">
           <h2 className="text-xl font-semibold">Application Details</h2>
-          <Button variant="ghost" size="sm" onClick={() => onClose()}>
-            ×
-          </Button>
+          <div className="text-red-600" onClick={() => onClose()}>
+            <CloseCircle size={24} />
+          </div>
         </div>
 
         <div className="p-6 space-y-6">
@@ -64,11 +81,12 @@ const ApplicationDetailsModal = ({
                 <Badge
                   variant="secondary"
                   className={`
-                    ${application.status === "PENDING"
-                      ? "bg-yellow-50 text-yellow-600 border-yellow-200"
-                      : application.status === "ACCEPTED"
-                        ? "bg-green-50 text-green-600 border-green-200"
-                        : "bg-gray-50 text-gray-600 border-gray-200"
+                    ${
+                      application.status === "PENDING"
+                        ? "bg-yellow-50 text-yellow-600 border-yellow-200"
+                        : application.status === "ACCEPTED"
+                          ? "bg-green-50 text-green-600 border-green-200"
+                          : "bg-gray-50 text-gray-600 border-gray-200"
                     }
                   `}
                 >
@@ -202,10 +220,36 @@ const ApplicationDetailsModal = ({
 
           {/* Action Buttons */}
           <div className="sticky bottom-0 bg-white p-4 border-t flex justify-end gap-3">
-            <Button variant="outline" className="w-32">
+            <Button
+              variant="outline"
+              size="default"
+              className="text-green-600 border-green-200 hover:bg-green-50"
+              onClick={() =>
+                handleBeingReviewedStatus(
+                  application.id,
+                  application.candidateId,
+                  ApplicationStatusValues.ACCEPTED,
+                  application.jobId,
+                )
+              }
+            >
+              Accept
+            </Button>
+            <Button
+              variant="outline"
+              size="default"
+              className="text-red-600 border-red-200 hover:bg-red-50"
+              onClick={() =>
+                handleBeingReviewedStatus(
+                  application.id,
+                  application.candidateId,
+                  ApplicationStatusValues.REJECTED,
+                  application.jobId,
+                )
+              }
+            >
               Reject
             </Button>
-            <Button className="w-32">Accept</Button>
           </div>
         </div>
       </div>
