@@ -13,13 +13,19 @@ export default function Jobs() {
   const { data, isLoading, isError } = useGetEmployerJobs();
 
   if (isLoading) return <Loading />;
-  if (isError) return <div>Error fetching jobs.</div>;
+
+  if (isError) {
+    return (
+      <div className="flex justify-center items-center h-64">
+        <h1 className="text-lg text-gray-600">Candidates not found</h1>
+      </div>
+    );
+  }
 
   const handleShowChange = (value: number | string) => {
     setShowCount(value);
     setIsSelectOpen(false);
   };
-  console.log(data.jobs[0]);
 
   return (
     <div className="mx-auto px-4 py-8 max-h-fit">

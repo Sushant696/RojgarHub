@@ -23,7 +23,7 @@ enum JobStatus {
 
 enum ApplicationStatus {
   PENDING
-  REVIEWED
+  REVIEWING
   ACCEPTED
   REJECTED
 }
@@ -55,6 +55,7 @@ model CandidateProfile {
   
   fullName    String
   phone       String?
+  profile     String?
   bio         String?   @db.Text
   skills      Json?     
   location    String?

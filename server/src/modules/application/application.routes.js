@@ -15,8 +15,9 @@ applicationRouter.get(
   isAuthenticated,
   applicationController.getApplicationById,
 );
+
 applicationRouter.patch(
-  "/:applicationId",
+  "/status/:applicationId",
   isAuthenticated,
   applicationController.updateApplicationStatus,
 );
