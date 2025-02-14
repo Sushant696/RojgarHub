@@ -17,7 +17,7 @@ import { Button } from "@/components/ui/button";
 import useRouter from "@/lib/router";
 import { useGetJobById, useJobStatusToggle } from "@/hooks/jobs";
 import clsx from "clsx";
-import ApplicationsOverview from "./home/applicationOverview";
+import ApplicationsOverview from "@/components/employer/applicationOverview";
 
 function JobDetails() {
   const [copied, setCopied] = useState(false);
@@ -208,10 +208,11 @@ function JobDetails() {
 
                 <button
                   onClick={handleCopy}
-                  className={`flex items-center gap-2 px-3 py-1.5 rounded-lg transition ${copied
+                  className={`flex items-center gap-2 px-3 py-1.5 rounded-lg transition ${
+                    copied
                       ? "bg-green-100 text-green-600"
                       : "bg-gray-100 hover:bg-gray-200"
-                    }`}
+                  }`}
                 >
                   {copied ? (
                     <>

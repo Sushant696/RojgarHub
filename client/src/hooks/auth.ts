@@ -16,9 +16,9 @@ export const useLogin = () => {
   return useMutation({
     mutationFn: authApi.Login,
     onSuccess: (response) => {
-      const { role, id, contact } = response?.data?.data;
+      const { role, id, contact, username } = response?.data?.data;
       setIsAuthenticated(true);
-      setCurrentUser({ id, role, contact });
+      setCurrentUser({ id, role, contact, username });
       queryClient.invalidateQueries({ queryKey: ["verify"] });
       role === "EMPLOYER"
         ? router.push("/employer")

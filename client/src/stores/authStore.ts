@@ -6,6 +6,7 @@ import { UserRole } from "../types/auth";
 interface User {
   id: string;
   role: UserRole;
+  username: string;
   contact: string;
 }
 interface AuthState {

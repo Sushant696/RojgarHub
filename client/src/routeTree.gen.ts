@@ -28,6 +28,7 @@ import { Route as EmployerMessagesRouteImport } from './routes/employer/messages
 import { Route as EmployerDashboardRouteImport } from './routes/employer/dashboard/route'
 import { Route as EmployerCompanyRouteImport } from './routes/employer/company/route'
 import { Route as EmployerCandidatesRouteImport } from './routes/employer/candidates/route'
+import { Route as EmployerApplicationManagementRouteImport } from './routes/employer/application-management/route'
 import { Route as CandidateVeiwJobsRouteImport } from './routes/candidate/veiwJobs/route'
 import { Route as CandidateSettingsRouteImport } from './routes/candidate/settings/route'
 import { Route as CandidateApplicationsRouteImport } from './routes/candidate/applications/route'
@@ -155,6 +156,13 @@ const EmployerCandidatesRouteRoute = EmployerCandidatesRouteImport.update({
   path: '/candidates',
   getParentRoute: () => EmployerRouteRoute,
 } as any)
+
+const EmployerApplicationManagementRouteRoute =
+  EmployerApplicationManagementRouteImport.update({
+    id: '/application-management',
+    path: '/application-management',
+    getParentRoute: () => EmployerRouteRoute,
+  } as any)
 
 const CandidateVeiwJobsRouteRoute = CandidateVeiwJobsRouteImport.update({
   id: '/veiwJobs',
@@ -315,6 +323,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof EmployerIndexRouteImport
       parentRoute: typeof EmployerRouteImport
     }
+    '/employer/application-management': {
+      id: '/employer/application-management'
+      path: '/application-management'
+      fullPath: '/employer/application-management'
+      preLoaderRoute: typeof EmployerApplicationManagementRouteImport
+      parentRoute: typeof EmployerRouteImport
+    }
     '/employer/candidates': {
       id: '/employer/candidates'
       path: '/candidates'
@@ -403,6 +418,7 @@ const CandidateRouteRouteWithChildren = CandidateRouteRoute._addFileChildren(
 
 interface EmployerRouteRouteChildren {
   EmployerIndexRouteRoute: typeof EmployerIndexRouteRoute
+  EmployerApplicationManagementRouteRoute: typeof EmployerApplicationManagementRouteRoute
   EmployerCandidatesRouteRoute: typeof EmployerCandidatesRouteRoute
   EmployerCompanyRouteRoute: typeof EmployerCompanyRouteRoute
   EmployerDashboardRouteRoute: typeof EmployerDashboardRouteRoute
@@ -416,6 +432,8 @@ interface EmployerRouteRouteChildren {
 
 const EmployerRouteRouteChildren: EmployerRouteRouteChildren = {
   EmployerIndexRouteRoute: EmployerIndexRouteRoute,
+  EmployerApplicationManagementRouteRoute:
+    EmployerApplicationManagementRouteRoute,
   EmployerCandidatesRouteRoute: EmployerCandidatesRouteRoute,
   EmployerCompanyRouteRoute: EmployerCompanyRouteRoute,
   EmployerDashboardRouteRoute: EmployerDashboardRouteRoute,
@@ -446,6 +464,7 @@ export interface FileRoutesByFullPath {
   '/candidate/applications': typeof CandidateApplicationsRouteRoute
   '/candidate/settings': typeof CandidateSettingsRouteRoute
   '/candidate/veiwJobs': typeof CandidateVeiwJobsRouteRoute
+  '/employer/application-management': typeof EmployerApplicationManagementRouteRoute
   '/employer/candidates': typeof EmployerCandidatesRouteRoute
   '/employer/company': typeof EmployerCompanyRouteRoute
   '/employer/dashboard': typeof EmployerDashboardRouteRoute
@@ -472,6 +491,7 @@ export interface FileRoutesByTo {
   '/candidate/applications': typeof CandidateApplicationsRouteRoute
   '/candidate/settings': typeof CandidateSettingsRouteRoute
   '/candidate/veiwJobs': typeof CandidateVeiwJobsRouteRoute
+  '/employer/application-management': typeof EmployerApplicationManagementRouteRoute
   '/employer/candidates': typeof EmployerCandidatesRouteRoute
   '/employer/company': typeof EmployerCompanyRouteRoute
   '/employer/dashboard': typeof EmployerDashboardRouteRoute
@@ -501,6 +521,7 @@ export interface FileRoutesById {
   '/candidate/settings': typeof CandidateSettingsRouteRoute
   '/candidate/veiwJobs': typeof CandidateVeiwJobsRouteRoute
   '/employer/_index': typeof EmployerIndexRouteRoute
+  '/employer/application-management': typeof EmployerApplicationManagementRouteRoute
   '/employer/candidates': typeof EmployerCandidatesRouteRoute
   '/employer/company': typeof EmployerCompanyRouteRoute
   '/employer/dashboard': typeof EmployerDashboardRouteRoute
@@ -529,6 +550,7 @@ export interface FileRouteTypes {
     | '/candidate/applications'
     | '/candidate/settings'
     | '/candidate/veiwJobs'
+    | '/employer/application-management'
     | '/employer/candidates'
     | '/employer/company'
     | '/employer/dashboard'
@@ -554,6 +576,7 @@ export interface FileRouteTypes {
     | '/candidate/applications'
     | '/candidate/settings'
     | '/candidate/veiwJobs'
+    | '/employer/application-management'
     | '/employer/candidates'
     | '/employer/company'
     | '/employer/dashboard'
@@ -581,6 +604,7 @@ export interface FileRouteTypes {
     | '/candidate/settings'
     | '/candidate/veiwJobs'
     | '/employer/_index'
+    | '/employer/application-management'
     | '/employer/candidates'
     | '/employer/company'
     | '/employer/dashboard'
@@ -660,6 +684,7 @@ export const routeTree = rootRoute
       "filePath": "employer/route.tsx",
       "children": [
         "/employer/_index",
+        "/employer/application-management",
         "/employer/candidates",
         "/employer/company",
         "/employer/dashboard",
@@ -713,6 +738,10 @@ export const routeTree = rootRoute
     },
     "/employer/_index": {
       "filePath": "employer/_index/route.tsx",
+      "parent": "/employer"
+    },
+    "/employer/application-management": {
+      "filePath": "employer/application-management/route.tsx",
       "parent": "/employer"
     },
     "/employer/candidates": {

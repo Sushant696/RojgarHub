@@ -14,6 +14,14 @@ enum UserRole {
   EMPLOYER
 }
 
+enum InterviewStatus {
+  PENDING
+  CONFIRMED
+  COMPLETED
+  CANCELLED
+}
+
+
 
 enum JobStatus {
   OPEN
@@ -65,6 +73,7 @@ model CandidateProfile {
   websiteLink String?
 
   applications JobApplication[]
+  interviews   Interview[]
 
   createdAt   DateTime  @default(now())
   updatedAt   DateTime  @updatedAt
@@ -74,7 +83,7 @@ model EmployerProfile {
   id                String    @id @default(uuid())
   user              User      @relation(fields: [userId], references: [id], onDelete: Cascade)
   userId            String    @unique
-  
+
   companyName       String
   companySize       Int?
   industry          String?
@@ -84,6 +93,7 @@ model EmployerProfile {
   address          String?
 
   jobs             Job[]
+  interviews      Interview[]  // ✅ An employer can have multiple interviews, not just one.
 
   createdAt        DateTime  @default(now())
   updatedAt        DateTime  @updatedAt
@@ -105,8 +115,25 @@ model Job {
   status          JobStatus @default(OPEN)
   
   applications    JobApplication[] @relation("JobToApplications")
+  interviews      Interview[]  // ✅ A job can have multiple interviews.
+
   createdAt       DateTime  @default(now())
   updatedAt       DateTime  @updatedAt
+}
+
+
+model Interview {
+  id          String   @id @default(uuid())
+  jobId       String
+  job         Job      @relation(fields: [jobId], references: [id])
+  candidateId String
+  candidate   CandidateProfile @relation(fields: [candidateId], references: [id])
+  employerId  String
+  employer    EmployerProfile @relation(fields: [employerId], references: [id])
+  scheduledAt DateTime
+  status      InterviewStatus @default(PENDING)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
 }
 
 model JobApplication {
