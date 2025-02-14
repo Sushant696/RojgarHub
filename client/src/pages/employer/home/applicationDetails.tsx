@@ -48,6 +48,7 @@ const ApplicationDetailsModal = ({
     jobId: string,
   ) {
     mutate({ applicationId, candidateId, status, jobId });
+    onClose();
   }
 
   return (

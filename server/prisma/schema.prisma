@@ -55,6 +55,7 @@ model CandidateProfile {
   
   fullName    String
   phone       String?
+  profile     String?
   bio         String?   @db.Text
   skills      Json?     
   location    String?

@@ -13,7 +13,14 @@ export default function Jobs() {
   const { data, isLoading, isError } = useGetEmployerJobs();
 
   if (isLoading) return <Loading />;
-  if (isError) return <div>Error fetching jobs.</div>;
+
+  if (isError) {
+    return (
+      <div className="flex justify-center items-center h-64">
+        <h1 className="text-lg text-gray-600">Candidates not found</h1>
+      </div>
+    );
+  }
 
   const handleShowChange = (value: number | string) => {
     setShowCount(value);
@@ -52,8 +59,9 @@ export default function Jobs() {
                   {showCount === "all" ? "All" : showCount}
                 </span>
                 <ChevronDown
-                  className={`w-4 h-4 transition-transform duration-200 ${isSelectOpen ? "rotate-180" : ""
-                    }`}
+                  className={`w-4 h-4 transition-transform duration-200 ${
+                    isSelectOpen ? "rotate-180" : ""
+                  }`}
                 />
               </button>
 

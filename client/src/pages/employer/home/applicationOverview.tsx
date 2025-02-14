@@ -35,7 +35,6 @@ const ApplicationCard = ({ application }: { application: Application }) => {
       day: "numeric",
     });
   };
-
   function handleBeingReviewedStatus(
     applicationId: string,
     candidateId: string,
@@ -236,6 +235,7 @@ const ApplicationCard = ({ application }: { application: Application }) => {
     </Card>
   );
 };
+
 const ApplicationsOverview = ({
   applications,
 }: {
@@ -243,11 +243,21 @@ const ApplicationsOverview = ({
 }) => {
   const [Filter, setFilter] = useState<string>(ApplicationStatusValues.PENDING);
   const [isSelectOpen, setIsSelectOpen] = useState(false);
+  const [view, setView] = useState<boolean>(false);
+  const filteredApplications = applications.filter((application) =>
+    Filter === "all" ? application : application.status === Filter,
+  );
 
   function handleShowChange(value: string) {
     setFilter(value);
     setIsSelectOpen(false);
   }
+
+  // Helper function to format status text
+  const formatStatus = (status: string) => {
+    if (status === "all") return "All";
+    return status.charAt(0).toUpperCase() + status.slice(1).toLowerCase();
+  };
 
   return (
     <div className="lg:col-span-full space-y-6">
@@ -266,12 +276,11 @@ const ApplicationsOverview = ({
                 className="flex items-center gap-2 px-4 py-2 bg-white rounded-lg shadow-sm border border-gray-200 hover:border-gray-300 transition-colors"
               >
                 <span className="text-gray-600">Show:</span>
-                <span className="font-medium">
-                  {Filter === "all" ? "All" : Filter}
-                </span>
+                <span className="font-medium">{formatStatus(Filter)}</span>
                 <ChevronDown
-                  className={`w-4 h-4 transition-transform duration-200 ${isSelectOpen ? "rotate-180" : ""
-                    }`}
+                  className={`w-4 h-4 transition-transform duration-200 ${
+                    isSelectOpen ? "rotate-180" : ""
+                  }`}
                 />
               </button>
 
@@ -289,41 +298,83 @@ const ApplicationsOverview = ({
                       onClick={() => handleShowChange(value)}
                       className="w-full px-4 py-2 text-left hover:bg-gray-50 transition-colors"
                     >
-                      {value === "all" ? "All" : value}
+                      {formatStatus(value)}
                     </button>
                   ))}
                 </div>
               )}
             </div>
-
             {/* View Toggle Buttons */}
             <div className="flex items-center gap-2 border-l border-gray-200 pl-4">
-              <button className="p-2 hover:bg-gray-50 rounded-lg transition-colors">
-                <AlignJustify size={20} className="text-gray-600" />
+              <button
+                className={`p-2 hover:bg-blue-500 rounded-lg transition-colors ${
+                  view ? "bg-blue-400 text-white" : "text-gray-600"
+                }`}
+                onClick={() => {
+                  setView(true);
+                }}
+              >
+                <AlignJustify
+                  size={20}
+                  className={view ? "text-white" : "text-gray-600"}
+                />
               </button>
-              <button className="p-2 hover:bg-gray-50 rounded-lg transition-colors">
-                <Grid size={20} className="text-gray-600" />
+              <button
+                className={`p-2 hover:bg-blue-500 hover:text-white rounded-lg transition-colors ${
+                  !view ? "bg-blue-400 text-white" : "text-gray-600"
+                }`}
+                onClick={() => {
+                  setView(false);
+                }}
+              >
+                <Grid
+                  size={20}
+                  className={!view ? "text-white" : "text-gray-600"}
+                />
               </button>
             </div>
           </div>
         </CardHeader>
         <CardContent className="pt-6">
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            {applications
-              .filter((application) =>
-                Filter === "all" ? application : application.status === Filter,
-              )
-              .map((application: Application) => (
+          <div
+            className={`transition-all duration-300 ${
+              view
+                ? "flex flex-col space-y-4"
+                : "grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4"
+            }`}
+          >
+            {filteredApplications.length > 0 ? (
+              filteredApplications.map((application: Application) => (
                 <ApplicationCard
                   key={application.id}
                   application={application}
                 />
-              ))}
+              ))
+            ) : (
+              <div className="col-span-full flex flex-col items-center justify-center py-12 px-4">
+                <div className="w-64 h-64 mb-6">
+                  <img
+                    src="/notfoundsearch.png"
+                    alt="No results found"
+                    className="w-full h-full object-contain"
+                  />
+                </div>
+                <h3 className="text-lg font-semibold text-gray-900 mb-2">
+                  No{" "}
+                  {formatStatus(Filter) === "All" ? "" : formatStatus(Filter)}{" "}
+                  Applications Found
+                </h3>
+                <p className="text-gray-500 text-center max-w-md">
+                  {Filter === "all"
+                    ? "There are no applications in the system yet."
+                    : `There are no applications with the "${formatStatus(Filter)}" status at the moment.`}
+                </p>
+              </div>
+            )}
           </div>
         </CardContent>
       </Card>
     </div>
   );
 };
-
 export default ApplicationsOverview;
