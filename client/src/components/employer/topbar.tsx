@@ -10,7 +10,6 @@ import { Edit, Moon, ProfileCircle, Setting3, Sun1 } from "iconsax-react";
 
 import { useLogout } from "@/hooks/auth";
 import { Button } from "../ui/button";
-import { TopBarSearch } from "./searchBar";
 import useRouter from "@/lib/router";
 import { Menu } from "lucide-react";
 import { Dispatch, SetStateAction } from "react";
@@ -45,9 +44,6 @@ function TopBar({ open, setOpen }: TopBarProps) {
           <Menu />
         </div>
         <div className="flex items-center gap-4">
-          <div className="hidden xl:block">
-            <TopBarSearch />
-          </div>
           <div className="hidden xl:block">
             <Button
               onClick={() => {

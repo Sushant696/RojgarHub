@@ -7,7 +7,8 @@ import {
   FolderAdd,
   Messages3,
   Building4,
-  Briefcase,
+  Note1,
+  DocumentText,
 } from "iconsax-react";
 import clsx from "clsx";
 import { useLocation } from "@tanstack/react-router";
@@ -24,14 +25,15 @@ function SideBar({ open }: SideBarProps) {
   const navItems = [
     { icon: Home2, label: "Dashboard", path: "/employer/dashboard" },
     { icon: FolderAdd, label: "Post Job", path: "/employer/postJob" },
+    { icon: Note1, label: "Job Management", path: "/employer/job-management" },
     {
-      icon: Briefcase,
-      label: "Job Management",
-      path: "/employer/job-management",
+      icon: DocumentText,
+      label: "Application Management",
+      path: "/employer/application-management",
     },
     { icon: People, label: "Candidates", path: "/employer/candidates" },
-    { icon: Messages3, label: "Messages", path: "/employer/messages" },
     { icon: Building4, label: "Company", path: "/employer/company" },
+    { icon: Messages3, label: "Messages", path: "/employer/messages" },
   ];
 
   const isActive = (path: string) => location.pathname === path;

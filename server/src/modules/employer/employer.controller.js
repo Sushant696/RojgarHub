@@ -5,8 +5,8 @@ import asyncHandler from "../../utils/asyncHandler.js";
 import { ApiResponse } from "../../utils/apiResponse.js";
 
 const getEmployerById = asyncHandler(async (req, res) => {
-  const { employerId } = req.params;
-  const employer = await EmployerServices.oneEmployer(employerId);
+  const { userId } = req.user;
+  const employer = await EmployerServices.oneEmployer(userId);
   return res.json(
     new ApiResponse(StatusCodes.OK, { employer }, "Employer Retrived"),
   );
@@ -52,9 +52,22 @@ const getCandidatesByEmployer = asyncHandler(async (req, res) => {
   );
 });
 
+const getAllApplicationsByEmployer = asyncHandler(async (req, res) => {
+  const { userId } = req.user;
+  const applications = await EmployerServices.employerApplication(userId);
+  return res.json(
+    new ApiResponse(
+      StatusCodes.OK,
+      { applications },
+      "Application Retrived Successfully",
+    ),
+  );
+});
+
 export const employerController = {
   getEmployerById,
   getEmployerJobs,
   getCandidatesByEmployer,
+  getAllApplicationsByEmployer,
   getApplicationsByEmployersJob,
 };

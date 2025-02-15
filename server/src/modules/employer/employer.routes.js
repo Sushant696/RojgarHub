@@ -21,15 +21,17 @@ employerRouter.get(
 
 // employer specific job's application
 employerRouter.get(
-  "/applications",
+  "/job-applications",
   isAuthenticated,
   employerController.getApplicationsByEmployersJob,
 );
 
+employerRouter.get("/", isAuthenticated, employerController.getEmployerById);
+
 employerRouter.get(
-  "/:employerId",
+  "/applications",
   isAuthenticated,
-  employerController.getEmployerById,
+  employerController.getAllApplicationsByEmployer,
 );
 
 export default employerRouter;

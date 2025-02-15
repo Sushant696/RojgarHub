@@ -8,6 +8,7 @@ import {
   Note1,
   Messages3,
   Building4,
+  DocumentText,
 } from "iconsax-react";
 import { useLocation } from "@tanstack/react-router";
 import clsx from "clsx";
@@ -29,8 +30,13 @@ function SideBarMobile({ open, setOpen }: SideBarProps) {
     { icon: FolderAdd, label: "Post Job", path: "/employer/postJob" },
     { icon: Note1, label: "Job Management", path: "/employer/job-management" },
     { icon: People, label: "Candidates", path: "/employer/candidates" },
-    { icon: Messages3, label: "Messages", path: "/employer/messages" },
+    {
+      icon: DocumentText,
+      label: "Application Management",
+      path: "/employer/application-management",
+    },
     { icon: Building4, label: "Company", path: "/employer/company" },
+    { icon: Messages3, label: "Messages", path: "/employer/messages" },
   ];
 
   const isActive = (path: string) => location.pathname === path;

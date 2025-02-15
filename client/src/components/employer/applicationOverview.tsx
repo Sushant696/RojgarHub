@@ -39,6 +39,7 @@ export const ApplicationCard = ({
       day: "numeric",
     });
   };
+
   function handleBeingReviewedStatus(
     applicationId: string,
     candidateId: string,
@@ -99,29 +100,36 @@ export const ApplicationCard = ({
         />
       )}
       <CardContent className="pt-6">
-        <div className="flex items-start gap-4">
+        <div className="flex flex-col sm:flex-row items-start gap-4">
           <div
-            className={`w-12 h-12 rounded-full flex items-center justify-center ${styles.icon}`}
+            className={`w-12 h-12 rounded-full flex items-center justify-center ${styles.icon} hidden sm:flex`}
           >
             <FileUser className="w-6 h-6" />
           </div>
-          <div className="flex-1">
-            <div className="flex justify-between items-start">
-              <div>
-                <h3 className="font-semibold text-lg text-gray-900">
-                  {application.fullName}
-                </h3>
+          <div className="flex-1 w-full">
+            <div className="flex flex-col sm:flex-row justify-between items-start gap-3 sm:gap-0">
+              <div className="w-full sm:w-auto">
+                <div className="flex items-center gap-3">
+                  <div
+                    className={`w-10 h-10 rounded-full flex items-center justify-center ${styles.icon} sm:hidden`}
+                  >
+                    <FileUser className="w-5 h-5" />
+                  </div>
+                  <h3 className="font-semibold text-lg text-gray-900">
+                    {application.fullName}
+                  </h3>
+                </div>
                 {application.experience && application.experience[0] && (
-                  <p className="text-sm text-gray-500">
+                  <p className="text-sm text-gray-500 mt-1">
                     {application.experience[0].position}
                   </p>
                 )}
               </div>
-              <div className="flex items-center gap-2">
+              <div className="flex flex-wrap items-center gap-2 w-full sm:w-auto">
                 {application.status === "PENDING" && (
                   <Badge
                     variant="secondary"
-                    className="bg-yellow-50 p-1 text-yellow-600 hover:bg-yellow-100 cursor-pointer transition-colors"
+                    className="bg-yellow-50 p-1 text-yellow-600 hover:bg-yellow-100 cursor-pointer transition-colors text-sm"
                     onClick={() =>
                       handleBeingReviewedStatus(
                         application.id,
@@ -134,8 +142,10 @@ export const ApplicationCard = ({
                     Mark as Being Reviewed
                   </Badge>
                 )}
-
-                <Badge variant="secondary" className={styles.badge}>
+                <Badge
+                  variant="secondary"
+                  className={`${styles.badge} text-sm`}
+                >
                   {application.status}
                 </Badge>
               </div>
@@ -148,7 +158,7 @@ export const ApplicationCard = ({
                     <Badge
                       key={index}
                       variant="secondary"
-                      className="bg-blue-50 text-blue-600"
+                      className="bg-blue-50 text-blue-600 text-sm"
                     >
                       {skill}
                     </Badge>
@@ -160,41 +170,43 @@ export const ApplicationCard = ({
             <div className="mt-4 space-y-2">
               {application.location && (
                 <div className="flex items-center gap-2 text-sm text-gray-600">
-                  <MapPin className="w-4 h-4" />
-                  {application.location}
+                  <MapPin className="w-4 h-4 flex-shrink-0" />
+                  <span className="break-words">{application.location}</span>
                 </div>
               )}
               {application.education && application.education[0] && (
                 <div className="flex items-center gap-2 text-sm text-gray-600">
-                  <GraduationCap className="w-4 h-4" />
-                  {`${application.education[0].degree} - ${application.education[0].institution}`}
+                  <GraduationCap className="w-4 h-4 flex-shrink-0" />
+                  <span className="break-words">{`${application.education[0].degree} - ${application.education[0].institution}`}</span>
                 </div>
               )}
               {application.websiteLink && (
                 <div className="flex items-center gap-2 text-sm text-gray-600">
-                  <LinkIcon className="w-4 h-4" />
+                  <LinkIcon className="w-4 h-4 flex-shrink-0" />
                   <a
                     href={application.websiteLink}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="text-blue-600 hover:underline"
+                    className="text-blue-600 hover:underline break-words"
                   >
                     Portfolio
                   </a>
                 </div>
               )}
               <div className="flex items-center gap-2 text-sm text-gray-600">
-                <Calendar className="w-4 h-4" />
-                Applied {formatDate(application.createdAt)}
+                <Calendar className="w-4 h-4 flex-shrink-0" />
+                <span className="break-words">
+                  Applied {formatDate(application.createdAt)}
+                </span>
               </div>
             </div>
 
-            <div className="mt-4 flex justify-between items-center">
+            <div className="mt-4 flex flex-col sm:flex-row justify-between items-stretch sm:items-center gap-3 sm:gap-0">
               <div className="flex gap-2">
                 <Button
                   variant="outline"
                   size="sm"
-                  className="text-green-600 border-green-200 hover:bg-green-50"
+                  className="text-green-600 border-green-200 hover:bg-green-50 flex-1 sm:flex-none"
                   onClick={() =>
                     handleBeingReviewedStatus(
                       application.id,
@@ -217,14 +229,14 @@ export const ApplicationCard = ({
                       application.jobId,
                     )
                   }
-                  className="text-red-600 border-red-200 hover:bg-red-50"
+                  className="text-red-600 border-red-200 hover:bg-red-50 flex-1 sm:flex-none"
                 >
                   Reject
                 </Button>
               </div>
               <Button
                 variant="link"
-                className="text-blue-600"
+                className="text-blue-600 w-full sm:w-auto"
                 onClick={() => {
                   setSelectedApplication(application);
                   setIsModalOpen(true);
@@ -282,8 +294,9 @@ const ApplicationsOverview = ({
                 <span className="text-gray-600">Show:</span>
                 <span className="font-medium">{formatStatus(Filter)}</span>
                 <ChevronDown
-                  className={`w-4 h-4 transition-transform duration-200 ${isSelectOpen ? "rotate-180" : ""
-                    }`}
+                  className={`w-4 h-4 transition-transform duration-200 ${
+                    isSelectOpen ? "rotate-180" : ""
+                  }`}
                 />
               </button>
 
@@ -310,8 +323,9 @@ const ApplicationsOverview = ({
             {/* View Toggle Buttons */}
             <div className="flex items-center gap-2 border-l border-gray-200 pl-4">
               <button
-                className={`p-2 hover:bg-blue-500 rounded-lg transition-colors ${view ? "bg-blue-400 text-white" : "text-gray-600"
-                  }`}
+                className={`p-2 hover:bg-blue-500 rounded-lg transition-colors ${
+                  view ? "bg-blue-400 text-white" : "text-gray-600"
+                }`}
                 onClick={() => {
                   setView(true);
                 }}
@@ -322,8 +336,9 @@ const ApplicationsOverview = ({
                 />
               </button>
               <button
-                className={`p-2 hover:bg-blue-500 hover:text-white rounded-lg transition-colors ${!view ? "bg-blue-400 text-white" : "text-gray-600"
-                  }`}
+                className={`p-2 hover:bg-blue-500 hover:text-white rounded-lg transition-colors ${
+                  !view ? "bg-blue-400 text-white" : "text-gray-600"
+                }`}
                 onClick={() => {
                   setView(false);
                 }}
@@ -338,10 +353,11 @@ const ApplicationsOverview = ({
         </CardHeader>
         <CardContent className="pt-6">
           <div
-            className={`transition-all duration-300 ${view
+            className={`transition-all duration-300 ${
+              view
                 ? "flex flex-col space-y-4"
                 : "grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4"
-              }`}
+            }`}
           >
             {filteredApplications.length > 0 ? (
               filteredApplications.map((application: Application) => (

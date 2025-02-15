@@ -52,7 +52,6 @@ model User {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  // index for role based queries
   @@index([role])
 }
 
@@ -84,19 +83,19 @@ model EmployerProfile {
   user              User      @relation(fields: [userId], references: [id], onDelete: Cascade)
   userId            String    @unique
 
-  companyName       String
-  companySize       Int?
-  industry          String?
-  location         String?
-  websiteLink      String?
+  companyName        String
+  companySize        Int?
+  industry           String?
+  location           String?
+  profile            String?
+  websiteLink        String?
   companyDescription String?  @db.Text
-  address          String?
 
-  jobs             Job[]
-  interviews      Interview[]  // ✅ An employer can have multiple interviews, not just one.
+  jobs               Job[]
+  interviews         Interview[] 
 
-  createdAt        DateTime  @default(now())
-  updatedAt        DateTime  @updatedAt
+  createdAt          DateTime  @default(now())
+  updatedAt          DateTime  @updatedAt
 }
 
 model Job {
@@ -115,7 +114,7 @@ model Job {
   status          JobStatus @default(OPEN)
   
   applications    JobApplication[] @relation("JobToApplications")
-  interviews      Interview[]  // ✅ A job can have multiple interviews.
+  interviews      Interview[]  
 
   createdAt       DateTime  @default(now())
   updatedAt       DateTime  @updatedAt

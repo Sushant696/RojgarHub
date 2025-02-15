@@ -13,10 +13,12 @@ interface AuthState {
   user: User | null;
   isAuthenticated: boolean;
   isLoading: boolean;
+  authenticatedUser: any;
   login: (phoneNo: string, password: string) => Promise<any>;
   logout: () => Promise<void>;
   setIsAuthenticated: (status: boolean) => void;
   setCurrentuser: (user: User | null) => Promise<void>;
+  setAuthenticatedUser: (user: User | null) => Promise<void>;
   setIsLoading: (status: boolean) => void;
 }
 
@@ -26,6 +28,7 @@ const useAuthStore = create<AuthState>()(
       user: null,
       isAuthenticated: false,
       isLoading: false,
+      authenticatedUser: null,
 
       setIsAuthenticated: (status) => {
         set({ isAuthenticated: status });
@@ -45,7 +48,9 @@ const useAuthStore = create<AuthState>()(
         }
         return response;
       },
-
+      setAuthenticatedUser: async (currUser) => {
+        set({ authenticatedUser: currUser });
+      },
       setCurrentuser: async (currUser) => {
         set({ user: currUser });
       },
