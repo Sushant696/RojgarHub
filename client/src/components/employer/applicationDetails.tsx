@@ -18,6 +18,7 @@ import InterviewScheduler from "./interviewScheduler";
 import { Briefcase, Edit } from "iconsax-react";
 import { useState } from "react";
 import StatusToggle from "./statusToggle";
+import InterviewCard from "./interviewCard";
 
 function ApplicationDetails() {
   const { applicationId } = useParams({
@@ -318,11 +319,14 @@ function ApplicationDetails() {
           </Card>
 
           {/* Interview Scheduler */}
-
-          <InterviewScheduler
-            applicationId={applicationId}
-            applicationStatus={application.status}
-          />
+          {!application.interviews ? (
+            <InterviewScheduler
+              applicationId={applicationId}
+              applicationStatus={application.status}
+            />
+          ) : (
+            <InterviewCard interviews={application?.interviews} />
+          )}
         </div>
       </div>
     </div>

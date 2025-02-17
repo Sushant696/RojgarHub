@@ -13,7 +13,7 @@ interface StatusToggleProps {
     candidateId: string;
     jobId: string;
   };
-  currentStatus: ApplicationStatus; 
+  currentStatus: ApplicationStatus;
 }
 
 function StatusToggle({

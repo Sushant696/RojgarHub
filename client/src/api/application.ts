@@ -2,6 +2,7 @@ import { apiURLs } from "@/lib/apiURLs";
 import api from "@/lib/axios";
 import { ApplicationStatus } from "@/types/job";
 import DisplayErrorToast from "@/utils/displayErrorMessage";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 
 async function applicationStatus(
   applicationId: string,
@@ -42,4 +43,64 @@ async function getApplicationById(applicationId: string) {
     throw new Error(error.response?.data?.message || "Something went wrong!");
   }
 }
-export const applicationActions = { applicationStatus, getApplicationById };
+
+interface InterviewSchedulerProps {
+  applicationId: string;
+  interviewObj: { scheduledAt: string; time: string; location: string };
+}
+
+async function scheduleInterview({
+  applicationId,
+  interviewObj,
+}: InterviewSchedulerProps) {
+  try {
+    const response = await api.post(
+      `${apiURLs.Application.interviewSchedule}/${applicationId}`,
+      { interviewObj },
+      { withCredentials: true },
+    );
+    return response.data?.data;
+  } catch (error: any) {
+    console.error(
+      "Error fetching application:",
+      error.response?.data || error.message,
+    );
+    throw new Error(error.response?.data?.message || "Something went wrong!");
+  }
+}
+
+async function updateInterview({ id, data }: { id: string; data: any }) {
+  try {
+    const response = await api.patch(
+      `${apiURLs.Application.updateInterview}/${id}`,
+      data,
+    );
+    return response.data;
+  } catch (error: any) {
+    console.error(
+      "Error updating interview:",
+      error.response?.data || error.message,
+    );
+    throw new Error(error.response?.data?.message || "Something went wrong!");
+  }
+}
+
+async function deleteInterview(id: string) {
+  try {
+    await api.delete(`${apiURLs.Application.deleteInterview}/${id}`);
+  } catch (error: any) {
+    console.error(
+      "Error deleting interview:",
+      error.response?.data || error.message,
+    );
+    throw new Error(error.response?.data?.message || "Something went wrong!");
+  }
+}
+
+export const applicationActions = {
+  applicationStatus,
+  getApplicationById,
+  scheduleInterview,
+  deleteInterview,
+  updateInterview,
+};

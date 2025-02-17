@@ -6,17 +6,37 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { Clock, MapPin, CalendarDays, MessageSquare, Info } from "lucide-react";
+import { ApplicationStatus } from "@/types/job";
+import { useInterviewScheduler } from "@/hooks/application";
 
-const InterviewScheduler = ({ applicationId, applicationStatus }) => {
+interface InterviewSchedulerProps {
+  applicationId: string;
+  applicationStatus: ApplicationStatus;
+}
+
+const InterviewScheduler = ({
+  applicationId,
+  applicationStatus,
+}: InterviewSchedulerProps) => {
   const [selectedDate, setSelectedDate] = useState();
   const [time, setTime] = useState("");
   const [location, setLocation] = useState("");
   const [notes, setNotes] = useState("");
+  const interviewScheduler = useInterviewScheduler();
 
   const handleScheduleInterview = () => {
     if (!selectedDate || !time || !location) {
       return;
     }
+
+    const interviewObj = {
+      scheduledAt: new Date(selectedDate).toISOString(),
+      time,
+      location,
+      notes,
+    };
+    console.log(interviewObj, "interview obj");
+    interviewScheduler.mutate({ applicationId, interviewObj });
     // Callback to parent component will go here
   };
 

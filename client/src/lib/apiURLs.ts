@@ -25,5 +25,8 @@ export const apiURLs = {
   Application: {
     applicationStatus: "/api/application/status",
     applicationById: "/api/application",
+    interviewSchedule: "/api/application/interview",
+    deleteInterview: "/api/application/interview",
+    updateInterview: "/api/application/interview",
   },
 };

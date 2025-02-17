@@ -31,5 +31,21 @@ applicationRouter.get(
   isAuthenticated,
   applicationController.getApplicationsByCandidate,
 );
+applicationRouter.post(
+  "/interview/:applicationId/",
+  isAuthenticated,
+  applicationController.scheduleApplicationInterview,
+);
+
+applicationRouter.patch(
+  "/interview/:interviewId",
+  isAuthenticated,
+  applicationController.updateApplicationInterview,
+);
+applicationRouter.delete(
+  "/interview/:interviewId",
+  isAuthenticated,
+  applicationController.deleteApplicationInterview,
+);
 
 export default applicationRouter;
