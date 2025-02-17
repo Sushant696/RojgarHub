@@ -12,25 +12,23 @@ import {
 
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import {
   Application,
   ApplicationStatus,
   ApplicationStatusValues,
 } from "@/types/job";
 
-import ApplicationDetailsModal from "./applicationDetailsModal";
 import { useUpdateApplicationStatus } from "@/hooks/application";
+import useRouter from "@/lib/router";
 
 export const ApplicationCard = ({
   application,
 }: {
   application: Application;
 }) => {
-  const [isModalOpen, setIsModalOpen] = useState(false);
-  const [selectedApplication, setSelectedApplication] =
-    useState<Application | null>(null);
   const { mutate } = useUpdateApplicationStatus();
+  const router = useRouter();
 
   const formatDate = (dateString: string) => {
     return new Date(dateString).toLocaleDateString("en-US", {
@@ -90,15 +88,6 @@ export const ApplicationCard = ({
     <Card
       className={`hover:shadow-lg transition-all duration-200 ${styles.card}`}
     >
-      {isModalOpen && selectedApplication && (
-        <ApplicationDetailsModal
-          application={selectedApplication}
-          onClose={() => {
-            setIsModalOpen(false);
-            setSelectedApplication(null);
-          }}
-        />
-      )}
       <CardContent className="pt-6">
         <div className="flex flex-col sm:flex-row items-start gap-4">
           <div
@@ -121,7 +110,7 @@ export const ApplicationCard = ({
                 </div>
                 {application.experience && application.experience[0] && (
                   <p className="text-sm text-gray-500 mt-1">
-                    {application.experience[0].position}
+                    {application?.job?.title}
                   </p>
                 )}
               </div>
@@ -238,8 +227,9 @@ export const ApplicationCard = ({
                 variant="link"
                 className="text-blue-600 w-full sm:w-auto"
                 onClick={() => {
-                  setSelectedApplication(application);
-                  setIsModalOpen(true);
+                  router.push(
+                    "/employer/application-management/" + application.id,
+                  );
                 }}
               >
                 View Details
@@ -252,7 +242,7 @@ export const ApplicationCard = ({
   );
 };
 
-const ApplicationsOverview = ({
+const ApplicationsSection = ({
   applications,
 }: {
   applications: Application[];
@@ -277,13 +267,8 @@ const ApplicationsOverview = ({
 
   return (
     <div className="lg:col-span-full space-y-6">
-      <Card>
-        <CardHeader className="flex sm:flex-row items-center justify-between border-b border-gray-200 px-6 py-4">
-          <CardTitle className="flex items-center gap-2">
-            <FileUser size={20} className="text-gray-700" />
-            <span>Applications Overview ({applications.length})</span>
-          </CardTitle>
-
+      <Card className="">
+        <CardHeader className="flex sm:flex-row items-center justify-end border-b border-gray-200 px-6 py-4">
           <div className="flex items-center gap-4">
             {/* Filter Dropdown */}
             <div className="relative">
@@ -389,4 +374,4 @@ const ApplicationsOverview = ({
     </div>
   );
 };
-export default ApplicationsOverview;
+export default ApplicationsSection;

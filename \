@@ -26,6 +26,7 @@ function ApplicationDetails() {
   const { data, isLoading } = useGetApplicationById(applicationId);
   const [showStatusOptions, setShowStatusOptions] = useState<boolean>(false);
 
+
   if (isLoading) {
     return <Loading />;
   }
@@ -96,7 +97,7 @@ function ApplicationDetails() {
                   </p>
                 </div>
 
-                {!showStatusOptions ? (
+                {showStatusOptions ?
                   <div className="flex">
                     <Badge
                       variant="secondary"
@@ -111,57 +112,48 @@ function ApplicationDetails() {
                       size={14}
                     />
                   </div>
-                ) : (
-                  <StatusToggle
-                    setShowStatusOptions={setShowStatusOptions}
-                    showStatusOptions={showStatusOptions}
-                    dataObj={{
-                      applicationId,
-                      candidateId: application.candidate.id,
-                      jobId: application.job.id,
-                    }}
-                    currentStatus={application.status}
-                  />
-                )}
-              </div>
-              {/* Info Grid */}
-              <div className="mt-6 grid grid-cols-1 md:grid-cols-3 gap-4">
-                <div className="flex items-center gap-3 text-gray-600">
-                  <div
-                    className={`w-8 h-8 rounded-full flex items-center justify-center ${styles.icon}`}
-                  >
-                    <MapPin className="w-4 h-4" />
-                  </div>
-                  <span className="text-sm lg:text-base">
-                    {application.location}
-                  </span>
-                </div>
 
-                <div className="flex items-center gap-3 text-gray-600">
-                  <div
-                    className={`w-8 h-8 rounded-full flex items-center justify-center ${styles.icon}`}
-                  >
-                    <Phone className="w-4 h-4" />
+                  :
+                  <StatusToggle />
+                }
+                {/* Info Grid */}
+                <div className="mt-6 grid grid-cols-1 md:grid-cols-3 gap-4">
+                  <div className="flex items-center gap-3 text-gray-600">
+                    <div
+                      className={`w-8 h-8 rounded-full flex items-center justify-center ${styles.icon}`}
+                    >
+                      <MapPin className="w-4 h-4" />
+                    </div>
+                    <span className="text-sm lg:text-base">
+                      {application.location}
+                    </span>
                   </div>
-                  <span className="text-sm lg:text-base">
-                    {application.phone}
-                  </span>
-                </div>
 
-                <div className="flex items-center gap-3 text-gray-600">
-                  <div
-                    className={`w-8 h-8 rounded-full flex items-center justify-center ${styles.icon}`}
-                  >
-                    <Calendar className="w-4 h-4" />
+                  <div className="flex items-center gap-3 text-gray-600">
+                    <div
+                      className={`w-8 h-8 rounded-full flex items-center justify-center ${styles.icon}`}
+                    >
+                      <Phone className="w-4 h-4" />
+                    </div>
+                    <span className="text-sm lg:text-base">
+                      {application.phone}
+                    </span>
                   </div>
-                  <span className="text-sm lg:text-base">
-                    Applied{" "}
-                    {new Date(application.createdAt).toLocaleDateString()}
-                  </span>
+
+                  <div className="flex items-center gap-3 text-gray-600">
+                    <div
+                      className={`w-8 h-8 rounded-full flex items-center justify-center ${styles.icon}`}
+                    >
+                      <Calendar className="w-4 h-4" />
+                    </div>
+                    <span className="text-sm lg:text-base">
+                      Applied{" "}
+                      {new Date(application.createdAt).toLocaleDateString()}
+                    </span>
+                  </div>
                 </div>
               </div>
             </div>
-          </div>
         </CardContent>
       </Card>
 

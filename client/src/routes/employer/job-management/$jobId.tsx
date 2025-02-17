@@ -1,6 +1,6 @@
+import JobDetails from "@/pages/employer/jobDetails";
 import { createFileRoute } from "@tanstack/react-router";
-import ApplicationDetails from "@/pages/employer/jobDetails";
 
 export const Route = createFileRoute("/employer/job-management/$jobId")({
-  component: ApplicationDetails,
+  component: JobDetails,
 });

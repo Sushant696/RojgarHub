@@ -114,7 +114,7 @@ model Job {
   status          JobStatus @default(OPEN)
   
   applications    JobApplication[] @relation("JobToApplications")
-  interviews      Interview[]  
+  interviews      Interview[]
 
   createdAt       DateTime  @default(now())
   updatedAt       DateTime  @updatedAt
@@ -130,6 +130,7 @@ model Interview {
   employerId  String
   employer    EmployerProfile @relation(fields: [employerId], references: [id])
   scheduledAt DateTime
+  notes       String?   @db.Text
   status      InterviewStatus @default(PENDING)
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
@@ -144,15 +145,16 @@ model JobApplication {
   candidate     CandidateProfile @relation(fields: [candidateId], references: [id])
   candidateId   String
 
-  fullName      String
-  phone         String?
-  bio           String?   @db.Text
-  skills        Json?     
-  location      String?
-  education     Json?     
-  experience    Json?   
-  resumeUrl     String?
-  websiteLink   String?
+  fullName       String
+  phone          String?
+  profilePicture String?
+  bio            String?   @db.Text
+  skills         Json?     
+  location       String?
+  education      Json?     
+  experience     Json?   
+  resumeUrl      String?
+  websiteLink    String?
 
   status        ApplicationStatus @default(PENDING)
 

@@ -24,5 +24,6 @@ export const apiURLs = {
   },
   Application: {
     applicationStatus: "/api/application/status",
+    applicationById: "/api/application",
   },
 };

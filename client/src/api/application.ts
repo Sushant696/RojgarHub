@@ -24,4 +24,22 @@ async function applicationStatus(
     throw new Error(error.response?.data?.message || "Something went wrong!");
   }
 }
-export const applicationActions = { applicationStatus };
+
+async function getApplicationById(applicationId: string) {
+  try {
+    const response = await api.get(
+      `${apiURLs.Application.applicationById}/${applicationId}`,
+      {
+        withCredentials: true,
+      },
+    );
+    return response.data?.data;
+  } catch (error: any) {
+    console.error(
+      "Error fetching application:",
+      error.response?.data || error.message,
+    );
+    throw new Error(error.response?.data?.message || "Something went wrong!");
+  }
+}
+export const applicationActions = { applicationStatus, getApplicationById };

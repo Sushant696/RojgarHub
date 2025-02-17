@@ -1,4 +1,4 @@
-import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 
 import { applicationActions } from "@/api/application";
 import { ApplicationStatus } from "@/types/job";
@@ -24,6 +24,8 @@ export const useUpdateApplicationStatus = () => {
         jobId,
       ),
     onSuccess: (variables) => {
+      queryClient.invalidateQueries({ queryKey: ["employerApplication"] });
+      queryClient.invalidateQueries({ queryKey: ["applicationById"] });
       queryClient.invalidateQueries({
         queryKey: ["jobById", variables.jobId],
         refetchType: "active",
@@ -35,3 +37,10 @@ export const useUpdateApplicationStatus = () => {
   });
 };
 
+export const useGetApplicationById = (applicationId: string) => {
+  return useQuery({
+    queryKey: ["applicationById"],
+    queryFn: () => applicationActions.getApplicationById(applicationId),
+    retry: false,
+  });
+};

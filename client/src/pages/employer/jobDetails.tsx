@@ -33,7 +33,7 @@ function JobDetails() {
 
   async function handleCopy() {
     try {
-      await navigator.clipboard.writeText(job.employerId);
+      await navigator.clipboard.writeText(job.id);
       setCopied(true);
       setTimeout(() => {
         setCopied(false);
@@ -208,11 +208,10 @@ function JobDetails() {
 
                 <button
                   onClick={handleCopy}
-                  className={`flex items-center gap-2 px-3 py-1.5 rounded-lg transition ${
-                    copied
+                  className={`flex items-center gap-2 px-3 py-1.5 rounded-lg transition ${copied
                       ? "bg-green-100 text-green-600"
                       : "bg-gray-100 hover:bg-gray-200"
-                  }`}
+                    }`}
                 >
                   {copied ? (
                     <>
