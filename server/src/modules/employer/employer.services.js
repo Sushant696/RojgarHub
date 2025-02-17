@@ -5,9 +5,9 @@ import { ApiError } from "../../utils/apiError.js";
 import { application } from "express";
 
 // single employer
-export const oneEmployer = async (id) => {
+export const oneEmployer = async (userId) => {
   const employer = await db.employerProfile.findFirst({
-    where: { id },
+    where: { userId },
   });
   if (!employer) {
     throw new ApiError(StatusCodes.NOT_FOUND, "No employer found");
@@ -81,4 +81,46 @@ export const employerCandidates = async (userId) => {
     );
 
   return uniqueCandidates;
+};
+
+// employer's specific job application
+export const employerApplication = async (userId) => {
+  const applications = await db.jobApplication.findMany({
+    where: {
+      job: {
+        employer: {
+          userId,
+        },
+      },
+    },
+    include: {
+      job: {
+        select: {
+          id: true,
+          title: true,
+          jobDescription: true,
+          location: true,
+          salaryMin: true,
+          salaryMax: true,
+          type: true,
+        },
+      },
+      candidate: {
+        select: {
+          fullName: true,
+          phone: true,
+          bio: true,
+          skills: true,
+          location: true,
+        },
+      },
+    },
+  });
+  if (!applications) {
+    throw new ApiError(
+      StatusCodes.NOT_FOUND,
+      "No applications found for the employer",
+    );
+  }
+  return applications;
 };

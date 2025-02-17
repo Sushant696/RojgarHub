@@ -13,9 +13,9 @@ async function getAllJobs() {
   }
 }
 
-async function getEmployerById(employerId: string) {
+async function getEmployerById() {
   try {
-    const response = await api.get(`${apiURLs.Employer.jobs}${employerId}`, {
+    const response = await api.get(`${apiURLs.Employer.getById}`, {
       withCredentials: true,
     });
     return response.data?.data;
@@ -37,8 +37,24 @@ async function getCandidateByEmployer() {
   }
 }
 
+async function getEmployerApplication() {
+  try {
+    const response = await api.get(apiURLs.Employer.applications, {
+      withCredentials: true,
+    });
+    return response.data?.data?.applications;
+  } catch (error: any) {
+    console.error(
+      "Error fetching application:",
+      error.response?.data || error.message,
+    );
+    throw new Error(error.response?.data?.message || "Something went wrong!");
+  }
+}
+
 export const employerApi = {
   getAllJobs,
   getEmployerById,
+  getEmployerApplication,
   getCandidateByEmployer,
 };

@@ -18,10 +18,12 @@ export const apiURLs = {
   },
   Employer: {
     getById: "/api/employer/",
-    jobs: "/api/employer/jobs",
-    candidates: "/api/employer/candidates",
+    jobs: "/api/employer/jobs", // specific jobs
+    candidates: "/api/employer/candidates", // all candidates
+    applications: "/api/employer/applications", // all applications
   },
   Application: {
     applicationStatus: "/api/application/status",
+    applicationById: "/api/application",
   },
 };

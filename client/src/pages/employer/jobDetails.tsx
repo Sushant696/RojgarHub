@@ -17,7 +17,7 @@ import { Button } from "@/components/ui/button";
 import useRouter from "@/lib/router";
 import { useGetJobById, useJobStatusToggle } from "@/hooks/jobs";
 import clsx from "clsx";
-import ApplicationsOverview from "./home/applicationOverview";
+import ApplicationsOverview from "@/components/employer/applicationOverview";
 
 function JobDetails() {
   const [copied, setCopied] = useState(false);
@@ -33,7 +33,7 @@ function JobDetails() {
 
   async function handleCopy() {
     try {
-      await navigator.clipboard.writeText(job.employerId);
+      await navigator.clipboard.writeText(job.id);
       setCopied(true);
       setTimeout(() => {
         setCopied(false);

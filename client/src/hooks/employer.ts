@@ -1,11 +1,12 @@
 import { employerApi } from "@/api/employer";
 import { useQuery } from "@tanstack/react-query";
 
-export const useGetEmployerById = (jobId: string) => {
+export const useGetEmployerById = () => {
+  console.log("this is logged");
   return useQuery({
-    queryKey: ["jobById", jobId],
-    queryFn: () => employerApi.getEmployerById(jobId),
-    enabled: !!jobId,
+    queryKey: ["employer"],
+    queryFn: employerApi.getEmployerById,
+    retry: false,
   });
 };
 
@@ -20,5 +21,12 @@ export const useGetEmployerCandidates = () => {
   return useQuery({
     queryKey: ["employerCandidates"],
     queryFn: employerApi.getCandidateByEmployer,
+  });
+};
+
+export const useGetEmployerApplications = () => {
+  return useQuery({
+    queryKey: ["employerApplication"],
+    queryFn: employerApi.getEmployerApplication,
   });
 };

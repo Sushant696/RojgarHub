@@ -68,6 +68,7 @@ export const useJobStatusToggle = () => {
     mutationFn: (jobId: string) => jobAction.toogleJobStatus(jobId),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["employerJobs"] });
+      queryClient.invalidateQueries({ queryKey: ["employerApplication"] });
       queryClient.invalidateQueries({ queryKey: ["jobById"] });
     },
   });

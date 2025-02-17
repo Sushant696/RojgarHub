@@ -11,7 +11,6 @@ export const register = async (registerData) => {
   if (!registerData) {
     throw new ApiError(StatusCodes.BAD_REQUEST, "Register data is missing.");
   }
-
   const existinguser = await db.user.findFirst({
     where: {
       OR: [{ contact: registerData.contact }, { email: registerData.email }],

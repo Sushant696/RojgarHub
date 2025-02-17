@@ -10,32 +10,41 @@ import { Edit, Moon, ProfileCircle, Setting3, Sun1 } from "iconsax-react";
 
 import { useLogout } from "@/hooks/auth";
 import { Button } from "../ui/button";
-import { TopBarSearch } from "./searchBar";
 import useRouter from "@/lib/router";
+import { Menu } from "lucide-react";
+import { Dispatch, SetStateAction } from "react";
+import useAuthStore from "@/stores/authStore";
 
-const user = {
-  name: "sushant babu prasai",
-  role: "",
-};
+interface TopBarProps {
+  open: boolean;
+  setOpen: Dispatch<SetStateAction<boolean>>;
+}
 
-function TopBar() {
+function TopBar({ open, setOpen }: TopBarProps) {
   const logout = useLogout();
   const router = useRouter();
-
+  const { user } = useAuthStore();
   return (
     <div className="w-full bg-white">
       <div className="px-3 py-2 flex items-center justify-between">
-        <div className="flex items-center space-x-2">
+        <div className=" hidden xl:flex  items-center space-x-2 ">
           <img
             src="/tempLogo.png"
             alt="Company Logo"
             className="w-14 h-14 rounded-full"
           />
-          <p className="emphasized-text">Employer Dashboard</p>
+          <p className="emphasized-text">RojgarHub</p>
+        </div>
+        <div
+          className="flex xl:hidden items-center space-x-2 "
+          onClick={() => {
+            setOpen(!open);
+          }}
+        >
+          <Menu />
         </div>
         <div className="flex items-center gap-4">
-          <TopBarSearch />
-          <div>
+          <div className="hidden xl:block">
             <Button
               onClick={() => {
                 router.push("/employer/postJob");
@@ -51,7 +60,7 @@ function TopBar() {
             <DropdownMenuTrigger className="focus:outline-none">
               <div className="flex items-center space-x-3">
                 <div className="w-10 h-10 border flex items-center justify-center rounded-full bg-blue-950 text-white capitalize hover:bg-blue-900 transition-colors duration-200">
-                  {user.name.slice(0, 1)}
+                  {user?.username.slice(0, 1)}
                 </div>
               </div>
             </DropdownMenuTrigger>
@@ -62,12 +71,12 @@ function TopBar() {
             >
               <DropdownMenuLabel className="flex flex-col items-center p-4">
                 <div className="w-12 h-12 border flex items-center justify-center rounded-full bg-blue-950 text-white capitalize mb-2">
-                  {user.name.slice(0, 1)}
+                  {user?.username.slice(0, 1)}
                 </div>
                 <h1 className="text-sm font-semibold text-gray-900">
-                  {user.name}
+                  {user?.username}
                 </h1>
-                <p className="text-xs text-gray-500">{user.role}</p>
+                <p className="text-xs text-gray-500">{user?.role}</p>
               </DropdownMenuLabel>
               <DropdownMenuSeparator className="bg-gray-100" />
 
