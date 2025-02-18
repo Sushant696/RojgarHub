@@ -1,18 +1,70 @@
 import { StatusCodes } from "http-status-codes";
 
 import db from "../../db/db.js";
-import { ApiError } from "../../utils/apiError.js";
 import { application } from "express";
+import { ApiError } from "../../utils/apiError.js";
+import { uploadOnCloudinary } from "../../utils/Cloudinary.js";
 
-// single employer
 export const oneEmployer = async (userId) => {
   const employer = await db.employerProfile.findFirst({
     where: { userId },
+    include: {
+      user: {
+        select: {
+          email: true,
+          contact: true,
+          role: true,
+        },
+      },
+    },
   });
   if (!employer) {
     throw new ApiError(StatusCodes.NOT_FOUND, "No employer found");
   }
   return employer;
+};
+
+export const updateEmployer = async (
+  employerId,
+  userId,
+  employerData,
+  imagePath,
+) => {
+  if (!employerData) {
+    throw new ApiError(StatusCodes.BAD_REQUEST, "Employer data is missing.");
+  }
+  const employer = await db.employerProfile.findFirst({
+    where: { id: employerId },
+  });
+
+  if (!employer) {
+    throw new ApiError(StatusCodes.NOT_FOUND, "No employer found");
+  }
+
+  let employerImgRef;
+  if (imagePath) {
+    if (typeof imagePath === "string" && imagePath.startsWith("/")) {
+      employerImgRef = await uploadOnCloudinary(imagePath);
+    } else {
+      employerImgRef = { url: imagePath };
+    }
+  }
+
+  const updateEmployerObj = {
+    ...employerData,
+    profile: employerImgRef?.url || null,
+    user: {
+      connect: {
+        id: userId,
+      },
+    },
+  };
+  const updateEmployer = await db.employerProfile.update({
+    where: { id: employerId },
+    data: updateEmployerObj,
+  });
+
+  return updateEmployer;
 };
 
 // employer specific jobs

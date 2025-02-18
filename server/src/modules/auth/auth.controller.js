@@ -106,16 +106,22 @@ const refreshAccessToken = asyncHandler(async (req, res) => {
   );
 });
 
-const forgotPassword = asyncHandler(async (req, res) => {
-  return res.json(201, {}, "Password changed successfully");
-});
-
 const verify = asyncHandler(async (req, res) => {
   return res.json(new ApiResponse(StatusCodes.OK, {}, "user verified"));
 });
 
-const test = asyncHandler(async (req, res) => {
-  return res.json(new ApiResponse(StatusCodes.OK, {}, "user verified"));
+const updateUser = asyncHandler(async (req, res) => {
+  const { userId } = req.params;
+  const data = req.body;
+
+  const updatedEmployer = await authServices.updateUser(userId, data);
+  return res.json(
+    new ApiResponse(
+      StatusCodes.OK,
+      { updatedEmployer },
+      "Contact Details Updated",
+    ),
+  );
 });
 
 export const authController = {
@@ -123,7 +129,6 @@ export const authController = {
   loginUser,
   logoutUser,
   refreshAccessToken,
-  forgotPassword,
   verify,
-  test,
+  updateUser,
 };

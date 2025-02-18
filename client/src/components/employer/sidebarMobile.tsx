@@ -6,7 +6,6 @@ import {
   People,
   FolderAdd,
   Note1,
-  Messages3,
   Building4,
   DocumentText,
 } from "iconsax-react";
@@ -36,7 +35,6 @@ function SideBarMobile({ open, setOpen }: SideBarProps) {
       path: "/employer/application-management",
     },
     { icon: Building4, label: "Company", path: "/employer/company" },
-    { icon: Messages3, label: "Messages", path: "/employer/messages" },
   ];
 
   const isActive = (path: string) => location.pathname === path;

@@ -5,7 +5,6 @@ import {
   Home2,
   People,
   FolderAdd,
-  Messages3,
   Building4,
   Note1,
   DocumentText,
@@ -33,7 +32,6 @@ function SideBar({ open }: SideBarProps) {
     },
     { icon: People, label: "Candidates", path: "/employer/candidates" },
     { icon: Building4, label: "Company", path: "/employer/company" },
-    { icon: Messages3, label: "Messages", path: "/employer/messages" },
   ];
 
   const isActive = (path: string) => location.pathname === path;

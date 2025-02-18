@@ -1,26 +1,17 @@
+import useAuthStore from "@/stores/authStore";
 import ContactForm from "@/components/employer/contactForm";
 import ProfileForm from "@/components/employer/profileForm";
-import SocialMediaform from "@/components/employer/socialMediaForm";
 
-function Settings() {
+const Settings = () => {
+  const { authenticatedUser } = useAuthStore();
   return (
-    <div className="p-4">
-      <div>
-        <h1 className="emphasized-text">My Profile</h1>
+    <div className=" mx-auto p-4 sm:p-6 lg:p-8 bg-gradient-to-b from-blue-50/50 to-white min-h-screen">
+      <div className="space-y-8">
+        <ProfileForm employer={authenticatedUser} />
+        <ContactForm employer={authenticatedUser} />
       </div>
-
-      <div className="flex gap-10">
-        <div className="bg-white flex-[0.7] my-6 rounded-xl p-6 shadow-sm">
-          <ProfileForm />
-        </div>
-        <div className="bg-white flex-[0.3] my-6 rounded-xl p-6 shadow-sm h-fit">
-          <SocialMediaform />
-        </div>
-      </div>
-
-      <ContactForm />
     </div>
   );
-}
+};
 
 export default Settings;

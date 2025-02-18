@@ -49,7 +49,7 @@ export function SingleDropzone({
         <input {...getInputProps()} />
         <div className="absolute inset-0 flex items-center justify-center">
           {preview ? (
-            <div className="relative w-full h-1/3 p-2">
+            <div className="relative w-full h-2/3 p-2">
               <img
                 src={preview}
                 alt="Preview"
