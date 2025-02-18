@@ -160,4 +160,3 @@ model JobApplication {
 
   @@unique([jobId, candidateId])  
 }
-

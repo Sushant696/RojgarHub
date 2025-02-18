@@ -52,9 +52,31 @@ async function getEmployerApplication() {
   }
 }
 
+async function updateEmployer(employerId: string, updateData: any) {
+  try {
+    console.log(employerId);
+    const response = await api.patch(
+      `${apiURLs.Employer.update}/${employerId}`,
+      updateData,
+      {
+        headers: { "Content-Type": "multipart/form-data" },
+        withCredentials: true,
+      },
+    );
+    return response.data;
+  } catch (error: any) {
+    console.error(
+      "Error updating employer:",
+      error.response?.data || error.message,
+    );
+    throw new Error(error.response?.data?.message || "Something went wrong!");
+  }
+}
+
 export const employerApi = {
   getAllJobs,
   getEmployerById,
+  updateEmployer,
   getEmployerApplication,
   getCandidateByEmployer,
 };

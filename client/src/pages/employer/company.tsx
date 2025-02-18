@@ -1,10 +1,13 @@
 import { Building2, MapPin, Globe, Users, Pencil } from "lucide-react";
+
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import useAuthStore from "@/stores/authStore";
+import useRouter from "@/lib/router";
 
 const Company = () => {
   const { authenticatedUser } = useAuthStore();
+  const router = useRouter();
 
   const isProfileComplete = () => {
     const requiredFields = [
@@ -29,7 +32,12 @@ const Company = () => {
             Your profile is incomplete. Please provide the necessary details to
             complete your profile.
           </p>
-          <Button variant="default" onClick={() => {}}>
+          <Button
+            variant="default"
+            onClick={() => {
+              router.push("/employer/settings");
+            }}
+          >
             <Pencil className="w-4 h-4 mr-2" />
             Edit Profile
           </Button>
@@ -58,7 +66,13 @@ const Company = () => {
               </span>
             </div>
           </div>
-          <Button variant="ghost" className="bg-white/10 hover:bg-white/20">
+          <Button
+            variant="ghost"
+            onClick={() => {
+              router.push("/employer/settings");
+            }}
+            className="bg-white/10 hover:bg-white/20"
+          >
             <Pencil className="w-4 h-4 mr-2" />
             Edit Profile
           </Button>
@@ -101,7 +115,11 @@ const Company = () => {
                 <span className="text-sm font-medium">Website</span>
               </div>
               <a
-                href={`https://${authenticatedUser?.websiteLink}`}
+                href={
+                  authenticatedUser?.websiteLink?.startsWith("http")
+                    ? authenticatedUser.websiteLink
+                    : `https://${authenticatedUser?.websiteLink}`
+                }
                 target="_blank"
                 rel="noopener noreferrer"
                 className="text-gray-700 hover:text-blue-600"

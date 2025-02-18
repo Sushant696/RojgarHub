@@ -5,6 +5,7 @@ export const apiURLs = {
     logout: "/api/auth/logout",
     verify: "/api/auth/verify",
     refresh: "/api/auth/refresh",
+    update: "/api/auth/update",
   },
   Jobs: {
     postJob: "/api/job/",
@@ -21,6 +22,7 @@ export const apiURLs = {
     jobs: "/api/employer/jobs", // specific jobs
     candidates: "/api/employer/candidates", // all candidates
     applications: "/api/employer/applications", // all applications
+    update: "/api/employer",
   },
   Application: {
     applicationStatus: "/api/application/status",

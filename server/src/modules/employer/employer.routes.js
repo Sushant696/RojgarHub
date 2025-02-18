@@ -2,6 +2,7 @@ import { Router } from "express";
 
 import isAuthenticated from "../../middlewares/isAuthenticated.js";
 import { employerController } from "./employer.controller.js";
+import upload from "../../utils/multer.js";
 
 const employerRouter = Router();
 
@@ -26,12 +27,18 @@ employerRouter.get(
   employerController.getApplicationsByEmployersJob,
 );
 
-employerRouter.get("/", isAuthenticated, employerController.getEmployerById);
-
 employerRouter.get(
   "/applications",
   isAuthenticated,
   employerController.getAllApplicationsByEmployer,
 );
 
+employerRouter.patch(
+  "/:employerId",
+  isAuthenticated,
+  upload.single("profile"),
+  employerController.updateEmployer,
+);
+
+employerRouter.get("/", isAuthenticated, employerController.getEmployerById);
 export default employerRouter;

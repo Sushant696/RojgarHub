@@ -73,4 +73,23 @@ async function verify() {
   return response;
 }
 
-export const authApi = { Login, Register, Logout, refresh, verify };
+async function updateUser(userId: string, updateData: any) {
+  try {
+    const response = await api.patch(
+      `${apiURLs.AUTH.update}/${userId}`,
+      updateData,
+      {
+        withCredentials: true,
+      },
+    );
+    return response.data;
+  } catch (error: any) {
+    console.error(
+      "Error updating employer:",
+      error.response?.data || error.message,
+    );
+    throw new Error(error.response?.data?.message || "Something went wrong!");
+  }
+}
+
+export const authApi = { Login, Register, Logout, refresh, verify, updateUser };

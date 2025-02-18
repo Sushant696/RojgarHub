@@ -88,3 +88,21 @@ export const useRefresh = () => {
   queryClient.invalidateQueries({ queryKey: ["verify"] });
   return response;
 };
+
+export const useUpdateUser = () => {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: ({ userId, updateData }: { userId: string; updateData: any }) =>
+      authApi.updateUser(userId, updateData),
+    onSuccess: () => {
+      showNotification("success", "Details updated Successfully");
+      queryClient.invalidateQueries({ queryKey: ["application"] });
+      queryClient.invalidateQueries({ queryKey: ["employer"] });
+    },
+    onError: (error: any) => {
+      DisplayErrorToast(error);
+    },
+    retry: false,
+  });
+};

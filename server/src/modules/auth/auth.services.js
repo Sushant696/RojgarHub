@@ -149,3 +149,40 @@ export const refreshAccessTokenService = async (token) => {
 
   return { user, tokens: { accessToken, refreshToken } };
 };
+
+export const updateUser = async (userId, data) => {
+  if (!data) {
+    throw new ApiError(StatusCodes.BAD_REQUEST, "Update data is missing.");
+  }
+
+  const user = await db.user.findFirst({
+    where: { id: userId },
+    include: { employerProfile: true, candidateProfile: true },
+  });
+
+  if (!user) {
+    throw new ApiError(StatusCodes.NOT_FOUND, "User not found");
+  }
+
+  const updatedUser = await db.user.update({
+    where: { id: userId },
+    data: {
+      email: data.email || user.email,
+      contact: data.contact || user.contact,
+    },
+  });
+
+  if (user.employerProfile) {
+    await db.employerProfile.update({
+      where: { id: user.employerProfile.id },
+      data: { location: data.location || user.employerProfile.location },
+    });
+  } else if (user.candidateProfile) {
+    await db.candidateProfile.update({
+      where: { id: user.candidateProfile.id },
+      data: { location: data.location || user.candidateProfile.location },
+    });
+  }
+
+  return { updatedUser };
+};
