@@ -78,10 +78,58 @@ const getApplicationsByCandidate = asyncHandler(async (req, res) => {
   );
 });
 
+const scheduleApplicationInterview = asyncHandler(async (req, res) => {
+  const { applicationId } = req.params;
+  const { interviewObj } = req.body;
+  const interview = await applicationServices.scheduleInterview(
+    applicationId,
+    interviewObj,
+  );
+  return res.json(
+    new ApiResponse(
+      StatusCodes.OK,
+      { interview },
+      "Interview schdeuled successfully",
+    ),
+  );
+});
+
+const updateApplicationInterview = asyncHandler(async (req, res) => {
+  const { interviewId } = req.params;
+  const { location, scheduledAt } = req.body;
+
+  const updatedInterview = await applicationServices.updateInterview(
+    interviewId,
+    { location, scheduledAt },
+  );
+
+  return res.json(
+    new ApiResponse(
+      StatusCodes.OK,
+      { updatedInterview },
+      "Interview updated successfully",
+    ),
+  );
+});
+
+const deleteApplicationInterview = asyncHandler(async (req, res) => {
+  const { interviewId } = req.params;
+  console.log(interviewId);
+
+  await applicationServices.deleteInterview(interviewId);
+
+  return res.json(
+    new ApiResponse(StatusCodes.OK, {}, "Interview deleted successfully"),
+  );
+});
+
 export const applicationController = {
   getApplicationById,
   updateApplicationStatus,
   deleteApplication,
   getApplicationsByCandidate,
   createJobApplication,
+  scheduleApplicationInterview,
+  updateApplicationInterview,
+  deleteApplicationInterview,
 };

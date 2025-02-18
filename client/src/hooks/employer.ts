@@ -2,7 +2,6 @@ import { employerApi } from "@/api/employer";
 import { useQuery } from "@tanstack/react-query";
 
 export const useGetEmployerById = () => {
-  console.log("this is logged");
   return useQuery({
     queryKey: ["employer"],
     queryFn: employerApi.getEmployerById,

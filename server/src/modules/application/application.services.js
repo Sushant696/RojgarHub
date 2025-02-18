@@ -7,7 +7,6 @@ export const createApplication = async (data, jobId) => {
   const existingApplication = await db.jobApplication.findUnique({
     where: {
       jobId_candidateId: {
-        // Using the unique constraint
         jobId: jobId,
         candidateId: data.candidateId,
       },
@@ -48,7 +47,7 @@ export const createApplication = async (data, jobId) => {
       job: {
         connect: {
           id: jobId,
-        }, 
+        },
       },
       candidate: {
         connect: {
@@ -65,6 +64,7 @@ export const getApplicationById = async (applicationId) => {
     include: {
       job: true,
       candidate: true,
+      interviews: true,
     },
   });
 };
@@ -75,7 +75,6 @@ export const updateApplicationStatus = async (
   candidateId,
   status,
 ) => {
-
   const existingApplication = await db.jobApplication.findUnique({
     where: {
       id: applicationId,
@@ -107,4 +106,75 @@ export const getApplicationsByCandidate = async (candidateId) => {
     where: { candidateId },
     include: { job: true },
   });
+};
+
+export const scheduleInterview = async (applicationId, interviewData) => {
+  const application = await db.jobApplication.findUnique({
+    where: { id: applicationId },
+  });
+  if (!application) {
+    throw new ApiError(StatusCodes.NOT_FOUND);
+  }
+  if (application.status !== "ACCEPTED") {
+    throw new ApiError(
+      StatusCodes.CONFLICT,
+      "Only Accepted applications candidates can be called  for Interview.",
+    );
+  }
+  const { scheduledAt, ...data } = interviewData;
+
+  const parsedScheduledAt = new Date(scheduledAt);
+  if (isNaN(parsedScheduledAt.getTime())) {
+    throw new ApiError(StatusCodes.BAD_REQUEST, "Invalid scheduledAt format");
+  }
+
+  const interview = await db.interview.create({
+    data: {
+      jobApplicationId: applicationId,
+      scheduledAt: parsedScheduledAt,
+      ...data,
+    },
+  });
+
+  return interview;
+};
+
+export const updateInterview = async (interviewId, interviewData) => {
+  const interview = await db.interview.findUnique({
+    where: { id: interviewId },
+  });
+
+  if (!interview) {
+    throw new ApiError(StatusCodes.NOT_FOUND, "Interview not found");
+  }
+  const { scheduledAt, ...data } = interviewData;
+
+  if (scheduledAt) {
+    const parsedScheduledAt = new Date(scheduledAt);
+    if (isNaN(parsedScheduledAt.getTime())) {
+      throw new ApiError(StatusCodes.BAD_REQUEST, "Invalid scheduledAt format");
+    }
+    data.scheduledAt = parsedScheduledAt;
+  }
+
+  const updatedInterview = await db.interview.update({
+    where: { id: interviewId },
+    data,
+  });
+
+  return updatedInterview;
+};
+
+export const deleteInterview = async (interviewId) => {
+  const interview = await db.interview.findUnique({
+    where: { id: interviewId },
+  });
+  
+  if (!interview) {
+    throw new ApiError(StatusCodes.NOT_FOUND, "Interview not found");
+  }
+  
+  await db.interview.delete({ where: { id: interviewId } });
+
+  return;
 };

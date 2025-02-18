@@ -259,7 +259,6 @@ const ApplicationsSection = ({
     setIsSelectOpen(false);
   }
 
-  // Helper function to format status text
   const formatStatus = (status: string) => {
     if (status === "all") return "All";
     return status.charAt(0).toUpperCase() + status.slice(1).toLowerCase();
