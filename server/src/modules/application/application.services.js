@@ -147,7 +147,6 @@ export const updateInterview = async (interviewId, interviewData) => {
   if (!interview) {
     throw new ApiError(StatusCodes.NOT_FOUND, "Interview not found");
   }
-
   const { scheduledAt, ...data } = interviewData;
 
   if (scheduledAt) {
@@ -170,11 +169,11 @@ export const deleteInterview = async (interviewId) => {
   const interview = await db.interview.findUnique({
     where: { id: interviewId },
   });
-
+  
   if (!interview) {
     throw new ApiError(StatusCodes.NOT_FOUND, "Interview not found");
   }
-
+  
   await db.interview.delete({ where: { id: interviewId } });
 
   return;

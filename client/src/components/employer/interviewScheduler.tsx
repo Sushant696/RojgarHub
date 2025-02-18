@@ -12,16 +12,29 @@ import { useInterviewScheduler } from "@/hooks/application";
 interface InterviewSchedulerProps {
   applicationId: string;
   applicationStatus: ApplicationStatus;
+  interviewData?: {
+    scheduledAt: string;
+    time: string;
+    location: string;
+    notes?: string;
+  };
+  onSave?: (data: any) => void; // Callback for saving
+  onCancel?: () => void; // Callback for canceling
 }
 
 const InterviewScheduler = ({
   applicationId,
   applicationStatus,
+  interviewData,
+  onSave,
+  onCancel,
 }: InterviewSchedulerProps) => {
-  const [selectedDate, setSelectedDate] = useState();
-  const [time, setTime] = useState("");
-  const [location, setLocation] = useState("");
-  const [notes, setNotes] = useState("");
+  const [selectedDate, setSelectedDate] = useState<Date | undefined>(
+    new Date(interviewData?.scheduledAt) || new Date(),
+  );
+  const [time, setTime] = useState(interviewData?.time || "");
+  const [location, setLocation] = useState(interviewData?.location || "");
+  const [notes, setNotes] = useState(interviewData?.notes || "");
   const interviewScheduler = useInterviewScheduler();
 
   const handleScheduleInterview = () => {
@@ -35,9 +48,27 @@ const InterviewScheduler = ({
       location,
       notes,
     };
-    console.log(interviewObj, "interview obj");
-    interviewScheduler.mutate({ applicationId, interviewObj });
-    // Callback to parent component will go here
+
+    if (onSave) {
+      onSave(interviewObj);
+    } else {
+      interviewScheduler.mutate({ applicationId, interviewObj });
+    }
+  };
+
+  const handleTimeChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const timeValue = e.target.value;
+    const [hours, minutes] = timeValue.split(":");
+    const selectedDateTime = new Date(selectedDate || new Date());
+    selectedDateTime.setHours(parseInt(hours, 10));
+    selectedDateTime.setMinutes(parseInt(minutes, 10));
+
+    if (selectedDateTime < new Date()) {
+      alert("Please select a future time.");
+      return;
+    }
+
+    setTime(timeValue);
   };
 
   return (
@@ -45,10 +76,11 @@ const InterviewScheduler = ({
       <CardHeader className="bg-blue-50/50">
         <CardTitle className="flex items-center space-x-2 text-blue-900">
           <CalendarDays className="w-5 h-5 text-blue-600" />
-          <span>Schedule Interview</span>
+          <span>{interviewData ? "Edit Interview" : "Schedule Interview"}</span>
         </CardTitle>
       </CardHeader>
       <CardContent className="space-y-6 pt-6">
+        {" "}
         {/* Info Callout */}
         {applicationStatus !== "ACCEPTED" && (
           <div className="bg-blue-50/50 p-4 rounded-lg border border-blue-200 flex items-start gap-3">
@@ -59,31 +91,24 @@ const InterviewScheduler = ({
             </p>
           </div>
         )}
-
         {/* Date Picker */}
-        <div className="space-y-2">
-          <Label
-            htmlFor="interview-date"
-            className="text-gray-800 font-medium flex items-center gap-2"
-          >
-            <CalendarDays className="w-4 h-4 text-blue-600" />
-            Select Date
-          </Label>
-          <div className="border border-gray-200 w-full rounded-lg p-3 bg-white shadow-sm">
-            <Calendar
-              mode="single"
-              selected={selectedDate}
-              onSelect={setSelectedDate}
-              className="rounded-md w-full"
-              classNames={{
-                day_selected: "bg-blue-600 text-white hover:bg-blue-600",
-                day_today: "bg-blue-50 text-blue-900",
-              }}
-              disabled={applicationStatus !== "ACCEPTED"} // Disable calendar if status is not ACCEPTED
-            />
-          </div>
+        <div className="space-y-4">
+          <div className="flex justify-center p-4">
+            <div className="border border-gray-200 w-full rounded-lg p-3 bg-white shadow-sm">
+              <Calendar
+                mode="single"
+                selected={selectedDate}
+                onSelect={setSelectedDate}
+                className="rounded-md w-full"
+                classNames={{
+                  day_selected: "bg-blue-600 text-white hover:bg-blue-600",
+                  day_today: "bg-blue-50 text-blue-900",
+                }}
+                disabled={applicationStatus !== "ACCEPTED"}
+              />
+            </div>
+          </div>{" "}
         </div>
-
         {/* Time Input */}
         <div className="space-y-2">
           <Label
@@ -97,12 +122,11 @@ const InterviewScheduler = ({
             id="interview-time"
             type="time"
             value={time}
-            onChange={(e) => setTime(e.target.value)}
+            onChange={handleTimeChange}
             className="focus:ring-blue-500 focus:border-blue-500 border-gray-300"
-            disabled={applicationStatus !== "ACCEPTED"} // Disable input if status is not ACCEPTED
+            disabled={applicationStatus !== "ACCEPTED"}
           />
         </div>
-
         {/* Location Input */}
         <div className="space-y-2">
           <Label
@@ -118,10 +142,9 @@ const InterviewScheduler = ({
             value={location}
             onChange={(e) => setLocation(e.target.value)}
             className="focus:ring-blue-500 focus:border-blue-500 border-gray-300"
-            disabled={applicationStatus !== "ACCEPTED"} // Disable input if status is not ACCEPTED
+            disabled={applicationStatus !== "ACCEPTED"}
           />
         </div>
-
         {/* Additional Notes */}
         <div className="space-y-2">
           <Label
@@ -137,23 +160,33 @@ const InterviewScheduler = ({
             value={notes}
             onChange={(e) => setNotes(e.target.value)}
             className="h-24 focus:ring-blue-500 focus:border-blue-500 border-gray-300"
-            disabled={applicationStatus !== "ACCEPTED"} // Disable textarea if status is not ACCEPTED
+            disabled={applicationStatus !== "ACCEPTED"}
           />
         </div>
-
         {/* Schedule Button */}
-        <Button
-          onClick={handleScheduleInterview}
-          className="w-full bg-blue-600 hover:bg-blue-700 text-white font-medium py-2 transition-colors"
-          disabled={
-            !selectedDate ||
-            !time ||
-            !location ||
-            applicationStatus !== "ACCEPTED"
-          } // Disable button if status is not ACCEPTED
-        >
-          Schedule Interview
-        </Button>
+        <div className="flex gap-2">
+          <Button
+            onClick={handleScheduleInterview}
+            className="flex-1 bg-blue-600 hover:bg-blue-700 text-white font-medium py-2 transition-colors"
+            disabled={
+              !selectedDate ||
+              !time ||
+              !location ||
+              applicationStatus !== "ACCEPTED"
+            }
+          >
+            {interviewData ? "Save Changes" : "Schedule Interview"}
+          </Button>
+          {onCancel && (
+            <Button
+              variant="outline"
+              onClick={onCancel}
+              className="flex-1 border-gray-300 text-gray-700 hover:bg-gray-50"
+            >
+              Cancel
+            </Button>
+          )}
+        </div>
       </CardContent>
     </Card>
   );

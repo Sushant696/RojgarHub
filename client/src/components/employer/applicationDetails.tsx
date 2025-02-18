@@ -172,9 +172,9 @@ function ApplicationDetails() {
         <div className="lg:col-span-2 space-y-6">
           {/* Skills Section */}
           {application.skills && application.skills.length > 0 && (
-            <Card>
+            <Card className="bg-white rounded-lg shadow-sm border border-gray-100 mb-6">
               <CardHeader>
-                <CardTitle className="text-gray-800 font-semibold">
+                <CardTitle className="text-gray-800 regular-text font-semibold">
                   Skills
                 </CardTitle>
               </CardHeader>
@@ -196,7 +196,7 @@ function ApplicationDetails() {
 
           {/* Experience Section */}
           {application.experience && (
-            <Card>
+            <Card className="bg-white rounded-lg shadow-sm border border-gray-100 mb-6">
               <CardHeader>
                 <CardTitle className="text-gray-800 font-semibold flex items-center">
                   <Briefcase size={24} className=" mr-2 text-blue-600" />
@@ -214,8 +214,8 @@ function ApplicationDetails() {
                         <h3 className="font-semibold text-gray-900">
                           {exp.position}
                         </h3>
-                        <p className="text-gray-600 flex items-center gap-2">
-                          <Building className="w-4 h-4" />
+                        <p className="text-blue-900/80 flex items-center gap-2">
+                          <Building className="w-4 h-4" color="blue" />
                           {exp.company}
                         </p>
                       </div>
@@ -231,7 +231,7 @@ function ApplicationDetails() {
           )}
 
           {/* Education Section */}
-          <Card>
+          <Card className="bg-white rounded-lg shadow-sm border border-gray-100 mb-6">
             <CardHeader>
               <CardTitle className="text-gray-800 font-semibold flex items-center">
                 <GraduationCap size={24} className=" mr-2 text-blue-600" />
@@ -262,31 +262,31 @@ function ApplicationDetails() {
         {/* Right Column */}
         <div className="space-y-6">
           {/* Job Details */}
-          <Card>
-            <CardHeader>
-              <CardTitle className="text-gray-800 font-semibold">
+          <Card className="bg-white rounded-lg shadow-sm border border-gray-100 mb-6  border-t-4 border-t-blue-500/20">
+            <CardHeader className="border-b border-blue-50 bg-blue-50">
+              <CardTitle className="text-blue-800 font-semibold">
                 Job Details
               </CardTitle>
             </CardHeader>
-            <CardContent className="space-y-4">
+            <CardContent className="space-y-4 pt-4">
               <div>
                 <h3 className="font-medium text-gray-900">
                   {application.job.title}
                 </h3>
-                <p className="text-gray-600 mt-1">
+                <p className="text-blue-600 mt-1">
                   {application.job.type} • {application.job.location}
                 </p>
                 <p className="text-gray-600 mt-2">
-                  ${application.job.salaryMin} - ${application.job.salaryMax}
+                  ${application.job.salaryMin.toLocaleString()} - $
+                  {application.job.salaryMax.toLocaleString()}
                 </p>
               </div>
             </CardContent>
           </Card>
-
           {/* Links Section */}
-          <Card>
-            <CardHeader>
-              <CardTitle className="text-gray-800 font-semibold">
+          <Card className="bg-white rounded-lg shadow-sm border border-gray-100 mb-6  border-t-4 border-t-blue-500/20">
+            <CardHeader className="border-b border-blue-50 bg-blue-50 mb-4">
+              <CardTitle className="text-blue-800 font-semibold">
                 Documents & Links
               </CardTitle>
             </CardHeader>
@@ -296,7 +296,7 @@ function ApplicationDetails() {
                   href={application.resumeUrl}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="flex items-center gap-2 text-blue-600 hover:underline"
+                  className="flex items-center gap-2 text-blue-600 hover:underline mt-2"
                 >
                   <FileText className="w-4 h-4" />
                   <span>Resume</span>
@@ -319,13 +319,16 @@ function ApplicationDetails() {
           </Card>
 
           {/* Interview Scheduler */}
-          {!application.interviews ? (
+          {application && application.interviews?.length > 0 ? (
+            <InterviewCard
+              interviews={application?.interviews}
+              applicationStatus={application.status}
+            />
+          ) : (
             <InterviewScheduler
               applicationId={applicationId}
               applicationStatus={application.status}
             />
-          ) : (
-            <InterviewCard interviews={application?.interviews} />
           )}
         </div>
       </div>

@@ -30,7 +30,7 @@ export const useUpdateApplicationStatus = () => {
       ),
     onSuccess: (variables) => {
       queryClient.invalidateQueries({ queryKey: ["employerApplication"] });
-      queryClient.invalidateQueries({ queryKey: ["applicationById"] });
+      queryClient.invalidateQueries({ queryKey: ["application"] });
       queryClient.invalidateQueries({ queryKey: ["interviewSchedule"] });
       queryClient.invalidateQueries({
         queryKey: ["jobById", variables.jobId],
@@ -45,18 +45,29 @@ export const useUpdateApplicationStatus = () => {
 
 export const useGetApplicationById = (applicationId: string) => {
   return useQuery({
-    queryKey: ["applicationById"],
+    queryKey: ["application"],
     queryFn: () => applicationActions.getApplicationById(applicationId),
     retry: false,
   });
 };
 
 export const useInterviewScheduler = () => {
+  const queryClient = useQueryClient();
   return useMutation({
-    mutationKey: ["interviewSchedule"],
+    mutationKey: ["interviews"],
     mutationFn: ({ applicationId, interviewObj }: InterviewSchedulerProps) =>
       applicationActions.scheduleInterview({ applicationId, interviewObj }),
     retry: false,
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["interviews"] });
+      queryClient.invalidateQueries({ queryKey: ["application"] });
+    },
+    onError: (error: any) => {
+      console.error(
+        "Error updating interview:",
+        error.response?.data || error.message,
+      );
+    },
   });
 };
 
@@ -67,6 +78,7 @@ export const useUpdateInterview = () => {
     mutationFn: applicationActions.updateInterview,
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["interviews"] });
+      queryClient.invalidateQueries({ queryKey: ["application"] });
     },
     onError: (error: any) => {
       console.error(
@@ -84,6 +96,7 @@ export const useDeleteInterview = () => {
     mutationFn: applicationActions.deleteInterview,
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["interviews"] });
+      queryClient.invalidateQueries({ queryKey: ["application"] });
     },
     onError: (error: any) => {
       console.error(

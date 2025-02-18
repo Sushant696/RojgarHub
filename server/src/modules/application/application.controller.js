@@ -96,11 +96,11 @@ const scheduleApplicationInterview = asyncHandler(async (req, res) => {
 
 const updateApplicationInterview = asyncHandler(async (req, res) => {
   const { interviewId } = req.params;
-  const { interviewObj } = req.body;
+  const { location, scheduledAt } = req.body;
 
   const updatedInterview = await applicationServices.updateInterview(
     interviewId,
-    interviewObj,
+    { location, scheduledAt },
   );
 
   return res.json(
@@ -114,6 +114,7 @@ const updateApplicationInterview = asyncHandler(async (req, res) => {
 
 const deleteApplicationInterview = asyncHandler(async (req, res) => {
   const { interviewId } = req.params;
+  console.log(interviewId);
 
   await applicationServices.deleteInterview(interviewId);
 

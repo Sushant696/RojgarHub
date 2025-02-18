@@ -2,7 +2,6 @@ import { apiURLs } from "@/lib/apiURLs";
 import api from "@/lib/axios";
 import { ApplicationStatus } from "@/types/job";
 import DisplayErrorToast from "@/utils/displayErrorMessage";
-import { useMutation, useQueryClient } from "@tanstack/react-query";
 
 async function applicationStatus(
   applicationId: string,
@@ -46,7 +45,12 @@ async function getApplicationById(applicationId: string) {
 
 interface InterviewSchedulerProps {
   applicationId: string;
-  interviewObj: { scheduledAt: string; time: string; location: string };
+  interviewObj: {
+    scheduledAt: string;
+    time: string;
+    location: string;
+    notes?: string;
+  };
 }
 
 async function scheduleInterview({
@@ -74,6 +78,9 @@ async function updateInterview({ id, data }: { id: string; data: any }) {
     const response = await api.patch(
       `${apiURLs.Application.updateInterview}/${id}`,
       data,
+      {
+        withCredentials: true,
+      },
     );
     return response.data;
   } catch (error: any) {
@@ -87,7 +94,9 @@ async function updateInterview({ id, data }: { id: string; data: any }) {
 
 async function deleteInterview(id: string) {
   try {
-    await api.delete(`${apiURLs.Application.deleteInterview}/${id}`);
+    await api.delete(`${apiURLs.Application.deleteInterview}/${id}`, {
+      withCredentials: true,
+    });
   } catch (error: any) {
     console.error(
       "Error deleting interview:",
