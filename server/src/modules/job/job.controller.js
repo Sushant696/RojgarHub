@@ -60,8 +60,7 @@ const editJob = asyncHandler(async (req, res) => {
   );
 });
 const getAllJobs = asyncHandler(async (req, res) => {
-  const userId = req.user?.userId;
-  const jobs = await jobServices.getJobs(userId);
+  const jobs = await jobServices.getJobs();
 
   return res.json(
     new ApiResponse(StatusCodes.OK, { jobs }, "Job Fetched successfully"),

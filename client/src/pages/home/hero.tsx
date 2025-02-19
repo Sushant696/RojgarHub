@@ -32,10 +32,10 @@ function Hero() {
             </h2>
           </div>
           <div className="block lg:hidden section-margin">
-            <SearchComponentMobile />
+            <SearchComponentMobile bgColor={"bg-[#F4F7FD]"} />
           </div>
           <div className="hidden lg:block section-margin">
-            <SearchComponent />
+            <SearchComponent bgColor={"bg-[#F4F7FD]"} />
             <div className="flex justify-center my-6 gap-2">
               {popularSearches.map((item, index) => (
                 <h1 key={index} className="underline">

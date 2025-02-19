@@ -34,16 +34,9 @@ export const useUpdateJob = () => {
   });
 };
 
-export const useGetAllJobs = () => {
-  return useQuery({
-    queryKey: ["getAllJobs"],
-    queryFn: jobAction.getAllJobs,
-  });
-};
-
 export const useGetJobById = (jobId: string) => {
   return useQuery({
-    queryKey: ["jobById"],
+    queryKey: ["job"],
     queryFn: () => jobAction.getJobById(jobId),
     enabled: !!jobId,
   });
@@ -56,7 +49,7 @@ export const useDeleteJob = () => {
     mutationFn: (jobId: string) => jobAction.deleteJob(jobId),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["employerJobs"] });
-      queryClient.invalidateQueries({ queryKey: ["jobById"] });
+      queryClient.invalidateQueries({ queryKey: ["job"] });
     },
   });
 };
@@ -69,7 +62,7 @@ export const useJobStatusToggle = () => {
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["employerJobs"] });
       queryClient.invalidateQueries({ queryKey: ["employerApplication"] });
-      queryClient.invalidateQueries({ queryKey: ["jobById"] });
+      queryClient.invalidateQueries({ queryKey: ["job"] });
     },
   });
 };
@@ -89,3 +82,10 @@ export const useGetJobApplications = () => {
     retry: false,
   });
 };
+
+export const useGetAllJobs = () => {
+  return useQuery({
+    queryKey: ["jobs"],
+    queryFn: jobAction.getAllJobs,
+  });
+}

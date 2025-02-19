@@ -82,14 +82,8 @@ export const updateJob = async (jobId, updateJobData, imagePath, userId) => {
   return job;
 };
 
-export const getJobs = async (employerId) => {
+export const getJobs = async () => {
   const job = await db.job.findMany({
-    where: {
-      employer: { userId: employerId },
-    },
-    include: {
-      applications: true,
-    },
     orderBy: {
       createdAt: "desc",
     },
@@ -99,7 +93,6 @@ export const getJobs = async (employerId) => {
 };
 
 export const getJobById = async (jobId) => {
-
   const job = await db.job.findFirst({
     where: { id: jobId },
     include: {

@@ -15,21 +15,13 @@ function Navbar() {
             Home
           </Link>{" "}
           <Link to="/apply" className="[&.active]:font-bold  regular-text">
-            Find a Job
+            Apply
           </Link>
           <Link to="/pricing" className="[&.active]:font-bold  regular-text">
             Pricing
           </Link>
-          <Link to="/blog" className="[&.active]:font-bold  regular-text">
-            blogs
-          </Link>
           <Link to="/contact" className="[&.active]:font-bold  regular-text">
             Contact
-          </Link>
-          <Link to="/dashboard" className="[&.active]:font-bold">
-            <button className="border-dotted border-2 border-blue-600 px-4 rounded-md">
-              Dashboard
-            </button>
           </Link>
         </div>
         {!isAuthenticated ? (

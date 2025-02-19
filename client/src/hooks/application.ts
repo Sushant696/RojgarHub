@@ -33,7 +33,7 @@ export const useUpdateApplicationStatus = () => {
       queryClient.invalidateQueries({ queryKey: ["application"] });
       queryClient.invalidateQueries({ queryKey: ["interviewSchedule"] });
       queryClient.invalidateQueries({
-        queryKey: ["jobById", variables.jobId],
+        queryKey: ["job", variables.jobId],
         refetchType: "active",
       });
     },
