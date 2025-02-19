@@ -101,15 +101,6 @@ function TopBar({ open, setOpen }: TopBarProps) {
 
               <DropdownMenuSeparator className="bg-gray-100" />
 
-              <DropdownMenuItem className="flex justify-between items-center space-x-2 p-2 text-sm text-gray-700 hover:bg-gray-100 rounded-md transition-colors duration-200">
-                <span>Theme</span>
-                <div className="flex items-center gap-4">
-                  <Sun1 size="18" color="#2ccce4" variant="Bulk" />
-
-                  <Moon size="18" color="#2ccce4" variant="Bulk" />
-                </div>
-              </DropdownMenuItem>
-
               <DropdownMenuItem
                 onClick={() => logout.mutate()}
                 className="flex items-center space-x-2 p-2 text-sm text-red-600 hover:bg-red-50 rounded-md transition-colors duration-200"

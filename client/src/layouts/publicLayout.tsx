@@ -5,11 +5,12 @@ import Footer from "../components/footer";
 import useAuthStore from "../stores/authStore";
 
 const PublicLayout = () => {
-  const isAuthenticated = useAuthStore((state) => state.isAuthenticated);
+  const { isAuthenticated, user } = useAuthStore();
+
   return (
     <>
       <div className="sticky top-0 z-50 overflow-hidden">
-        {!isAuthenticated && <Navbar />}
+        {!isAuthenticated || user?.role === "CANDIDATE" ? <Navbar /> : null}
       </div>
       <div className="">
         <Outlet />

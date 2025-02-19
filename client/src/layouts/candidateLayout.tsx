@@ -1,84 +1,39 @@
 import { Outlet } from "@tanstack/react-router";
+
 import useRouter from "../lib/router";
-import useAuthStore from "../stores/authStore";
 import { useLogout } from "../hooks/auth";
+import useAuthStore from "../stores/authStore";
+import { useGetCandidateById } from "@/hooks/candidate";
+import Loading from "@/components/isLoading";
+import { useEffect } from "react";
 
 export const CandidateLayout = () => {
   const router = useRouter();
-  const user = useAuthStore((state) => state.user);
+  const { user, setAuthenticatedUser } = useAuthStore();
+  const { data, isLoading } = useGetCandidateById();
+
+  useEffect(() => {
+    if (data?.candidate) {
+      setAuthenticatedUser(data?.employer);
+    }
+  }, [data, setAuthenticatedUser]);
+
+  if (isLoading) {
+    return <Loading />;
+  }
+
   const logout = useLogout();
   if (logout.isPending) {
     return <h1 className="min-h-screen mx-0 ">Loading...</h1>;
   }
-
-  
+  if (isLoading) return <Loading />;
 
   return (
-    <div className="min-h-screen bg-gray-50">
-      <div className="flex">
-        {/* Sidebar Navigation */}
-        <nav className="w-64 min-h-screen bg-white shadow-lg p-6 space-y-6">
-          <div className="mb-8">
-            <h2 className="text-2xl font-bold text-gray-800">
-              Candidate Portal
-            </h2>
-          </div>
-
-          <div className="space-y-2">
-            <button
-              onClick={() => router.push("/candidate/dashboard")}
-              className="w-full text-left px-4 py-2 text-gray-700 hover:bg-gray-100 rounded-lg transition-colors"
-            >
-              Dashboard
-            </button>
-
-            <button
-              onClick={() => router.push("/employer/new")}
-              className="w-full text-left px-4 py-2 text-gray-700 hover:bg-gray-100 rounded-lg transition-colors"
-            >
-              Unauthorized
-            </button>
-
-            <button
-              onClick={() => router.push("/candidate/application")}
-              className="w-full text-left px-4 py-2 text-gray-700 hover:bg-gray-100 rounded-lg transition-colors"
-            >
-              Applications
-            </button>
-
-            <button className="w-full text-left px-4 py-2 text-gray-700 hover:bg-gray-100 rounded-lg transition-colors">
-              Settings
-            </button>
-            <button
-              onClick={() => router.push("/candidate/settings")}
-              className="w-full text-left px-4 py-2 text-gray-700 hover:bg-gray-100 rounded-lg transition-colors"
-            >
-              Settings
-            </button>
-          </div>
-
-          <div className="pt-6 mt-6 border-t border-gray-200">
-            <button
-              onClick={() => logout.mutate()}
-              className="w-full px-4 py-2 text-red-600 hover:bg-red-50 rounded-lg transition-colors text-left"
-            >
-              Logout
-            </button>
-          </div>
-        </nav>
-
-        {/* Main Content Area */}
-        <div className="flex-1 p-8">
-          <div className="mb-8">
-            <h1 className="text-2xl font-semibold text-gray-800">
-              Welcome to {user?.role} dashboard
-            </h1>
-          </div>
-
-          <main>
-            <Outlet />
-          </main>
-        </div>
+    <div className="min-h-screen">
+      <div className="flex-1 p-8 border">
+        <main>
+          <Outlet />
+        </main>
       </div>
     </div>
   );
