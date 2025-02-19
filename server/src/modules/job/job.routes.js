@@ -32,6 +32,6 @@ jobRouter.get(
   jobController.getApplicationsByJob,
 );
 
-jobRouter.get("/", isAuthenticated, jobController.getAllJobs);
+jobRouter.get("/", jobController.getAllJobs);
 
 export default jobRouter;

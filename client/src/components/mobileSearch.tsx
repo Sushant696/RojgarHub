@@ -19,7 +19,7 @@ const location: string[] = [
   "Lalitpur",
 ];
 
-function SearchComponentMobile() {
+function SearchComponentMobile({ bgColor }: { bgColor: string }) {
   const [selectedValue, setSelectedValue] = useState<string>("");
 
   const [selectedValueLocation, setSelectedValueLocation] =
@@ -27,13 +27,13 @@ function SearchComponentMobile() {
 
   return (
     <div>
-      <div className="border text-center mx-8 p-4 md:mx-16 xl:mx-32 rounded-lg my-12 space-y-4">
+      <div className="border text-center mx-1 p-4 md:mx-16 xl:mx-32 rounded-lg my-12 space-y-4">
         <div className=" border flex-1 flex items-center p-5 gap-3 rounded-lg">
           <HiCubeTransparent className="subtitle-text text-blue-950" />
           <input
             type="text"
             placeholder="Job keywords or title.."
-            className="w-full bg-[#F4F7FD] regular-text outline-none"
+            className={`w-full ${bgColor ? `${bgColor}` : ""} regular-text outline-none h-full`}
           />
         </div>
         <div className="flex-2 flex items-center p-5 gap-3 border rounded-lg">

@@ -1,9 +1,10 @@
 import { Button } from "@mui/material";
 import { Link } from "@tanstack/react-router";
 import useAuthStore from "../stores/authStore";
+import Profile from "./candidate/profile";
 
 function Navbar() {
-  const { isAuthenticated } = useAuthStore();
+  const { isAuthenticated, user } = useAuthStore();
   return (
     <div className="bg-blue-200/20 backdrop-blur-xl py-1">
       <div className="flex container justify-between items-center">
@@ -15,24 +16,18 @@ function Navbar() {
             Home
           </Link>{" "}
           <Link to="/apply" className="[&.active]:font-bold  regular-text">
-            Find a Job
+            Apply
           </Link>
           <Link to="/pricing" className="[&.active]:font-bold  regular-text">
             Pricing
           </Link>
-          <Link to="/blog" className="[&.active]:font-bold  regular-text">
-            blogs
-          </Link>
           <Link to="/contact" className="[&.active]:font-bold  regular-text">
             Contact
           </Link>
-          <Link to="/dashboard" className="[&.active]:font-bold">
-            <button className="border-dotted border-2 border-blue-600 px-4 rounded-md">
-              Dashboard
-            </button>
-          </Link>
         </div>
-        {!isAuthenticated ? (
+        {isAuthenticated || user?.role === "CANDIDATE" ? (
+          <Profile />
+        ) : (
           <div className="flex gap-4 items-center">
             <Link to="/register" className="[&.active]:font-bold">
               Register
@@ -42,8 +37,6 @@ function Navbar() {
               <Button variant="contained">Login</Button>
             </Link>
           </div>
-        ) : (
-          <div>Back to Dashboard</div>
         )}
       </div>
     </div>

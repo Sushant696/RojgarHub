@@ -19,6 +19,7 @@ export const useLogin = () => {
       const { role, id, contact, username } = response?.data?.data;
       setIsAuthenticated(true);
       setCurrentUser({ id, role, contact, username });
+
       queryClient.invalidateQueries({ queryKey: ["verify"] });
       role === "EMPLOYER"
         ? router.push("/employer")

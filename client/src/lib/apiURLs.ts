@@ -24,6 +24,12 @@ export const apiURLs = {
     applications: "/api/employer/applications", // all applications
     update: "/api/employer",
   },
+  Candidate: {
+    getById: "/api/candidate/",
+    jobs: "/api/candidate/jobs", // candidate specific jobs
+    applications: "/api/candidate/applications", // all candidate applications
+    update: "/api/candidate",
+  },
   Application: {
     applicationStatus: "/api/application/status",
     applicationById: "/api/application",

@@ -6,12 +6,12 @@ import * as candidateServices from "./candidate.services.js";
 
 const getCandidateById = asyncHandler(async (req, res) => {
   const userId = req.user.userId;
-  const candidate = candidateServices.OneCandidate(userId);
+  const candidate = await candidateServices.OneCandidate(userId);
   return res.json(
     new ApiResponse(
       StatusCodes.OK,
       { candidate },
-      "User Registered Successfully",
+      "Candidate Retrived Successfully",
     ),
   );
 });

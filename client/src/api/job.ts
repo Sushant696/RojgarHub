@@ -5,6 +5,21 @@ import { JobPostingTypes } from "@/validators/jobValidators";
 import DisplayErrorToast from "@/utils/displayErrorMessage";
 import showNotification from "@/utils/toastify";
 
+// public api call actions
+
+async function getAllJobs() {
+  try {
+    const response = await api.get(apiURLs.Jobs.get, {
+      withCredentials: true,
+    });
+    return response.data?.data;
+  } catch (error: any) {
+    console.error("Error fetching job:", error.response?.data || error.message);
+    throw new Error(error.response?.data?.message || "Something went wrong!");
+  }
+}
+
+// private api call actions
 async function postJob(formData: JobPostingTypes) {
   try {
     const response = await api.post(apiURLs.Jobs.postJob, formData, {
@@ -30,18 +45,6 @@ async function updateJob(formData: any) {
     );
     return response.data;
   } catch (error: any) {
-    throw new Error(error.response?.data?.message || "Something went wrong!");
-  }
-}
-
-async function getAllJobs() {
-  try {
-    const response = await api.get(apiURLs.Jobs.get, {
-      withCredentials: true,
-    });
-    return response.data?.data;
-  } catch (error: any) {
-    console.error("Error fetching job:", error.response?.data || error.message);
     throw new Error(error.response?.data?.message || "Something went wrong!");
   }
 }
@@ -107,6 +110,7 @@ async function getJobApplication() {
     throw new Error(error.response?.data?.message || "Something went wrong!");
   }
 }
+
 export const jobAction = {
   postJob,
   getAllJobs,

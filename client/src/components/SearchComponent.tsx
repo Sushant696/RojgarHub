@@ -18,7 +18,7 @@ const location: string[] = [
   "Lalitpur",
 ];
 
-function SearchComponent() {
+function SearchComponent({ bgColor }: { bgColor: string }) {
   const [selectedValue, setSelectedValue] = useState<string>("");
   const [keywords, setKeywords] = useState<string>("");
   const [selectedValueLocation, setSelectedValueLocation] =
@@ -40,7 +40,7 @@ function SearchComponent() {
 
   return (
     <div>
-      <div className="flex items-center gap-4 border text-center mx-8 p-4 md:mx-16 xl:mx-32 rounded-lg mt-12">
+      <div className="flex items-center gap-4 border border-gray-300 text-center mx-8 p-4 md:mx-16 xl:mx-32 rounded-lg mt-12">
         {/* Search Input */}
         <div className="flex-1 flex items-center h-12 gap-3 rounded-lg px-4">
           <HiCubeTransparent className="text-blue-950 text-2xl flex-shrink-0" />
@@ -51,7 +51,7 @@ function SearchComponent() {
               setKeywords(e.target.value);
             }}
             placeholder="Job keywords or title.."
-            className="w-full bg-[#F4F7FD] outline-none h-full"
+            className={`w-full ${bgColor ? `${bgColor}` : ""} regular-text outline-none h-full`}
           />
         </div>
         <div>|</div>

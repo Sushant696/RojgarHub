@@ -9,7 +9,7 @@ const queryClient = new QueryClient();
 const LayoutWrapper = () => {
   return (
     <>
-      <AuthProvider /> {/* Add this here */}
+      <AuthProvider /> 
       <PublicLayout />
     </>
   );

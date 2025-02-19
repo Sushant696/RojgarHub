@@ -1,6 +1,13 @@
+import ApplyDesignCard from "@/components/ApplyDesignCard";
+import JobLists from "@/components/jobList";
 
-function Apply() {
-  return <div>Apply for job</div>;
-}
+const Apply = () => {
+  return (
+    <div>
+      <ApplyDesignCard />
+      <JobLists />
+    </div>
+  );
+};
 
 export default Apply;
