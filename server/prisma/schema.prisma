@@ -144,7 +144,6 @@ model JobApplication {
   fullName       String
   phone          String?
   profilePicture String?
-  bio            String?   @db.Text
   skills         Json?     
   location       String?
   education      Json?     

@@ -18,10 +18,6 @@ export const CandidateLayout = () => {
     }
   }, [data, setAuthenticatedUser]);
 
-  if (isLoading) {
-    return <Loading />;
-  }
-
   const logout = useLogout();
   if (logout.isPending) {
     return <h1 className="min-h-screen mx-0 ">Loading...</h1>;

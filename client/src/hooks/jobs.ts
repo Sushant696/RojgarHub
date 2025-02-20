@@ -34,6 +34,14 @@ export const useUpdateJob = () => {
   });
 };
 
+export const useGetJobByIdPublic = (jobId: string) => {
+  return useQuery({
+    queryKey: ["job"],
+    queryFn: () => jobAction.getJobByIdPublic(jobId),
+    enabled: !!jobId,
+  });
+};
+
 export const useGetJobById = (jobId: string) => {
   return useQuery({
     queryKey: ["job"],
@@ -88,4 +96,4 @@ export const useGetAllJobs = () => {
     queryKey: ["jobs"],
     queryFn: jobAction.getAllJobs,
   });
-}
+};
