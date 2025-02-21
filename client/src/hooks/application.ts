@@ -8,6 +8,33 @@ interface InterviewSchedulerProps {
   interviewObj: { scheduledAt: string; time: string; location: string };
 }
 
+export const useCreateApplication = () => {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: ({
+      candidateId,
+      jobId,
+      applicationData,
+    }: {
+      candidateId: string;
+      jobId: string;
+      applicationData: any;
+    }) =>
+      applicationActions.createApplication(candidateId, jobId, applicationData),
+    onSuccess: (variables) => {
+      queryClient.invalidateQueries({ queryKey: ["employerApplication"] });
+      queryClient.invalidateQueries({ queryKey: ["application"] });
+      queryClient.invalidateQueries({
+        queryKey: ["job", variables.jobId],
+        refetchType: "active",
+      });
+    },
+    onError: (error) => {
+      console.error("Mutation failed:", error);
+    },
+  });
+};
+
 export const useUpdateApplicationStatus = () => {
   const queryClient = useQueryClient();
   return useMutation({

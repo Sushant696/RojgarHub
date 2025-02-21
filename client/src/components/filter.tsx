@@ -46,20 +46,22 @@ function Filter({
             onChange={(e) => setSearchTerm(e.target.value)}
           />
         </div>
-        <div className="flex gap-3 w-full lg:w-auto">
-          <Select value={salaryRange} onValueChange={setSalaryRange}>
-            <SelectTrigger className="w-[140px] bg-slate-50">
-              <SelectValue placeholder="Salary Range" />
-            </SelectTrigger>
-            <SelectContent>
-              <SelectItem value="all">All Ranges</SelectItem>
-              <SelectItem value="17000-30000">17000-30000</SelectItem>
-              <SelectItem value="31000-50000">31000-50000</SelectItem>
-              <SelectItem value="51000-70000">51000-70000</SelectItem>
-              <SelectItem value="71000-120000">71000-120000</SelectItem>
-              <SelectItem value="120000">Above 120000</SelectItem>
-            </SelectContent>
-          </Select>
+        <div className="flex gap-3 nth-last-3:  w-full lg:w-auto">
+          <div className="w-full sm:w-auto hidden sm:flex ">
+            <Select value={salaryRange} onValueChange={setSalaryRange}>
+              <SelectTrigger className="w-[140px] bg-slate-50">
+                <SelectValue placeholder="Salary Range" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="all">All Ranges</SelectItem>
+                <SelectItem value="17000-30000">17000-30000</SelectItem>
+                <SelectItem value="31000-50000">31000-50000</SelectItem>
+                <SelectItem value="51000-70000">51000-70000</SelectItem>
+                <SelectItem value="71000-120000">71000-120000</SelectItem>
+                <SelectItem value="120000">Above 120000</SelectItem>
+              </SelectContent>
+            </Select>
+          </div>
 
           <Select value={jobType} onValueChange={setJobType}>
             <SelectTrigger className="w-[140px] bg-slate-50">
@@ -73,7 +75,6 @@ function Filter({
               <SelectItem value="remote">Remote</SelectItem>
             </SelectContent>
           </Select>
-
           <Select value={sortBy} onValueChange={setSortBy}>
             <SelectTrigger className="w-[180px] bg-slate-50">
               <SelectValue placeholder="Sort" />
@@ -84,18 +85,19 @@ function Filter({
               <SelectItem value="high_to_low">Salary High to Low</SelectItem>
             </SelectContent>
           </Select>
-
           <div className="hidden md:flex items-center gap-2 border-l border-gray-200 pl-4">
             <button
-              className={`p-2 hover:bg-blue-500 rounded-lg transition-colors ${viewMode === "list" ? "bg-blue-400 text-white" : "text-gray-600"
-                }`}
+              className={`p-2 hover:bg-blue-500 rounded-lg transition-colors ${
+                viewMode === "list" ? "bg-blue-400 text-white" : "text-gray-600"
+              }`}
               onClick={() => setViewMode("list")}
             >
               <AlignJustify size={20} />
             </button>
             <button
-              className={`p-2 hover:bg-blue-500 hover:text-white rounded-lg transition-colors ${viewMode === "grid" ? "bg-blue-400 text-white" : "text-gray-600"
-                }`}
+              className={`p-2 hover:bg-blue-500 hover:text-white rounded-lg transition-colors ${
+                viewMode === "grid" ? "bg-blue-400 text-white" : "text-gray-600"
+              }`}
               onClick={() => setViewMode("grid")}
             >
               <Grid size={20} />

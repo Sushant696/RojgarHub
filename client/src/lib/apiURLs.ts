@@ -32,6 +32,7 @@ export const apiURLs = {
     update: "/api/candidate",
   },
   Application: {
+    createApplication: "/api/application/create",
     applicationStatus: "/api/application/status",
     applicationById: "/api/application",
     interviewSchedule: "/api/application/interview",

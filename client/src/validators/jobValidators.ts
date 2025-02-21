@@ -3,8 +3,20 @@ import * as Yup from "yup";
 const jobPostingSchema = Yup.object().shape({
   title: Yup.string().required("Job title is required"),
   jobDescription: Yup.string().required("Job description is required"),
-  salaryMin: Yup.number().required("Minimum salary is required"),
-  salaryMax: Yup.number().required("Maximum salary is required"),
+  salaryMin: Yup.number()
+    .required("Minimum salary is required")
+    .positive("Minimum salary must be positive"),
+  salaryMax: Yup.number()
+    .required("Maximum salary is required")
+    .positive("Maximum salary must be positive")
+    .test(
+      "is-greater",
+      "Maximum salary must be greater than  minimum salary",
+      function(value) {
+        const { salaryMin } = this.parent;
+        return value > salaryMin;
+      },
+    ),
   location: Yup.string().required("Location is required"),
   type: Yup.string()
     .required("Job type is required")

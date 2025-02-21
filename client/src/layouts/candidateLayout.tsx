@@ -1,6 +1,5 @@
 import { Outlet } from "@tanstack/react-router";
 
-import useRouter from "../lib/router";
 import { useLogout } from "../hooks/auth";
 import useAuthStore from "../stores/authStore";
 import { useGetCandidateById } from "@/hooks/candidate";
@@ -8,13 +7,12 @@ import Loading from "@/components/isLoading";
 import { useEffect } from "react";
 
 export const CandidateLayout = () => {
-  const router = useRouter();
-  const { user, setAuthenticatedUser } = useAuthStore();
+  const { setAuthenticatedUser } = useAuthStore();
   const { data, isLoading } = useGetCandidateById();
 
   useEffect(() => {
     if (data?.candidate) {
-      setAuthenticatedUser(data?.employer);
+      setAuthenticatedUser(data?.candidate);
     }
   }, [data, setAuthenticatedUser]);
 

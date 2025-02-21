@@ -1,7 +1,7 @@
-import { useState } from "react";
-import { MapPin, Clock, DollarSign, Building2, Users, Eye } from "lucide-react";
-import DOMPurify from "dompurify";
 import clsx from "clsx";
+import { useState } from "react";
+import DOMPurify from "dompurify";
+import { MapPin, Clock, DollarSign, Building2, Users, Eye } from "lucide-react";
 
 import { useGetAllJobs } from "@/hooks/jobs";
 import { Button } from "@/components/ui/button";
@@ -14,10 +14,10 @@ import {
   SheetTitle,
 } from "@/components/ui/sheet";
 
-import Loading from "./isLoading";
 import Filter from "./filter";
-import useAuthStore from "@/stores/authStore";
+import Loading from "./isLoading";
 import useRouter from "@/lib/router";
+import useAuthStore from "@/stores/authStore";
 import JobApplicationForm from "./candidate/jobApplicationForm";
 
 interface Job {
@@ -116,7 +116,7 @@ function JobLists() {
           className={clsx(
             "gap-4",
             viewMode === "grid"
-              ? "grid grid-cols-1 md:grid-cols-2"
+              ? "grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3"
               : "space-y-4",
           )}
         >
@@ -177,24 +177,26 @@ function JobLists() {
 
                     <Separator className="my-4" />
 
-                    <div className="flex justify-between items-center">
+                    <div className="flex  flex-col gap-5 3xl:flex-row sm:items-start sm:justify-between">
                       <p className="text-slate-600 line-clamp-2 max-w-2xl">
                         {job.jobDescription}
                       </p>
-                      <div className="flex gap-2 ml-4">
+
+                      {/* Buttons section */}
+                      <div className="w-full sm:w-auto flex gap-2 self-end sm:self-auto sm:ml-auto">
                         <Button
                           variant="outline"
                           onClick={() => handleViewDetails(job)}
-                          className="whitespace-nowrap"
+                          className="whitespace-nowrap sm:w-auto"
                         >
-                          <Eye className="w-4 h-4 mr-2" />
+                          <Eye className="w-4 h-4 mr-2 sm:mr-0" />
                           View Details
                         </Button>
                         <Button
                           onClick={() =>
                             router.push("/candidate/apply/" + job.id)
                           }
-                          className="bg-blue-600 hover:bg-blue-700 whitespace-nowrap"
+                          className="bg-blue-600 hover:bg-blue-700 whitespace-nowrap sm:w-auto"
                         >
                           Apply Now
                         </Button>
@@ -202,7 +204,7 @@ function JobLists() {
                     </div>
                   </div>
                 </div>
-              </CardContent>
+              </CardContent>{" "}
             </Card>
           ))}
         </div>
@@ -239,7 +241,7 @@ function JobLists() {
               </div>
 
               <Card className="bg-white/50 backdrop-blur-sm border-blue-100">
-                <CardContent className="grid grid-cols-2 gap-6 p-6">
+                <CardContent className="grid grid-cols-1 sm:grid-cols-2 gap-6 p-6">
                   <div className="flex items-center gap-3 group">
                     <div className="p-2 rounded-lg bg-blue-50 text-blue-600 group-hover:bg-blue-100 transition-colors">
                       <MapPin className="w-5 h-5" />
@@ -331,7 +333,7 @@ function JobLists() {
               Apply for {selectedJob?.title}
             </SheetTitle>
           </SheetHeader>
-          <JobApplicationForm />
+          <JobApplicationForm jobId={selectedJob?.id} />
         </SheetContent>
       </Sheet>
     </div>

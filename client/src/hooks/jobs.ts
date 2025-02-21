@@ -9,7 +9,10 @@ export const usePostJob = () => {
     mutationKey: ["postJob"],
     mutationFn: jobAction.postJob,
     onSuccess(response) {
-      showNotification("success", response.data.message);
+      showNotification(
+        "success",
+        response?.message || "Job Added Successfully",
+      );
     },
     onError: (error: any) => {
       showNotification("error", error.message);
@@ -23,10 +26,10 @@ export const useUpdateJob = () => {
   return useMutation({
     mutationKey: ["updateJob"],
     mutationFn: jobAction.updateJob,
-    onSuccess: (response, { id }) => {
+    onSuccess: (response) => {
       toast.success(response.data.message);
       showNotification("success", "Job updated Successfully");
-      queryClient.invalidateQueries({ queryKey: ["jobById", id] });
+      queryClient.invalidateQueries({ queryKey: ["job"] });
     },
     onError: (error: any) => {
       showNotification("error", error.message);

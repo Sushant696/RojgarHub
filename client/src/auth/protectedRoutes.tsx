@@ -23,7 +23,7 @@ export const ProtectedRoutes = ({
         if (!isAuthenticated || !user) {
           setHasNavigated(true);
           showNotification("warning", "Please, Login to continue");
-          router.push("/");
+          router.push("/login");
           return;
         }
         if (!allowedRoles.includes(user.role)) {
@@ -36,7 +36,6 @@ export const ProtectedRoutes = ({
     }
   }, [isAuthenticated, user, allowedRoles, router, hasNavigated, authLoading]);
 
-  // Show nothing while auth state is loading or conditions aren't met
   if (
     authLoading ||
     !isAuthenticated ||
