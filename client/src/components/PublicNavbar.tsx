@@ -18,25 +18,29 @@ import {
 } from "@/components/ui/sheet";
 import { Separator } from "@/components/ui/separator";
 import { Button } from "@/components/ui/button";
+import { cn } from "@/lib/utils";
+import useRouter from "@/lib/router";
 
 interface NavLinkProps {
   to: string;
   icon: React.ComponentType<{ className?: string }>;
   children: React.ReactNode;
   onClick?: () => void;
+  className?: string;
   variant?: "default" | "button";
 }
 
-const NavLink: React.FC<NavLinkProps> = ({
+const NavLink = ({
   to,
   icon: Icon,
   children,
   onClick,
+  className = "",
   variant = "default",
-}) => {
+}: NavLinkProps) => {
   const content = (
     <>
-      <Icon className="h-5 w-5 text-slate-600" />
+      <Icon className={`h-5 w-5 text-slate-600 ${className}`} />
       <span className="text-slate-700">{children}</span>
     </>
   );
@@ -46,11 +50,13 @@ const NavLink: React.FC<NavLinkProps> = ({
       <Link
         to={to}
         onClick={onClick}
-        className={
+        className={cn(
+          "flex items-center gap-3 px-4 py-2 rounded-lg transition-colors",
           variant === "default"
-            ? "flex items-center gap-3 px-4 py-2 rounded-lg hover:bg-slate-100 transition-colors [&.active]:bg-slate-100 [&.active]:font-medium"
-            : "flex items-center gap-2 px-4 py-2 bg-primary text-primary-foreground rounded-lg hover:bg-primary/90 transition-colors"
-        }
+            ? "hover:bg-slate-100 [&.active]:bg-slate-100 [&.active]:font-medium"
+            : "bg-primary text-primary-foreground hover:bg-primary/90",
+          className,
+        )}
       >
         {content}
       </Link>
@@ -59,11 +65,17 @@ const NavLink: React.FC<NavLinkProps> = ({
 };
 
 function PublicNavbar() {
+  const router = useRouter();
   return (
     <div className="bg-white/80 backdrop-blur-xl shadow-sm">
       <div className="none md:container md:mx-auto">
         <div className="flex justify-between items-center py-5">
-          <div className="flex items-center gap-2">
+          <div
+            className="flex items-center gap-2 cursor-pointer"
+            onClick={() => {
+              router.push("/");
+            }}
+          >
             <img src="/tempLogo.png" className="w-12 h-12" alt="temp logo" />
             <span className="font-semibold medium-text hidden sm:block">
               RojgarHub
@@ -74,19 +86,24 @@ function PublicNavbar() {
           <div className="md:hidden">
             <Sheet>
               <SheetTrigger asChild>
-                <Button variant="ghost" size="icon">
-                  <Menu className="h-5 w-5" />
-                </Button>
+                <button>
+                  <Menu size={24} />
+                </button>
               </SheetTrigger>
               <SheetContent className="w-[300px]">
-                <SheetHeader className="pb-4">
+                <SheetHeader
+                  onClick={() => {
+                    router.push("/");
+                  }}
+                  className="pb-4"
+                >
                   <SheetTitle className="flex items-center gap-2">
                     <img
                       src="/tempLogo.png"
                       className="w-8 h-8"
                       alt="temp logo"
                     />
-                    <span>JobPortal</span>
+                    <span>RojgarHub</span>
                   </SheetTitle>
                 </SheetHeader>
 
@@ -111,8 +128,13 @@ function PublicNavbar() {
                   <NavLink to="/register" icon={UserPlus}>
                     Register
                   </NavLink>
-                  <NavLink to="/login" icon={LogIn} variant="button">
-                    Login
+                  <NavLink
+                    to="/login"
+                    icon={LogIn}
+                    variant="button"
+                    className="bg-blue-600 hover:bg-blue-600 text-white"
+                  >
+                    <p className="text-white">Login</p>
                   </NavLink>
                 </div>
               </SheetContent>
@@ -124,28 +146,28 @@ function PublicNavbar() {
             <nav className="flex gap-6">
               <Link
                 to="/"
-                className="flex items-center gap-2 text-slate-700 hover:text-slate-900 transition-colors [&.active]:text-slate-900 [&.active]:font-medium"
+                className="flex items-center gap-2 text-slate-700 hover:text-blue-900 transition-colors [&.active]:text-blue-600 [&.active]:font-medium"
               >
                 <Home className="h-4 w-4" />
                 Home
               </Link>
               <Link
                 to="/apply"
-                className="flex items-center gap-2 text-slate-700 hover:text-slate-900 transition-colors [&.active]:text-slate-900 [&.active]:font-medium"
+                className="flex items-center gap-2 text-slate-700 hover:text-blue-900 transition-colors [&.active]:text-blue-600 [&.active]:font-medium"
               >
                 <Briefcase className="h-4 w-4" />
                 Apply
               </Link>
               <Link
                 to="/pricing"
-                className="flex items-center gap-2 text-slate-700 hover:text-slate-900 transition-colors [&.active]:text-slate-900 [&.active]:font-medium"
+                className="flex items-center gap-2 text-slate-700 hover:text-blue-900 transition-colors [&.active]:text-blue-600 [&.active]:font-medium"
               >
                 <DollarSign className="h-4 w-4" />
                 Pricing
               </Link>
               <Link
                 to="/contact"
-                className="flex items-center gap-2 text-slate-700 hover:text-slate-900 transition-colors [&.active]:text-slate-900 [&.active]:font-medium"
+                className="flex items-center gap-2 text-slate-700 hover:text-blue-900 transition-colors [&.active]:text-blue-600 [&.active]:font-medium"
               >
                 <Mail className="h-4 w-4" />
                 Contact

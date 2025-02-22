@@ -20,6 +20,8 @@ import {
 import { Separator } from "@/components/ui/separator";
 import { Button } from "@/components/ui/button";
 import ProfileModal from "./profile";
+import useAuthStore from "@/stores/authStore";
+import { useLogout } from "@/hooks/auth";
 
 interface NavLinkProps {
   to: string;
@@ -47,6 +49,8 @@ function NavLink({ to, icon: Icon, children, onClick }: NavLinkProps) {
 }
 
 function CandidateNavbar() {
+  const { authenticatedUser, user } = useAuthStore();
+  const logoutMutation = useLogout();
   return (
     <div className="bg-white/80 backdrop-blur-xl shadow-sm border-b border-blue-100">
       <div className="lg:container mx-6 lg:mx-auto">
@@ -78,7 +82,7 @@ function CandidateNavbar() {
                       className="w-8 h-8"
                       alt="temp logo"
                     />
-                    <span>JobPortal</span>
+                    <span>RojgarHub</span>
                   </SheetTitle>
                 </SheetHeader>
 
@@ -108,9 +112,27 @@ function CandidateNavbar() {
                 <div className="absolute bottom-4 left-4 right-4">
                   <Separator className="mb-4 bg-blue-100" />
                   <div className="flex items-center justify-between">
-                    <ProfileModal />
+                    <div className="flex items-center gap-2">
+                      <div className="relative w-10 h-10 rounded-full ring-2 ring-primary/10 overflow-hidden">
+                        {authenticatedUser.profile ? (
+                          <img
+                            src={authenticatedUser.profile}
+                            alt={authenticatedUser.fullName}
+                            className="w-full h-full object-cover"
+                          />
+                        ) : (
+                          <div className="w-full h-full bg-primary flex items-center justify-center text-lg font-medium text-primary-foreground">
+                            {user?.username.slice(0, 1).toUpperCase()}
+                          </div>
+                        )}
+                      </div>
+                    </div>
+
                     <Button
                       variant="ghost"
+                      onClick={() => {
+                        logoutMutation.mutate();
+                      }}
                       size="icon"
                       className="text-blue-600 hover:text-blue-700 hover:bg-blue-50"
                     >
@@ -147,19 +169,15 @@ function CandidateNavbar() {
                 My Applications
               </Link>
             </nav>
-
             <Separator orientation="vertical" className="h-6 bg-blue-100" />
-
-            <div className="flex items-center gap-2">
-              <Button
-                variant="ghost"
-                size="icon"
-                className="text-blue-600 hover:text-blue-700 hover:bg-blue-50"
-              >
-                <Bell className="h-5 w-5" />
-              </Button>
-              <ProfileModal />
-            </div>
+            <Button
+              variant="ghost"
+              size="icon"
+              className="text-blue-600 hover:text-blue-700 hover:bg-blue-50"
+            >
+              <Bell className="h-5 w-5" />
+            </Button>
+            <ProfileModal />
           </div>
         </div>
       </div>

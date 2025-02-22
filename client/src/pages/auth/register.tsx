@@ -1,13 +1,3 @@
-import {
-  FaFacebook,
-  FaGithub,
-  FaChartLine,
-  FaLock,
-  FaShieldAlt,
-  FaSync,
-  FaUser,
-} from "react-icons/fa";
-
 import { useState } from "react";
 import { useFormik } from "formik";
 import { Building3, Eye, Mobile } from "iconsax-react";
@@ -15,7 +5,6 @@ import { IoMail } from "react-icons/io5";
 import { ArrowLeft } from "iconsax-react";
 import { Link } from "@tanstack/react-router";
 import { useMutation } from "@tanstack/react-query";
-
 import { authApi } from "../../api/user";
 import useRouter from "../../lib/router";
 import { registerSchema } from "./schemas";
@@ -23,6 +12,14 @@ import showNotification from "../../utils/toastify";
 import ToggleUser from "../../components/toggleButton";
 import DisplayErrorToast from "../../utils/displayErrorMessage";
 import { EyeOff } from "lucide-react";
+import {
+  FaChartLine,
+  FaLock,
+  FaShieldAlt,
+  FaSync,
+  FaUser,
+} from "react-icons/fa";
+import { motion } from "motion/react";
 
 interface RegisterProps {
   onSwitch: () => void;
@@ -69,171 +66,116 @@ function Register({ onSwitch }: RegisterProps) {
   });
 
   return (
-    <div className="flex">
-      <div className="w-1/4 flex justify-center items-center">
-        <Link
-          href="/login"
-          onClick={onSwitch}
-          className="flex items-center gap-2"
-        >
-          <ArrowLeft variant="Bulk" size={24} />
-          Login
-        </Link>
-      </div>
+    <div className="min-h-[90vh] md:min-h-[95vh] w-full bg-[#f0f6ff] flex items-center justify-center p-4">
+      <div className="absolute top-0 left-0 w-full h-52 md:h-64 bg-gradient-to-b from-blue-600 to-blue-500" />
 
-      <div className="w-full flex items-center justify-center">
-        <div className="w-full px-2">
-          <div className="flex flex-col lg:flex-row w-full bg-white rounded-xl shadow-lg overflow-hidden">
-            <div className="lg:w-6/12 p-4 lg:p-6">
-              <div className="max-w-lg mx-auto">
-                <div className="text-center mb-4">
-                  <h3 className="emphasized-text font-bold text-gray-800 text-xl">
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        className="w-full max-w-7xl relative bottom-4"
+      >
+        {/* Main Register Container */}
+        <div className="bg-white rounded-3xl shadow-2xl overflow-hidden relative z-10">
+          <div className="grid md:grid-cols-2 gap-0">
+            {/* Left Side - Form */}
+            <div className="p-6 md:p-8 lg:p-12">
+              <div className="max-w-md mx-auto">
+                <div className="mb-6 md:mb-8">
+                  <h2 className="text-2xl md:text-3xl font-bold text-gray-900">
                     Create Your Account
-                  </h3>
-                  <p className="small-text text-gray-500 mt-1 small-text">
-                    Please fill in your details to register
+                  </h2>
+                  <p className="mt-2 text-gray-600">
+                    Your next career move starts here
                   </p>
                 </div>
-                <div className="flex justify-center mt-3 mb-4">
+
+                <div className="flex justify-center mb-6">
                   <ToggleUser setCurrentUser={setCurrentUser} />
                 </div>
 
-                <form onSubmit={formik.handleSubmit} className="space-y-5">
-                  <div>
-                    <label
-                      htmlFor="username"
-                      className="block small-text font-medium text-gray-700 mb-1"
-                    >
-                      {currentUser === "candidate"
-                        ? "Username"
-                        : "Company Name"}
-                    </label>
-                    <div className="relative">
-                      <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                        {currentUser === "candidate" ? (
-                          <FaUser className="text-gray-600" size={16} />
-                        ) : (
-                          <Building3
-                            variant="Bold"
-                            className="text-gray-600"
-                            size={16}
-                          />
-                        )}
-                      </div>
+                <form
+                  onSubmit={formik.handleSubmit}
+                  className="space-y-4 md:space-y-6"
+                >
+                  {/* Username Input */}
+                  <div className="relative">
+                    {currentUser === "candidate" ? (
+                      <FaUser className="absolute left-4 top-1/2 transform -translate-y-1/2 w-5 h-5 text-gray-400" />
+                    ) : (
+                      <Building3 className="absolute left-4 top-1/2 transform -translate-y-1/2 w-5 h-5 text-gray-400" />
+                    )}
+                    <input
+                      type="text"
+                      id="username"
+                      name="username"
+                      onChange={formik.handleChange}
+                      value={formik.values.username}
+                      className="w-full pl-12 pr-4 py-3 md:py-4 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200"
+                      placeholder={
+                        currentUser === "candidate"
+                          ? "Enter your Full Name"
+                          : "Enter Your Company Name"
+                      }
+                    />
+                  </div>
+
+                  {/* Email and Contact Inputs */}
+                  <div className="flex flex-col md:flex-row gap-4">
+                    <div className="w-full md:w-1/2 relative">
+                      <IoMail className="absolute left-4 top-1/2 transform -translate-y-1/2 w-5 h-5 text-gray-400" />
+                      <input
+                        type="email"
+                        id="email"
+                        onChange={formik.handleChange}
+                        value={formik.values.email}
+                        className="w-full pl-12 pr-4 py-3 md:py-4 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200"
+                        placeholder="Enter your email"
+                      />
+                    </div>
+
+                    <div className="w-full md:w-1/2 relative">
+                      <Mobile className="absolute left-4 top-1/2 transform -translate-y-1/2 w-5 h-5 text-gray-400" />
                       <input
                         type="text"
-                        id={"username"}
-                        name={"username"}
+                        id="contact"
                         onChange={formik.handleChange}
-                        value={formik.values.username}
-                        className="block w-full pl-10 pr-3 py-2 border border-gray-300 rounded-lg small-text"
-                        placeholder={
-                          currentUser === "candidate"
-                            ? "Enter your Full Name"
-                            : "Enter Your Company Name"
-                        }
+                        value={formik.values.contact}
+                        className="w-full pl-12 pr-4 py-3 md:py-4 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200"
+                        placeholder="Enter your Mobile number"
                       />
                     </div>
                   </div>
-                  <div className="flex  gap-4">
-                    <div>
-                      <label
-                        htmlFor="email"
-                        className="block small-text font-medium text-gray-700 mb-1"
-                      >
-                        Email Address
-                      </label>
-                      <div className="relative">
-                        <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                          <IoMail className="text-gray-600" size={16} />
-                        </div>
-                        <input
-                          type="email"
-                          id="email"
-                          onChange={formik.handleChange}
-                          value={formik.values.email}
-                          className="block w-full pl-10 pr-3 py-2 border border-gray-300 rounded-lg small-text"
-                          placeholder="Enter your email"
-                        />
-                      </div>
-                    </div>
 
-                    <div>
-                      <label
-                        htmlFor="contact"
-                        className="block small-text font-medium text-gray-700 mb-1"
-                      >
-                        Mobile Number
-                      </label>
-                      <div className="relative">
-                        <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                          <Mobile
-                            variant="Bold"
-                            className="text-gray-600"
-                            size={16}
-                          />
-                        </div>
-                        <input
-                          type="text"
-                          id="contact"
-                          onChange={formik.handleChange}
-                          value={formik.values.contact}
-                          className="block w-full pl-10 pr-3 py-2 border border-gray-300 rounded-lg small-text"
-                          placeholder="Enter your Mobile number"
-                        />
-                      </div>
-                    </div>
-                  </div>
-                  <div>
-                    <label
-                      htmlFor="password"
-                      className="block small-text font-medium text-gray-700 mb-1"
-                    >
-                      Password
-                    </label>
+                  {/* Password Fields */}
+                  <div className="space-y-4">
                     <div className="relative">
-                      <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                        <FaLock className="text-gray-600" size={16} />
-                      </div>
-                      <div className="flex items-center px-2 border border-gray-300 rounded-lg">
+                      <FaLock className="absolute left-4 top-1/2 transform -translate-y-1/2 w-5 h-5 text-gray-400" />
+                      <div className="flex items-center">
                         <input
                           type={showPassword ? "text" : "password"}
                           id="password"
                           onChange={formik.handleChange}
                           value={formik.values.password}
-                          className="block w-full pl-10 pr-3 py-2  focus:outline-none small-text"
+                          className="w-full pl-12 pr-4 py-3 md:py-4 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200"
                           placeholder="Create your password"
                         />
-
-                        {showPassword ? (
-                          <Eye
-                            onClick={() => {
-                              setShowPassword(!showPassword);
-                            }}
-                          />
-                        ) : (
-                          <EyeOff
-                            onClick={() => {
-                              setShowPassword(!showPassword);
-                            }}
-                          />
-                        )}
+                        <button
+                          type="button"
+                          onClick={() => setShowPassword(!showPassword)}
+                          className="absolute right-4 top-1/2 transform -translate-y-1/2"
+                        >
+                          {showPassword ? (
+                            <Eye size={20} />
+                          ) : (
+                            <EyeOff size={20} />
+                          )}
+                        </button>
                       </div>
                     </div>
-                  </div>
 
-                  <div>
-                    <label
-                      htmlFor="confirmPassword"
-                      className="block small-text font-medium text-gray-700 mb-1"
-                    >
-                      Confirm Password
-                    </label>
                     <div className="relative">
-                      <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                        <FaLock className="text-gray-600" size={16} />
-                      </div>
-                      <div className="flex items-center px-2 border border-gray-300 rounded-lg">
+                      <FaLock className="absolute left-4 top-1/2 transform -translate-y-1/2 w-5 h-5 text-gray-400" />
+                      <div className="flex items-center">
                         <input
                           type={showPassword ? "text" : "password"}
                           id="confirmPassword"
@@ -241,129 +183,170 @@ function Register({ onSwitch }: RegisterProps) {
                           onChange={formik.handleChange}
                           onBlur={formik.handleBlur}
                           value={formik.values.confirmPassword}
-                          className="block w-full pl-10 pr-3 py-2 focus:outline-none small-text"
+                          className="w-full pl-12 pr-4 py-3 md:py-4 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200"
                           placeholder="Confirm your password"
                         />
-                        {showPassword ? (
-                          <Eye
-                            onClick={() => {
-                              setShowPassword(!showPassword);
-                            }}
-                          />
-                        ) : (
-                          <EyeOff
-                            onClick={() => {
-                              setShowPassword(!showPassword);
-                            }}
-                          />
-                        )}
+                        <button
+                          type="button"
+                          onClick={() => setShowPassword(!showPassword)}
+                          className="absolute right-4 top-1/2 transform -translate-y-1/2"
+                        >
+                          {showPassword ? (
+                            <Eye size={20} />
+                          ) : (
+                            <EyeOff size={20} />
+                          )}
+                        </button>
                       </div>
+                      {formik.touched.confirmPassword &&
+                        formik.errors.confirmPassword && (
+                          <p className="mt-2 text-red-500 text-sm">
+                            {formik.errors.confirmPassword}
+                          </p>
+                        )}
                     </div>
-                    {formik.touched.confirmPassword &&
-                      formik.errors.confirmPassword && (
-                        <p className=" mt-2 text-red-500 text-sm">
-                          {formik.errors.confirmPassword}
-                        </p>
-                      )}
                   </div>
 
-                  <button
-                    disabled={isPending}
+                  {/* Submit Button */}
+                  <motion.button
+                    whileHover={{ scale: 1.01 }}
+                    whileTap={{ scale: 0.99 }}
                     type="submit"
-                    className="w-full bg-indigo-600 text-white py-2 px-4 rounded-lg small-text hover:bg-indigo-700"
+                    disabled={isPending}
+                    className="w-full bg-blue-600 text-white py-3 md:py-4 rounded-xl font-medium hover:bg-blue-700 transition-all duration-200"
                   >
-                    {isPending ? "Creating" : "Create Account"}
-                  </button>
+                    {isPending ? "Creating Account..." : "Create Account"}
+                  </motion.button>
+
+                  <div className="text-center">
+                    <Link
+                      to="/login"
+                      onClick={onSwitch}
+                      className="inline-flex items-center gap-2 text-blue-600 hover:text-blue-700 font-medium group"
+                    >
+                      Already have an account? Sign in
+                      <ArrowLeft
+                        className="group-hover:-translate-x-1 transition-transform"
+                        size={20}
+                      />
+                    </Link>
+                  </div>
                 </form>
-
-                <div className="relative mt-4">
-                  <div className="absolute inset-0 flex items-center">
-                    <div className="w-full border-t border-gray-300"></div>
-                  </div>
-                  <div className="relative flex justify-center small-text">
-                    <span className="px-2 bg-white text-gray-500">
-                      Or continue with
-                    </span>
-                  </div>
-                </div>
-
-                <div className="mt-4">
-                  <div className="grid grid-cols-2 gap-3">
-                    <button className="flex items-center justify-center gap-2 py-1.5 border border-gray-300 rounded-lg small-text">
-                      <FaFacebook color="#1877F2" size={20} />
-                      Google
-                    </button>
-                    <button className="flex items-center justify-center gap-2 py-1.5 border border-gray-300 rounded-lg small-text">
-                      <FaGithub size={20} />
-                      GitHub
-                    </button>
-                  </div>
-                </div>
               </div>
             </div>
 
-            {/* Right side with adjusted padding */}
-            <div className="lg:w-1/2 bg-indigo-600 flex flex-col justify-between text-white py-6 px-6">
-              <div>
-                <h2 className="subtitle-text font-bold mb-4">
-                  Welcome to rojgarHub!
-                </h2>
-                <p className="text-indigo-100 mb-6">
-                  Log in to access your dashboard and continue your journey with
-                  us.
-                </p>
+            {/* Right Side - Features Section - Hidden on mobile */}
+            <div className="relative bg-gradient-to-br from-blue-600 to-blue-500 p-8 lg:p-12 text-white overflow-hidden hidden md:block">
+              <div className="relative z-10">
+                <h3 className="text-3xl font-bold mb-6">Why Join Us?</h3>
 
-                <div className="space-y-4">
-                  <div className="flex items-center space-x-4">
-                    <div className="bg-indigo-500 p-2 rounded-lg">
-                      <FaChartLine className="text-lg" />
+                {/* Benefits Section */}
+                <div className="space-y-6">
+                  <div className="flex items-center gap-4">
+                    <div className="w-12 h-12 bg-white/10 rounded-xl flex items-center justify-center">
+                      <FaChartLine size={24} />
                     </div>
-                    <p className="small-text">Real-time Job Tracking</p>
-                  </div>
-                  <div className="flex items-center space-x-4">
-                    <div className="bg-indigo-500 p-2 rounded-lg">
-                      <FaShieldAlt className="text-lg" />
+                    <div>
+                      <h4 className="font-semibold">Real-time Job Tracking</h4>
+                      <p className="text-blue-100">
+                        Track your applications and get updates in real-time.
+                      </p>
                     </div>
-                    <p className="small-text">Secure Application Process</p>
                   </div>
-                  <div className="flex items-center space-x-4">
-                    <div className="bg-indigo-500 p-2 rounded-lg">
-                      <FaSync className="text-lg" />
+
+                  <div className="flex items-center gap-4">
+                    <div className="w-12 h-12 bg-white/10 rounded-xl flex items-center justify-center">
+                      <FaShieldAlt size={24} />
                     </div>
-                    <p className="small-text">Automatic Profile Updates</p>
+                    <div>
+                      <h4 className="font-semibold">Secure & Private</h4>
+                      <p className="text-blue-100">
+                        Your data is always protected with advanced security.
+                      </p>
+                    </div>
                   </div>
+
+                  <div className="flex items-center gap-4">
+                    <div className="w-12 h-12 bg-white/10 rounded-xl flex items-center justify-center">
+                      <FaSync size={24} />
+                    </div>
+                    <div>
+                      <h4 className="font-semibold">Auto Profile Updates</h4>
+                      <p className="text-blue-100">
+                        Keep your profile updated and visible to employers.
+                      </p>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Testimonials Section */}
+                <div className="bg-blue-700 p-6 rounded-xl mt-8">
+                  <p className="italic text-blue-100 mb-4">
+                    "This platform helped me land my dream job as a developer.
+                    The process was seamless and efficient!"
+                  </p>
+                  <div className="flex items-center gap-3">
+                    <div className="w-10 h-10 bg-blue-500 rounded-full flex items-center justify-center">
+                      <FaUser className="text-lg" />
+                    </div>
+                    <div>
+                      <p className="font-medium">Bibek Pandey</p>
+                      <p className="text-blue-200 text-sm">
+                        Full Stack Developer
+                      </p>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Call-to-Action */}
+                <div className="mt-8 text-center">
+                  <p className="text-blue-100 mb-4">
+                    Join thousands of job seekers and start your journey today!
+                  </p>
+                  <button
+                    className="bg-white text-blue-600 py-2 px-6 rounded-lg font-medium hover:bg-blue-100 transition-all duration-200"
+                    onClick={onSwitch}
+                  >
+                    Explore Jobs
+                  </button>
                 </div>
               </div>
 
-              <div className="bg-indigo-700 p-4 rounded-xl mt-4">
-                <p className="italic text-indigo-100 mb-3 small-text">
-                  "Rojgar hub is a great platform it helped me find my dream
-                  job."
-                </p>
-
-                <div className="flex items-center">
-                  <div className="w-8 h-8 bg-indigo-500 rounded-full flex items-center justify-center">
-                    <FaUser className="small-text" />
-                  </div>
-                  <div className="ml-3">
-                    <p className="font-semibold regular-text">Bibek Pandey</p>
-                    <p className="small-text text-indigo-200">
-                      Full stack developer
-                    </p>
-                  </div>
-                </div>
-              </div>
-
-              <div className="flex justify-center gap-3 mt-4">
-                <div className="p-1 bg-blue-300 rounded-xl w-4 h-[2px]"></div>
-                <div className="p-1 bg-white rounded-xl w-4 h-[2px]"></div>
-                <div className="p-1 bg-white rounded-xl w-4 h-[2px]"></div>
-                <div className="p-1 bg-white rounded-xl w-4 h-[2px]"></div>
+              {/* Background Grid Pattern */}
+              <div className="absolute inset-0 opacity-10">
+                <svg
+                  className="w-full h-full"
+                  viewBox="0 0 100 100"
+                  preserveAspectRatio="none"
+                >
+                  <pattern
+                    id="grid"
+                    x="0"
+                    y="0"
+                    width="10"
+                    height="10"
+                    patternUnits="userSpaceOnUse"
+                  >
+                    <path
+                      d="M 10 0 L 0 0 0 10"
+                      fill="none"
+                      stroke="white"
+                      strokeWidth="0.5"
+                    />
+                  </pattern>
+                  <rect
+                    x="0"
+                    y="0"
+                    width="100"
+                    height="100"
+                    fill="url(#grid)"
+                  />
+                </svg>
               </div>
             </div>
           </div>
         </div>
-      </div>
+      </motion.div>
     </div>
   );
 }

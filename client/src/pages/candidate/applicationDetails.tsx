@@ -20,7 +20,7 @@ import Loading from "@/components/isLoading";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { useGetApplicationById } from "@/hooks/application";
-import { ApplicationStatusValues } from "@/types/job"; // Import status values
+import { ApplicationStatusValues } from "@/types/job";
 
 interface Education {
   degree: string;
@@ -66,8 +66,7 @@ interface Application {
   job: Job;
   candidate: Candidate;
   interviews?: Interview[];
-  status: string; // Add status to the Application interface
-}
+  status: string; }
 
 interface ApplicationResponse {
   application: Application;
@@ -245,7 +244,7 @@ const ApplicationDetails = () => {
         <Button
           variant="secondary"
           onClick={() => router.back()}
-          className="mb-6 flex items-center bg-blue-500 text-white gap-2 hover:bg-gray-100"
+          className="mb-6 flex items-center bg-blue-500 text-white gap-2 hover:bg-blue-400"
         >
           <ArrowLeft className="h-4 w-4" />
           Back to Applications
