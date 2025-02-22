@@ -42,9 +42,6 @@ export const createApplication = async (
     );
   }
 
-  console.log(filesPath?.profilePath, "Profile Picture Path");
-  console.log(filesPath?.resumePath, "Resume Path");
-
   const profilePictureRef = filesPath?.profilePath?.startsWith("https://")
     ? filesPath.profilePath
     : filesPath.profilePath

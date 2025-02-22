@@ -54,7 +54,6 @@ async function getEmployerApplication() {
 
 async function updateEmployer(employerId: string, updateData: any) {
   try {
-    console.log(employerId);
     const response = await api.patch(
       `${apiURLs.Employer.update}/${employerId}`,
       updateData,

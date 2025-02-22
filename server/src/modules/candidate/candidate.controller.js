@@ -19,7 +19,6 @@ const getCandidateById = asyncHandler(async (req, res) => {
 const getApplicationByCandidates = asyncHandler(async (req, res) => {
   const userId = req.user.userId;
   const applications = await candidateServices.applicationByCandidates(userId);
-  console.log(applications, "applications");
   return res.json(
     new ApiResponse(
       StatusCodes.OK,

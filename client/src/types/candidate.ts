@@ -30,6 +30,7 @@ export type Experience = {
   title: string;
   company: string;
   startDate: string;
+  position: string;
   endDate: string | null;
   description: string;
 };

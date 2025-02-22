@@ -6,7 +6,6 @@ import { ApiResponse } from "../../utils/apiResponse.js";
 import applicationSchema from "./application.validators.js";
 
 const createJobApplication = asyncHandler(async (req, res) => {
-  console.log(req.body);
   const { jobId } = req.params;
   const { candidateId, ...applicationData } = req.body;
 

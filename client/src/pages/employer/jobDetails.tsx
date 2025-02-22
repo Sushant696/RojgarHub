@@ -27,7 +27,6 @@ function JobDetails() {
   });
   const { data, isLoading, isError } = useGetJobById(jobId);
   const job = data?.data?.job || {};
-  console.log(job)
   const jobStatusToogle = useJobStatusToggle();
 
   const router = useRouter();

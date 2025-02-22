@@ -13,7 +13,7 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import Loading from "@/components/isLoading";
 import { useGetCandidateApplications } from "@/hooks/candidate";
-import { Application } from "@/types/job";
+import { Application, ApplicationStatusValues } from "@/types/job";
 import useRouter from "@/lib/router";
 import {
   Select,
@@ -22,6 +22,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { Separator } from "@/components/ui/separator";
 
 const CandidateApplications = () => {
   const { data, isLoading, isError } = useGetCandidateApplications();
@@ -30,15 +31,13 @@ const CandidateApplications = () => {
   const [isFilterOpen, setIsFilterOpen] = useState(false);
   const [sortBy, setSortBy] = useState("status");
 
-  // Filter applications by status
   const filteredApplications =
     filterStatus === "all"
       ? data?.applications
       : data?.applications.filter(
-          (app: Application) => app.status === filterStatus,
-        );
+        (app: Application) => app.status === filterStatus,
+      );
 
-  // Sort applications
   const sortedApplications = useMemo(() => {
     const priorityOrder: any = {
       ACCEPTED: 0,
@@ -50,10 +49,8 @@ const CandidateApplications = () => {
     return [...(filteredApplications || [])].sort((a, b) => {
       switch (sortBy) {
         case "status":
-          // First sort by status priority
           const statusDiff = priorityOrder[a.status] - priorityOrder[b.status];
           if (statusDiff !== 0) return statusDiff;
-          // Then by salary for same status
           return (b.job?.salaryMax || 0) - (a.job?.salaryMax || 0);
 
         case "salary-high":
@@ -82,13 +79,13 @@ const CandidateApplications = () => {
   if (isError) return <div className="text-red-600">No Applications found</div>;
 
   return (
-    <div className="mx-auto py-8">
-      {/* Header Section */}
-      <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 mb-8">
-        <h1 className="text-2xl font-bold text-gray-900">Your Applications</h1>
+    <div className="mx-auto  my-4 md:py-8">
+      <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 mb-4 sm:mb-5">
+        <h1 className="medium-text text-center  w-full sm:text-left font-bold text-gray-900">
+          Your Applications
+        </h1>
 
         <div className="flex items-center gap-3 w-full sm:w-auto">
-          {/* Sort Dropdown */}
           <Select value={sortBy} onValueChange={setSortBy}>
             <SelectTrigger className="w-48">
               <SelectValue placeholder="Sort by..." />
@@ -101,8 +98,6 @@ const CandidateApplications = () => {
               <SelectItem value="oldest">Oldest First</SelectItem>
             </SelectContent>
           </Select>
-
-          {/* Filter Dropdown */}
           <div className="relative flex-1 sm:flex-none">
             <Button
               variant="outline"
@@ -121,11 +116,10 @@ const CandidateApplications = () => {
                   (status) => (
                     <button
                       key={status}
-                      className={`w-full px-4 py-2 text-left text-sm hover:bg-gray-50 transition-colors ${
-                        filterStatus === status
+                      className={`w-full px-4 py-2 text-left text-sm hover:bg-gray-50 transition-colors ${filterStatus === status
                           ? "bg-blue-50 text-blue-600"
                           : "text-gray-700"
-                      }`}
+                        }`}
                       onClick={() => {
                         setFilterStatus(status);
                         setIsFilterOpen(false);
@@ -138,29 +132,37 @@ const CandidateApplications = () => {
               </div>
             )}
           </div>
-
-          {/* View Toggle Buttons */}
           <div className="hidden sm:flex border-l border-gray-200 pl-3">
+            {/* Grid Button */}
             <Button
               variant={viewType === "grid" ? "default" : "outline"}
               size="icon"
               onClick={() => setViewType("grid")}
-              className="h-9 w-9"
+              className={`h-9 w-9 ${viewType === "grid"
+                  ? "bg-blue-600/90 hover:bg-blue-500 text-white"
+                  : "bg-transparent hover:bg-gray-100 text-gray-500"
+                }`}
             >
               <Grid className="w-4 h-4" />
             </Button>
+
+            {/* List Button */}
             <Button
               variant={viewType === "list" ? "default" : "outline"}
               size="icon"
               onClick={() => setViewType("list")}
-              className="h-9 w-9 ml-2"
+              className={`h-9 w-9 ml-2 ${viewType === "list"
+                  ? "bg-blue-600/90 hover:bg-blue-500 text-white"
+                  : "bg-transparent hover:bg-gray-100 text-gray-500"
+                }`}
             >
               <Menu className="w-4 h-4" />
             </Button>
-          </div>
+          </div>{" "}
         </div>
       </div>
 
+      <Separator className="mb-8" />
       {/* Applications List */}
       {sortedApplications.length === 0 ? (
         <div className="text-center py-12">
@@ -172,7 +174,7 @@ const CandidateApplications = () => {
         <div
           className={
             viewType === "grid"
-              ? "grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"
+              ? "grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6"
               : "space-y-6"
           }
         >
@@ -186,30 +188,60 @@ const CandidateApplications = () => {
 };
 
 const ApplicationCard = ({ application }: { application: any }) => {
-  const statusStyles: any = {
-    PENDING: "bg-blue-50 text-blue-600",
-    REVIEWING: "bg-yellow-50 text-yellow-600",
-    ACCEPTED: "bg-green-50 text-green-600",
-    REJECTED: "bg-red-50 text-red-600",
+  const getStatusStyles = () => {
+    switch (application.status) {
+      case ApplicationStatusValues.REJECTED:
+        return {
+          card: "border-red-100 hover:border-red-200",
+          badge: "bg-red-50 text-red-600 border-red-200",
+          icon: "bg-red-50 text-red-600",
+        };
+      case ApplicationStatusValues.ACCEPTED:
+        return {
+          card: "border-green-100 hover:border-green-200",
+          badge: "bg-green-50 text-green-600 border-green-200",
+          icon: "bg-green-50 text-green-600",
+        };
+      case ApplicationStatusValues.REVIEWING:
+        return {
+          card: "border-yellow-100 hover:border-yellow-200",
+          badge: "bg-yellow-50 text-yellow-600 border-yellow-200",
+          icon: "bg-yellow-50 text-yellow-600",
+        };
+      case ApplicationStatusValues.PENDING:
+        return {
+          card: "border-blue-100 hover:border-blue-200",
+          badge: "bg-blue-50 text-blue-600 border-blue-200",
+          icon: "bg-blue-50 text-blue-600",
+        };
+      default:
+        return {
+          card: "border-gray-100 hover:border-gray-200",
+          badge: "bg-gray-50 text-gray-600 border-gray-200",
+          icon: "bg-gray-50 text-gray-600",
+        };
+    }
   };
 
   const router = useRouter();
   const hasInterview = application?.interviews?.length > 0;
+  const styles = getStatusStyles();
 
-  // Format salary range
   const formatSalary = (min: number, max: number) => {
     return `NPR ${min.toLocaleString()} - ${max.toLocaleString()}`;
   };
 
   return (
-    <Card className="group transition duration-200 hover:shadow-lg hover:border-blue-100">
+    <Card
+      className={`group transition duration-200 hover:shadow-lg ${styles.card}`}
+    >
       <CardContent className="p-6">
         {/* Company Image and Title Section */}
         <div className="flex items-start gap-4">
           <div className="h-16 w-16 rounded-lg overflow-hidden bg-gray-100 border border-gray-200">
             <img
-              src={application.job?.image || "/api/placeholder/64/64"}
-              alt="Company logo"
+              src={application.job?.image}
+              alt="job"
               className="h-full w-full object-cover"
             />
           </div>
@@ -219,24 +251,30 @@ const ApplicationCard = ({ application }: { application: any }) => {
                 {application.job?.title}
               </h3>
               <Badge
-                className={`${statusStyles[application.status]} text-xs font-medium`}
+                className={`${styles.badge} text-xs font-medium px-3 py-1`}
               >
                 {application.status}
               </Badge>
             </div>
 
             {/* Job Details */}
-            <div className="mt-2 space-y-1">
+            <div className="mt-3 space-y-2">
               <div className="flex items-center gap-2 text-sm text-gray-600">
-                <Briefcase className="h-4 w-4" />
+                <div className={`p-1.5 rounded-md ${styles.icon}`}>
+                  <Briefcase className="h-4 w-4" />
+                </div>
                 <span className="capitalize">{application.job?.type}</span>
               </div>
               <div className="flex items-center gap-2 text-sm text-gray-600">
-                <MapPin className="h-4 w-4" />
+                <div className={`p-1.5 rounded-md ${styles.icon}`}>
+                  <MapPin className="h-4 w-4" />
+                </div>
                 <span>{application.job?.location}</span>
               </div>
               <div className="flex items-center gap-2 text-sm text-gray-600">
-                <Clock className="h-4 w-4" />
+                <div className={`p-1.5 rounded-md ${styles.icon}`}>
+                  <Clock className="h-4 w-4" />
+                </div>
                 <span>
                   {formatSalary(
                     application.job?.salaryMin,
@@ -247,16 +285,23 @@ const ApplicationCard = ({ application }: { application: any }) => {
             </div>
 
             {/* Skills Preview */}
-            <div className="mt-3 flex flex-wrap gap-2">
+            <div className="mt-4 flex flex-wrap gap-2">
               {application.skills
                 ?.slice(0, 3)
                 .map((skill: string, index: number) => (
-                  <Badge key={index} variant="secondary" className="text-xs">
+                  <Badge
+                    key={index}
+                    variant="secondary"
+                    className="text-xs bg-blue-50 text-blue-600 hover:bg-blue-100 transition-colors"
+                  >
                     {skill}
                   </Badge>
                 ))}
               {application.skills?.length > 3 && (
-                <Badge variant="secondary" className="text-xs">
+                <Badge
+                  variant="secondary"
+                  className="text-xs bg-gray-50 text-gray-600 hover:bg-gray-100 transition-colors"
+                >
                   +{application.skills.length - 3} more
                 </Badge>
               )}
@@ -264,11 +309,19 @@ const ApplicationCard = ({ application }: { application: any }) => {
           </div>
         </div>
 
-        {/* Interview Indicator */}
-        {hasInterview && (
-          <div className="mt-4 flex items-center gap-2 text-sm text-blue-600">
+        {hasInterview ? (
+          <div
+            className={`w-fit mt-4 p-3 rounded-md ${styles.icon} flex items-center gap-2 text-sm`}
+          >
             <Calendar className="h-4 w-4" />
-            <span>Interview Scheduled</span>
+            <span className="font-medium">Interview Scheduled</span>
+          </div>
+        ) : (
+          <div
+            className={`w-fit mt-4 p-3 rounded-md ${styles.icon} flex items-center gap-2 text-sm`}
+          >
+            <Calendar className="h-4 w-4" />
+            <span className="font-medium">No Interview Scheduled</span>
           </div>
         )}
 
@@ -288,7 +341,7 @@ const ApplicationCard = ({ application }: { application: any }) => {
             onClick={() =>
               router.push(`/candidate/application/${application.id}`)
             }
-            className="text-blue-600 hover:text-blue-700 hover:bg-blue-50 -mr-2 transition-colors"
+            className={`${styles.icon} -mr-2 transition-colors hover:bg-opacity-80`}
           >
             View Details →
           </Button>
@@ -297,5 +350,4 @@ const ApplicationCard = ({ application }: { application: any }) => {
     </Card>
   );
 };
-
 export default CandidateApplications;

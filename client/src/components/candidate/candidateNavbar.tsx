@@ -49,12 +49,12 @@ function NavLink({ to, icon: Icon, children, onClick }: NavLinkProps) {
 function CandidateNavbar() {
   return (
     <div className="bg-white/80 backdrop-blur-xl shadow-sm border-b border-blue-100">
-      <div className="container">
+      <div className="lg:container mx-6 lg:mx-auto">
         <div className="flex justify-between items-center py-3">
           <div className="flex items-center gap-2">
             <img src="/tempLogo.png" className="w-12 h-12" alt="temp logo" />
             <span className="font-semibold text-xl hidden sm:block text-blue-950">
-              JobPortal
+              RojgarHub
             </span>
           </div>
 
@@ -156,7 +156,7 @@ function CandidateNavbar() {
                 size="icon"
                 className="text-blue-600 hover:text-blue-700 hover:bg-blue-50"
               >
-                <Bell className="h-5 w-5"  />
+                <Bell className="h-5 w-5" />
               </Button>
               <ProfileModal />
             </div>
