@@ -30,12 +30,16 @@ import { Route as EmployerCompanyRouteImport } from './routes/employer/company/r
 import { Route as EmployerCandidatesRouteImport } from './routes/employer/candidates/route'
 import { Route as CandidateVeiwJobsRouteImport } from './routes/candidate/veiwJobs/route'
 import { Route as CandidateSettingsRouteImport } from './routes/candidate/settings/route'
-import { Route as CandidateApplicationsRouteImport } from './routes/candidate/applications/route'
 import { Route as EmployerJobManagementIndexImport } from './routes/employer/job-management/index'
 import { Route as EmployerApplicationManagementIndexImport } from './routes/employer/application-management/index'
+import { Route as CandidateProfileIndexImport } from './routes/candidate/profile/index'
+import { Route as CandidateNotificationsIndexImport } from './routes/candidate/notifications/index'
+import { Route as CandidateDashboardIndexImport } from './routes/candidate/dashboard/index'
+import { Route as CandidateApplicationIndexImport } from './routes/candidate/application/index'
 import { Route as EmployerJobManagementJobIdImport } from './routes/employer/job-management/$jobId'
 import { Route as EmployerApplicationManagementApplicationIdImport } from './routes/employer/application-management/$applicationId'
 import { Route as CandidateApplyApplyIdImport } from './routes/candidate/apply/$applyId'
+import { Route as CandidateApplicationApplicationIdImport } from './routes/candidate/application/$applicationId'
 import { Route as EmployerJobManagementUpdateJobIdImport } from './routes/employer/job-management/update/$jobId'
 
 // Create Virtual Routes
@@ -171,14 +175,6 @@ const CandidateSettingsRouteRoute = CandidateSettingsRouteImport.update({
   getParentRoute: () => CandidateRouteRoute,
 } as any)
 
-const CandidateApplicationsRouteRoute = CandidateApplicationsRouteImport.update(
-  {
-    id: '/applications',
-    path: '/applications',
-    getParentRoute: () => CandidateRouteRoute,
-  } as any,
-)
-
 const EmployerJobManagementIndexRoute = EmployerJobManagementIndexImport.update(
   {
     id: '/job-management/',
@@ -193,6 +189,31 @@ const EmployerApplicationManagementIndexRoute =
     path: '/application-management/',
     getParentRoute: () => EmployerRouteRoute,
   } as any)
+
+const CandidateProfileIndexRoute = CandidateProfileIndexImport.update({
+  id: '/profile/',
+  path: '/profile/',
+  getParentRoute: () => CandidateRouteRoute,
+} as any)
+
+const CandidateNotificationsIndexRoute =
+  CandidateNotificationsIndexImport.update({
+    id: '/notifications/',
+    path: '/notifications/',
+    getParentRoute: () => CandidateRouteRoute,
+  } as any)
+
+const CandidateDashboardIndexRoute = CandidateDashboardIndexImport.update({
+  id: '/dashboard/',
+  path: '/dashboard/',
+  getParentRoute: () => CandidateRouteRoute,
+} as any)
+
+const CandidateApplicationIndexRoute = CandidateApplicationIndexImport.update({
+  id: '/application/',
+  path: '/application/',
+  getParentRoute: () => CandidateRouteRoute,
+} as any)
 
 const EmployerJobManagementJobIdRoute = EmployerJobManagementJobIdImport.update(
   {
@@ -214,6 +235,13 @@ const CandidateApplyApplyIdRoute = CandidateApplyApplyIdImport.update({
   path: '/apply/$applyId',
   getParentRoute: () => CandidateRouteRoute,
 } as any)
+
+const CandidateApplicationApplicationIdRoute =
+  CandidateApplicationApplicationIdImport.update({
+    id: '/application/$applicationId',
+    path: '/application/$applicationId',
+    getParentRoute: () => CandidateRouteRoute,
+  } as any)
 
 const EmployerJobManagementUpdateJobIdRoute =
   EmployerJobManagementUpdateJobIdImport.update({
@@ -310,13 +338,6 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof CandidateIndexRouteImport
       parentRoute: typeof CandidateRouteImport
     }
-    '/candidate/applications': {
-      id: '/candidate/applications'
-      path: '/applications'
-      fullPath: '/candidate/applications'
-      preLoaderRoute: typeof CandidateApplicationsRouteImport
-      parentRoute: typeof CandidateRouteImport
-    }
     '/candidate/settings': {
       id: '/candidate/settings'
       path: '/settings'
@@ -380,6 +401,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof EmployerSettingsRouteImport
       parentRoute: typeof EmployerRouteImport
     }
+    '/candidate/application/$applicationId': {
+      id: '/candidate/application/$applicationId'
+      path: '/application/$applicationId'
+      fullPath: '/candidate/application/$applicationId'
+      preLoaderRoute: typeof CandidateApplicationApplicationIdImport
+      parentRoute: typeof CandidateRouteImport
+    }
     '/candidate/apply/$applyId': {
       id: '/candidate/apply/$applyId'
       path: '/apply/$applyId'
@@ -400,6 +428,34 @@ declare module '@tanstack/react-router' {
       fullPath: '/employer/job-management/$jobId'
       preLoaderRoute: typeof EmployerJobManagementJobIdImport
       parentRoute: typeof EmployerRouteImport
+    }
+    '/candidate/application/': {
+      id: '/candidate/application/'
+      path: '/application'
+      fullPath: '/candidate/application'
+      preLoaderRoute: typeof CandidateApplicationIndexImport
+      parentRoute: typeof CandidateRouteImport
+    }
+    '/candidate/dashboard/': {
+      id: '/candidate/dashboard/'
+      path: '/dashboard'
+      fullPath: '/candidate/dashboard'
+      preLoaderRoute: typeof CandidateDashboardIndexImport
+      parentRoute: typeof CandidateRouteImport
+    }
+    '/candidate/notifications/': {
+      id: '/candidate/notifications/'
+      path: '/notifications'
+      fullPath: '/candidate/notifications'
+      preLoaderRoute: typeof CandidateNotificationsIndexImport
+      parentRoute: typeof CandidateRouteImport
+    }
+    '/candidate/profile/': {
+      id: '/candidate/profile/'
+      path: '/profile'
+      fullPath: '/candidate/profile'
+      preLoaderRoute: typeof CandidateProfileIndexImport
+      parentRoute: typeof CandidateRouteImport
     }
     '/employer/application-management/': {
       id: '/employer/application-management/'
@@ -429,18 +485,27 @@ declare module '@tanstack/react-router' {
 
 interface CandidateRouteRouteChildren {
   CandidateIndexRouteRoute: typeof CandidateIndexRouteRoute
-  CandidateApplicationsRouteRoute: typeof CandidateApplicationsRouteRoute
   CandidateSettingsRouteRoute: typeof CandidateSettingsRouteRoute
   CandidateVeiwJobsRouteRoute: typeof CandidateVeiwJobsRouteRoute
+  CandidateApplicationApplicationIdRoute: typeof CandidateApplicationApplicationIdRoute
   CandidateApplyApplyIdRoute: typeof CandidateApplyApplyIdRoute
+  CandidateApplicationIndexRoute: typeof CandidateApplicationIndexRoute
+  CandidateDashboardIndexRoute: typeof CandidateDashboardIndexRoute
+  CandidateNotificationsIndexRoute: typeof CandidateNotificationsIndexRoute
+  CandidateProfileIndexRoute: typeof CandidateProfileIndexRoute
 }
 
 const CandidateRouteRouteChildren: CandidateRouteRouteChildren = {
   CandidateIndexRouteRoute: CandidateIndexRouteRoute,
-  CandidateApplicationsRouteRoute: CandidateApplicationsRouteRoute,
   CandidateSettingsRouteRoute: CandidateSettingsRouteRoute,
   CandidateVeiwJobsRouteRoute: CandidateVeiwJobsRouteRoute,
+  CandidateApplicationApplicationIdRoute:
+    CandidateApplicationApplicationIdRoute,
   CandidateApplyApplyIdRoute: CandidateApplyApplyIdRoute,
+  CandidateApplicationIndexRoute: CandidateApplicationIndexRoute,
+  CandidateDashboardIndexRoute: CandidateDashboardIndexRoute,
+  CandidateNotificationsIndexRoute: CandidateNotificationsIndexRoute,
+  CandidateProfileIndexRoute: CandidateProfileIndexRoute,
 }
 
 const CandidateRouteRouteWithChildren = CandidateRouteRoute._addFileChildren(
@@ -495,7 +560,6 @@ export interface FileRoutesByFullPath {
   '/apply': typeof ApplyLazyRoute
   '/blog': typeof BlogLazyRoute
   '/contact': typeof ContactLazyRoute
-  '/candidate/applications': typeof CandidateApplicationsRouteRoute
   '/candidate/settings': typeof CandidateSettingsRouteRoute
   '/candidate/veiwJobs': typeof CandidateVeiwJobsRouteRoute
   '/employer/candidates': typeof EmployerCandidatesRouteRoute
@@ -504,9 +568,14 @@ export interface FileRoutesByFullPath {
   '/employer/messages': typeof EmployerMessagesRouteRoute
   '/employer/postJob': typeof EmployerPostJobRouteRoute
   '/employer/settings': typeof EmployerSettingsRouteRoute
+  '/candidate/application/$applicationId': typeof CandidateApplicationApplicationIdRoute
   '/candidate/apply/$applyId': typeof CandidateApplyApplyIdRoute
   '/employer/application-management/$applicationId': typeof EmployerApplicationManagementApplicationIdRoute
   '/employer/job-management/$jobId': typeof EmployerJobManagementJobIdRoute
+  '/candidate/application': typeof CandidateApplicationIndexRoute
+  '/candidate/dashboard': typeof CandidateDashboardIndexRoute
+  '/candidate/notifications': typeof CandidateNotificationsIndexRoute
+  '/candidate/profile': typeof CandidateProfileIndexRoute
   '/employer/application-management': typeof EmployerApplicationManagementIndexRoute
   '/employer/job-management': typeof EmployerJobManagementIndexRoute
   '/employer/job-management/update/$jobId': typeof EmployerJobManagementUpdateJobIdRoute
@@ -524,7 +593,6 @@ export interface FileRoutesByTo {
   '/apply': typeof ApplyLazyRoute
   '/blog': typeof BlogLazyRoute
   '/contact': typeof ContactLazyRoute
-  '/candidate/applications': typeof CandidateApplicationsRouteRoute
   '/candidate/settings': typeof CandidateSettingsRouteRoute
   '/candidate/veiwJobs': typeof CandidateVeiwJobsRouteRoute
   '/employer/candidates': typeof EmployerCandidatesRouteRoute
@@ -533,9 +601,14 @@ export interface FileRoutesByTo {
   '/employer/messages': typeof EmployerMessagesRouteRoute
   '/employer/postJob': typeof EmployerPostJobRouteRoute
   '/employer/settings': typeof EmployerSettingsRouteRoute
+  '/candidate/application/$applicationId': typeof CandidateApplicationApplicationIdRoute
   '/candidate/apply/$applyId': typeof CandidateApplyApplyIdRoute
   '/employer/application-management/$applicationId': typeof EmployerApplicationManagementApplicationIdRoute
   '/employer/job-management/$jobId': typeof EmployerJobManagementJobIdRoute
+  '/candidate/application': typeof CandidateApplicationIndexRoute
+  '/candidate/dashboard': typeof CandidateDashboardIndexRoute
+  '/candidate/notifications': typeof CandidateNotificationsIndexRoute
+  '/candidate/profile': typeof CandidateProfileIndexRoute
   '/employer/application-management': typeof EmployerApplicationManagementIndexRoute
   '/employer/job-management': typeof EmployerJobManagementIndexRoute
   '/employer/job-management/update/$jobId': typeof EmployerJobManagementUpdateJobIdRoute
@@ -555,7 +628,6 @@ export interface FileRoutesById {
   '/blog': typeof BlogLazyRoute
   '/contact': typeof ContactLazyRoute
   '/candidate/_index': typeof CandidateIndexRouteRoute
-  '/candidate/applications': typeof CandidateApplicationsRouteRoute
   '/candidate/settings': typeof CandidateSettingsRouteRoute
   '/candidate/veiwJobs': typeof CandidateVeiwJobsRouteRoute
   '/employer/_index': typeof EmployerIndexRouteRoute
@@ -565,9 +637,14 @@ export interface FileRoutesById {
   '/employer/messages': typeof EmployerMessagesRouteRoute
   '/employer/postJob': typeof EmployerPostJobRouteRoute
   '/employer/settings': typeof EmployerSettingsRouteRoute
+  '/candidate/application/$applicationId': typeof CandidateApplicationApplicationIdRoute
   '/candidate/apply/$applyId': typeof CandidateApplyApplyIdRoute
   '/employer/application-management/$applicationId': typeof EmployerApplicationManagementApplicationIdRoute
   '/employer/job-management/$jobId': typeof EmployerJobManagementJobIdRoute
+  '/candidate/application/': typeof CandidateApplicationIndexRoute
+  '/candidate/dashboard/': typeof CandidateDashboardIndexRoute
+  '/candidate/notifications/': typeof CandidateNotificationsIndexRoute
+  '/candidate/profile/': typeof CandidateProfileIndexRoute
   '/employer/application-management/': typeof EmployerApplicationManagementIndexRoute
   '/employer/job-management/': typeof EmployerJobManagementIndexRoute
   '/employer/job-management/update/$jobId': typeof EmployerJobManagementUpdateJobIdRoute
@@ -587,7 +664,6 @@ export interface FileRouteTypes {
     | '/apply'
     | '/blog'
     | '/contact'
-    | '/candidate/applications'
     | '/candidate/settings'
     | '/candidate/veiwJobs'
     | '/employer/candidates'
@@ -596,9 +672,14 @@ export interface FileRouteTypes {
     | '/employer/messages'
     | '/employer/postJob'
     | '/employer/settings'
+    | '/candidate/application/$applicationId'
     | '/candidate/apply/$applyId'
     | '/employer/application-management/$applicationId'
     | '/employer/job-management/$jobId'
+    | '/candidate/application'
+    | '/candidate/dashboard'
+    | '/candidate/notifications'
+    | '/candidate/profile'
     | '/employer/application-management'
     | '/employer/job-management'
     | '/employer/job-management/update/$jobId'
@@ -615,7 +696,6 @@ export interface FileRouteTypes {
     | '/apply'
     | '/blog'
     | '/contact'
-    | '/candidate/applications'
     | '/candidate/settings'
     | '/candidate/veiwJobs'
     | '/employer/candidates'
@@ -624,9 +704,14 @@ export interface FileRouteTypes {
     | '/employer/messages'
     | '/employer/postJob'
     | '/employer/settings'
+    | '/candidate/application/$applicationId'
     | '/candidate/apply/$applyId'
     | '/employer/application-management/$applicationId'
     | '/employer/job-management/$jobId'
+    | '/candidate/application'
+    | '/candidate/dashboard'
+    | '/candidate/notifications'
+    | '/candidate/profile'
     | '/employer/application-management'
     | '/employer/job-management'
     | '/employer/job-management/update/$jobId'
@@ -644,7 +729,6 @@ export interface FileRouteTypes {
     | '/blog'
     | '/contact'
     | '/candidate/_index'
-    | '/candidate/applications'
     | '/candidate/settings'
     | '/candidate/veiwJobs'
     | '/employer/_index'
@@ -654,9 +738,14 @@ export interface FileRouteTypes {
     | '/employer/messages'
     | '/employer/postJob'
     | '/employer/settings'
+    | '/candidate/application/$applicationId'
     | '/candidate/apply/$applyId'
     | '/employer/application-management/$applicationId'
     | '/employer/job-management/$jobId'
+    | '/candidate/application/'
+    | '/candidate/dashboard/'
+    | '/candidate/notifications/'
+    | '/candidate/profile/'
     | '/employer/application-management/'
     | '/employer/job-management/'
     | '/employer/job-management/update/$jobId'
@@ -721,10 +810,14 @@ export const routeTree = rootRoute
       "filePath": "candidate/route.tsx",
       "children": [
         "/candidate/_index",
-        "/candidate/applications",
         "/candidate/settings",
         "/candidate/veiwJobs",
-        "/candidate/apply/$applyId"
+        "/candidate/application/$applicationId",
+        "/candidate/apply/$applyId",
+        "/candidate/application/",
+        "/candidate/dashboard/",
+        "/candidate/notifications/",
+        "/candidate/profile/"
       ]
     },
     "/employer": {
@@ -772,10 +865,6 @@ export const routeTree = rootRoute
       "filePath": "candidate/_index/route.tsx",
       "parent": "/candidate"
     },
-    "/candidate/applications": {
-      "filePath": "candidate/applications/route.tsx",
-      "parent": "/candidate"
-    },
     "/candidate/settings": {
       "filePath": "candidate/settings/route.tsx",
       "parent": "/candidate"
@@ -812,6 +901,10 @@ export const routeTree = rootRoute
       "filePath": "employer/settings/route.tsx",
       "parent": "/employer"
     },
+    "/candidate/application/$applicationId": {
+      "filePath": "candidate/application/$applicationId.tsx",
+      "parent": "/candidate"
+    },
     "/candidate/apply/$applyId": {
       "filePath": "candidate/apply/$applyId.tsx",
       "parent": "/candidate"
@@ -823,6 +916,22 @@ export const routeTree = rootRoute
     "/employer/job-management/$jobId": {
       "filePath": "employer/job-management/$jobId.tsx",
       "parent": "/employer"
+    },
+    "/candidate/application/": {
+      "filePath": "candidate/application/index.tsx",
+      "parent": "/candidate"
+    },
+    "/candidate/dashboard/": {
+      "filePath": "candidate/dashboard/index.tsx",
+      "parent": "/candidate"
+    },
+    "/candidate/notifications/": {
+      "filePath": "candidate/notifications/index.tsx",
+      "parent": "/candidate"
+    },
+    "/candidate/profile/": {
+      "filePath": "candidate/profile/index.tsx",
+      "parent": "/candidate"
     },
     "/employer/application-management/": {
       "filePath": "employer/application-management/index.tsx",

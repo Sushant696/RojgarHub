@@ -8,3 +8,10 @@ export const useGetCandidateById = () => {
     retry: false,
   });
 };
+export const useGetCandidateApplications = () => {
+  return useQuery({
+    queryKey: ["candidateApplication"],
+    queryFn: candidateAction.getCandidateApplications,
+    retry: 1,
+  });
+};

@@ -1,6 +1,8 @@
-// types/job.ts
+import { CandidateProfile, Education, Experience } from "./candidate";
+import { Interview } from "./interview";
 
 export type JobStatus = "OPEN" | "CLOSED";
+
 export type ApplicationStatus =
   | "PENDING"
   | "ACCEPTED"
@@ -16,19 +18,6 @@ export const ApplicationStatusValues: Record<
   REVIEWING: "REVIEWING",
   REJECTED: "REJECTED",
 };
-
-export interface Education {
-  year: number;
-  degree: string;
-  institution: string;
-}
-
-export interface Experience {
-  company: string;
-  duration: string;
-  position: string;
-  description: string;
-}
 
 export interface Application {
   id: string;
@@ -47,26 +36,12 @@ export interface Application {
   status: ApplicationStatus;
   createdAt: string;
   updatedAt: string;
-  candidate: Candidate;
+  candidate: CandidateProfile;
+  job?: Job;
+  interviews?: Interview;
 }
 
-export interface Candidate {
-  id: string;
-  userId: string;
-  fullName: string;
-  phone: string | null;
-  bio: string | null;
-  skills: string[] | null;
-  location: string | null;
-  education: Education[] | null;
-  experience: Experience[] | null;
-  resumeUrl: string | null;
-  websiteLink: string | null;
-  createdAt: string;
-  updatedAt: string;
-}
-
-export interface Job {
+export type Job = {
   id: string;
   employerId: string;
   title: string;
@@ -77,11 +52,13 @@ export interface Job {
   location: string;
   salaryMin: number;
   salaryMax: number;
-  status: JobStatus;
+  status: string;
+  skills: Skill[];
   createdAt: string;
   updatedAt: string;
-  applications: Application[];
-}
+};
+
+type Skill = string;
 
 export interface JobResponse {
   success: boolean;

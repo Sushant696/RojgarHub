@@ -23,6 +23,7 @@ enum InterviewStatus {
 
 
 
+
 enum JobStatus {
   OPEN
   CLOSED

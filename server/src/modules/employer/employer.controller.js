@@ -22,7 +22,7 @@ const updateEmployer = asyncHandler(async (req, res) => {
   const { userId } = req.user;
   const data = req.body;
   const profile = req.file;
- 
+
   let imagePath;
   if (profile) {
     imagePath = profile.path;
@@ -74,7 +74,7 @@ const getApplicationsByEmployersJob = asyncHandler(async (req, res) => {
     new ApiResponse(
       StatusCodes.OK,
       { applications },
-      "Candidates Retrived Successfully",
+      "Applications Retrived Successfully",
     ),
   );
 });

@@ -4,15 +4,12 @@ import { candidateController } from "./candidate.controller.js";
 
 const candidateRouter = Router();
 
+candidateRouter.get("/", isAuthenticated, candidateController.getCandidateById);
+
 candidateRouter.get(
-  "/",
+  "/applications",
   isAuthenticated,
-  candidateController.getCandidateById,
-);
-candidateRouter.get(
-  "/jobs",
-  isAuthenticated,
-  candidateController.getJobsByCandidate,
+  candidateController.getApplicationByCandidates,
 );
 
 export default candidateRouter;

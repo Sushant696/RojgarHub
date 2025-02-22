@@ -24,8 +24,8 @@ export const CandidateLayout = () => {
 
   return (
     <div className="min-h-screen">
-      <div className="flex-1 p-8 border">
-        <main>
+      <div className="flex-1 py-8 border">
+        <main className="container">
           <Outlet />
         </main>
       </div>

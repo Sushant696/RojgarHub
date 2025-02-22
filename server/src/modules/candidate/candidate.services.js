@@ -8,7 +8,6 @@ export const OneCandidate = async (userId) => {
   const candidate = await db.candidateProfile.findFirst({
     where: { userId },
     include: {
-      applications: true,
       user: {
         select: {
           contact: true,
@@ -30,22 +29,21 @@ export const AllCandidates = async () => {
   return candidates;
 };
 
-export const jobsByCandidate = async (jobId, userId) => {
-  const job = await db.candidateProfile.findMany({
-    where: {
-      userId: userId,
-      applications: { jobId },
+export const applicationByCandidates = async (userId) => {
+  const applications = await db.candidateProfile.findUnique({
+    where: { userId },
+    select: {
+      applications: {
+        include: { job: true, interviews: true },
+      },
     },
   });
 
-  if (!job) {
-    throw new ApiError(
-      StatusCodes.NOT_FOUND,
-      "Job not found or unauthorized access",
-    );
+  if (!applications) {
+    throw new ApiError(StatusCodes.NOT_FOUND, "No applications Found");
   }
 
-  return job;
+  return applications.applications;
 };
 
 /*
