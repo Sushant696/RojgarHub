@@ -2,13 +2,19 @@ import { StatusCodes } from "http-status-codes";
 
 import db from "../../db/db.js";
 import { ApiError } from "../../utils/apiError.js";
+import { uploadOnCloudinary } from "../../utils/Cloudinary.js";
 
-export const createApplication = async (data, jobId) => {
+export const createApplication = async (
+  data,
+  jobId,
+  candidateId,
+  filesPath,
+) => {
   const existingApplication = await db.jobApplication.findUnique({
     where: {
       jobId_candidateId: {
         jobId: jobId,
-        candidateId: data.candidateId,
+        candidateId,
       },
     },
   });
@@ -21,15 +27,10 @@ export const createApplication = async (data, jobId) => {
   }
 
   const job = await db.job.findFirst({
-    where: {
-      id: jobId,
-    },
-    include: {
-      applications: true,
-    },
+    where: { id: jobId },
+    include: { applications: true },
   });
 
-  const { candidateId, ...applicationData } = data;
   if (!job) {
     throw new ApiError(StatusCodes.NOT_FOUND, "Job Not Found.");
   }
@@ -41,19 +42,32 @@ export const createApplication = async (data, jobId) => {
     );
   }
 
+  console.log(filesPath?.profilePath, "Profile Picture Path");
+  console.log(filesPath?.resumePath, "Resume Path");
+
+  const profilePictureRef = filesPath?.profilePath?.startsWith("https://")
+    ? filesPath.profilePath
+    : filesPath.profilePath
+      ? (await uploadOnCloudinary(filesPath.profilePath))?.url
+      : null;
+
+  const resumeUrlRef = filesPath?.resumePath?.startsWith("https://")
+    ? filesPath.resumePath
+    : filesPath.resumePath
+      ? (await uploadOnCloudinary(filesPath.resumePath))?.url
+      : null;
+
+  const applicationObject = {
+    ...data,
+    profilePicture: profilePictureRef,
+    resumeUrl: resumeUrlRef,
+  };
+
   return await db.jobApplication.create({
     data: {
-      ...applicationData,
-      job: {
-        connect: {
-          id: jobId,
-        },
-      },
-      candidate: {
-        connect: {
-          id: candidateId,
-        },
-      },
+      ...applicationObject,
+      job: { connect: { id: jobId } },
+      candidate: { connect: { id: candidateId } },
     },
   });
 };
@@ -169,11 +183,11 @@ export const deleteInterview = async (interviewId) => {
   const interview = await db.interview.findUnique({
     where: { id: interviewId },
   });
-  
+
   if (!interview) {
     throw new ApiError(StatusCodes.NOT_FOUND, "Interview not found");
   }
-  
+
   await db.interview.delete({ where: { id: interviewId } });
 
   return;

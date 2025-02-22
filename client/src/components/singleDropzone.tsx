@@ -30,6 +30,7 @@ export function SingleDropzone({
     onDrop,
     accept: {
       "image/*": [".png", ".jpg", ".jpeg", ".svg", ".webp"],
+      "application/pdf": [".pdf"],
     },
     maxFiles: 1,
   });
@@ -39,6 +40,7 @@ export function SingleDropzone({
     setPreview(null);
     onFileSelect(null);
   };
+  console.log(preview);
 
   return (
     <div className="flex flex-col w-full gap-2">
@@ -52,8 +54,8 @@ export function SingleDropzone({
             <div className="relative w-full h-2/3 p-2">
               <img
                 src={preview}
-                alt="Preview"
-                className="w-full h-full object-cover rounded-lg"
+                alt="Preview Not Avaliable"
+                className="w-full h-full object-cover rounded-lg border"
               />
               <button
                 type="button"

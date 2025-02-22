@@ -9,12 +9,12 @@ async function createApplication(
   applicationData: any,
 ) {
   try {
-    console.log(applicationData);
-    const response = await api.patch(
+    const response = await api.post(
       `${apiURLs.Application.createApplication}/${jobId}`,
-      { candidateId, applicationData },
+      { candidateId, ...applicationData },
       {
         withCredentials: true,
+        headers: { "Content-Type": "multipart/form-data" },
       },
     );
     return response.data;

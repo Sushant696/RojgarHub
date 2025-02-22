@@ -66,6 +66,7 @@ function UpdateJob() {
       formik.resetForm();
     },
   });
+
   if (!job || isLoading || updateJob.isPending) {
     return (
       <div>
@@ -74,9 +75,6 @@ function UpdateJob() {
     );
   }
 
-  const handleImageUpload = (file: File | null) => {
-    formik.setFieldValue("image", file);
-  };
   const handleAddSkill = () => {
     if (skill?.trim()) {
       formik.setFieldValue("skills", [...formik.values.skills, skill.trim()]);
@@ -90,6 +88,11 @@ function UpdateJob() {
     );
     formik.setFieldValue("skills", filteredSkills);
   };
+
+  const handleImageUpload = (file: File | null) => {
+    formik.setFieldValue("image", file);
+  };
+
   return (
     <div className="mx-auto px-4 py-8">
       <div className="bg-white rounded-xl p-8 shadow-sm border border-gray-200">
