@@ -2,11 +2,41 @@ import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 
 import { applicationActions } from "@/api/application";
 import { ApplicationStatus } from "@/types/job";
+import showNotification from "@/utils/toastify";
 
 interface InterviewSchedulerProps {
   applicationId: string;
   interviewObj: { scheduledAt: string; time: string; location: string };
 }
+
+export const useCreateApplication = () => {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: ({
+      candidateId,
+      jobId,
+      applicationData,
+    }: {
+      candidateId: string;
+      jobId: string;
+      applicationData: any;
+    }) =>
+      applicationActions.createApplication(candidateId, jobId, applicationData),
+    onSuccess: (response) => {
+      showNotification("success", response?.message);
+      queryClient.invalidateQueries({ queryKey: ["employerApplication"] });
+      queryClient.invalidateQueries({ queryKey: ["application"] });
+      queryClient.invalidateQueries({
+        queryKey: ["job"],
+        refetchType: "active",
+      });
+    },
+    onError: (error) => {
+
+      console.error("Mutation failed:", error);
+    },
+  });
+};
 
 export const useUpdateApplicationStatus = () => {
   const queryClient = useQueryClient();
@@ -58,10 +88,12 @@ export const useInterviewScheduler = () => {
     mutationFn: ({ applicationId, interviewObj }: InterviewSchedulerProps) =>
       applicationActions.scheduleInterview({ applicationId, interviewObj }),
     retry: false,
-    onSuccess: () => {
+    onSuccess: (response: any) => {
+      showNotification("success", response?.message);
       queryClient.invalidateQueries({ queryKey: ["interviews"] });
       queryClient.invalidateQueries({ queryKey: ["application"] });
     },
+
     onError: (error: any) => {
       console.error(
         "Error updating interview:",

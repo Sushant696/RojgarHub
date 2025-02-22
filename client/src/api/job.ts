@@ -62,6 +62,19 @@ async function getJobById(jobId: string) {
   }
 }
 
+async function getJobByIdPublic(jobId: string) {
+  try {
+    const response = await api.get(`${apiURLs.Jobs.getByIdPublic}/${jobId}`, {
+      withCredentials: true,
+    });
+    return response.data;
+  } catch (error: any) {
+    DisplayErrorToast(error);
+    showNotification("error", error?.respone?.data?.message);
+    throw new Error(error.response?.data?.message || "Something went wrong!");
+  }
+}
+
 async function toogleJobStatus(jobId: string) {
   try {
     const response = await api.get(`${apiURLs.Jobs.toggleJob}/${jobId}`, {
@@ -120,4 +133,5 @@ export const jobAction = {
   deleteJob,
   getJobApplication,
   getJobCandidates,
+  getJobByIdPublic,
 };

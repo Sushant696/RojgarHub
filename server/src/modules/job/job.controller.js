@@ -75,6 +75,14 @@ const getJobById = asyncHandler(async (req, res) => {
   );
 });
 
+const getJobByIdpublic = asyncHandler(async (req, res) => {
+  const jobId = req.params?.jobId;
+  const job = await jobServices.getJobByIdPublic(jobId);
+  return res.json(
+    new ApiResponse(StatusCodes.OK, { job }, "Job fetched successfully"),
+  );
+});
+
 const deleteJob = asyncHandler(async (req, res) => {
   const jobId = req.params?.jobId;
 
@@ -114,14 +122,14 @@ const getCandidatesByJob = asyncHandler(async (req, res) => {
   );
 });
 
-
 export const jobController = {
-  PostJob,
   editJob,
+  PostJob,
   deleteJob,
-  getAllJobs,
   getJobById,
+  getAllJobs,
   toggleJobStatus,
-  getApplicationsByJob,
+  getJobByIdpublic,
   getCandidatesByJob,
+  getApplicationsByJob,
 };

@@ -34,8 +34,10 @@ const applicationSchema = yup.object().shape({
       }),
     )
     .nullable(),
-  resumeUrl: yup.string().url("Invalid URL").nullable(),
-  websiteLink: yup.string().url("Invalid URL").nullable(),
+  websiteLink: yup
+    .string()
+    .url("Please Enter  a valid website Link.")
+    .nullable(),
 });
 
 export default applicationSchema;

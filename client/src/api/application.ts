@@ -3,6 +3,28 @@ import api from "@/lib/axios";
 import { ApplicationStatus } from "@/types/job";
 import DisplayErrorToast from "@/utils/displayErrorMessage";
 
+async function createApplication(
+  candidateId: string,
+  jobId: string,
+  applicationData: any,
+) {
+  try {
+    const response = await api.post(
+      `${apiURLs.Application.createApplication}/${jobId}`,
+      { candidateId, ...applicationData },
+      {
+        withCredentials: true,
+        headers: { "Content-Type": "multipart/form-data" },
+      },
+    );
+    return response.data;
+  } catch (error: any) {
+    console.error("API Error:", error);
+    DisplayErrorToast(error);
+    throw new Error(error.response?.data?.message || "Something went wrong!");
+  }
+}
+
 async function applicationStatus(
   applicationId: string,
   candidateId: string,
@@ -112,4 +134,5 @@ export const applicationActions = {
   scheduleInterview,
   deleteInterview,
   updateInterview,
+  createApplication,
 };

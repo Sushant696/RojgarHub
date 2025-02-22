@@ -7,9 +7,15 @@ export const OneCandidate = async (userId) => {
   console.log(userId, "userId");
   const candidate = await db.candidateProfile.findFirst({
     where: { userId },
-    include: { applications: true },
+    include: {
+      applications: true,
+      user: {
+        select: {
+          contact: true,
+        },
+      },
+    },
   });
-  console.log(candidate);
   if (!candidate) {
     throw new ApiError(StatusCodes.NOT_FOUND, "Requested Candidate not found");
   }

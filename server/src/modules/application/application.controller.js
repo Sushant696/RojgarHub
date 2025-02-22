@@ -6,11 +6,26 @@ import { ApiResponse } from "../../utils/apiResponse.js";
 import applicationSchema from "./application.validators.js";
 
 const createJobApplication = asyncHandler(async (req, res) => {
+  console.log(req.body);
   const { jobId } = req.params;
-  const validatedApplicationData = await applicationSchema.validate(req.body);
+  const { candidateId, ...applicationData } = req.body;
+
+  const profilePath =
+    applicationData.profilePicture ||
+    req.files.find((file) => file.fieldname === "profilePicture")?.path;
+
+  const resumePath =
+    applicationData.resumeUrl ||
+    req.files.find((file) => file.fieldname === "resumeUrl")?.path;
+
+  const validatedApplicationData =
+    await applicationSchema.validate(applicationData);
+
   const application = await applicationServices.createApplication(
     validatedApplicationData,
     jobId,
+    candidateId,
+    { profilePath, resumePath },
   );
 
   return res.json(
@@ -114,7 +129,6 @@ const updateApplicationInterview = asyncHandler(async (req, res) => {
 
 const deleteApplicationInterview = asyncHandler(async (req, res) => {
   const { interviewId } = req.params;
-  console.log(interviewId);
 
   await applicationServices.deleteInterview(interviewId);
 

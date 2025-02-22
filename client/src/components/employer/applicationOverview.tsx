@@ -260,6 +260,7 @@ const ApplicationsOverview = ({
   const [Filter, setFilter] = useState<string>("all");
   const [isSelectOpen, setIsSelectOpen] = useState(false);
   const [view, setView] = useState<boolean>(false);
+  console.log(applications);
   const filteredApplications = applications.filter((application) =>
     Filter === "all" ? application : application.status === Filter,
   );
@@ -294,8 +295,9 @@ const ApplicationsOverview = ({
                 <span className="text-gray-600">Show:</span>
                 <span className="font-medium">{formatStatus(Filter)}</span>
                 <ChevronDown
-                  className={`w-4 h-4 transition-transform duration-200 ${isSelectOpen ? "rotate-180" : ""
-                    }`}
+                  className={`w-4 h-4 transition-transform duration-200 ${
+                    isSelectOpen ? "rotate-180" : ""
+                  }`}
                 />
               </button>
 
@@ -322,8 +324,9 @@ const ApplicationsOverview = ({
             {/* View Toggle Buttons */}
             <div className="hidden md:flex items-center gap-2 border-l border-gray-200 pl-4 ">
               <button
-                className={`p-2 hover:bg-blue-500 rounded-lg transition-colors ${view ? "bg-blue-400 text-white" : "text-gray-600"
-                  }`}
+                className={`p-2 hover:bg-blue-500 rounded-lg transition-colors ${
+                  view ? "bg-blue-400 text-white" : "text-gray-600"
+                }`}
                 onClick={() => {
                   setView(true);
                 }}
@@ -334,8 +337,9 @@ const ApplicationsOverview = ({
                 />
               </button>
               <button
-                className={`p-2 hover:bg-blue-500 hover:text-white rounded-lg transition-colors ${!view ? "bg-blue-400 text-white" : "text-gray-600"
-                  }`}
+                className={`p-2 hover:bg-blue-500 hover:text-white rounded-lg transition-colors ${
+                  !view ? "bg-blue-400 text-white" : "text-gray-600"
+                }`}
                 onClick={() => {
                   setView(false);
                 }}
@@ -350,10 +354,11 @@ const ApplicationsOverview = ({
         </CardHeader>
         <CardContent className="pt-6">
           <div
-            className={`transition-all duration-300 ${view
+            className={`transition-all duration-300 ${
+              view
                 ? "flex flex-col space-y-4"
                 : "grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4"
-              }`}
+            }`}
           >
             {filteredApplications.length > 0 ? (
               filteredApplications.map((application: Application) => (

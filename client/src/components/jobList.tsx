@@ -1,12 +1,24 @@
-import { MapPin, Clock, DollarSign } from "lucide-react";
+import clsx from "clsx";
 import { useState } from "react";
+import DOMPurify from "dompurify";
+import { MapPin, Clock, DollarSign, Building2, Users, Eye } from "lucide-react";
+
 import { useGetAllJobs } from "@/hooks/jobs";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
 import { Card, CardContent } from "@/components/ui/card";
-import Loading from "./isLoading";
-import clsx from "clsx";
+import {
+  Sheet,
+  SheetContent,
+  SheetHeader,
+  SheetTitle,
+} from "@/components/ui/sheet";
+
 import Filter from "./filter";
+import Loading from "./isLoading";
+import useRouter from "@/lib/router";
+import useAuthStore from "@/stores/authStore";
+import JobApplicationForm from "./candidate/jobApplicationForm";
 
 interface Job {
   id: string;
@@ -17,6 +29,12 @@ interface Job {
   salaryMax: number;
   jobDescription: string;
   image: string;
+  employer?: {
+    companyName: string;
+    companySize: number;
+    industry: string;
+  };
+  requirements?: string;
 }
 
 function JobLists() {
@@ -26,6 +44,11 @@ function JobLists() {
   const [salaryRange, setSalaryRange] = useState<string>("");
   const [jobType, setJobType] = useState<string>("");
   const [sortBy, setSortBy] = useState<string>("");
+  const [selectedJob, setSelectedJob] = useState<Job | null>(null);
+  const [isDetailsOpen, setIsDetailsOpen] = useState(false);
+  const [isApplyOpen, setIsApplyOpen] = useState(false);
+  const { isAuthenticated } = useAuthStore();
+  const router = useRouter();
 
   if (isLoading) return <Loading />;
   if (isError)
@@ -39,38 +62,43 @@ function JobLists() {
     const matchesSearch = job.title
       .toLowerCase()
       .includes(searchTerm.toLowerCase());
-
     const matchesType =
       jobType === "all" ||
       !jobType ||
       job.type.toLowerCase() === jobType.toLowerCase();
-
     const matchesSalary = () => {
       if (salaryRange === "all" || !salaryRange) return true;
-
       const [min, max] = salaryRange.split("-").map(Number);
       return (
         (job.salaryMin >= min && job.salaryMin <= max) ||
         (job.salaryMax >= min && job.salaryMax <= max)
       );
     };
-
     return matchesSearch && matchesType && matchesSalary();
   });
 
-  if (sortBy) {
-    filteredJobs.sort((a: Job, b: Job) => {
-      if (sortBy === "newest") return a;
-      if (sortBy === "low_to_high") return a.salaryMin - b.salaryMin;
-      if (sortBy === "high_to_low") return b.salaryMax - a.salaryMax;
-      return 0;
-    });
-  }
+  const handleViewDetails = (job: Job) => {
+    setSelectedJob(job);
+    setIsDetailsOpen(true);
+  };
 
+  const handleApplyJob = (job: Job) => {
+    if (!isAuthenticated) {
+      router.push("/login");
+      return;
+    }
+    setSelectedJob(job);
+    setIsApplyOpen(true);
+  };
+
+  const sanitizedData = () => ({
+    __html: selectedJob?.requirements
+      ? DOMPurify.sanitize(selectedJob.requirements)
+      : "",
+  });
   return (
     <div className="min-h-screen bg-slate-50/50">
-      <div className="container mx-auto px-4 py-8">
-        {/* Filter Section */}
+      <div className="lg:container mx-0 sm:mx-auto px-1 md:px-4 py-0 sm:py-8">
         <Filter
           viewMode={viewMode}
           setViewMode={setViewMode}
@@ -84,12 +112,11 @@ function JobLists() {
           setSortBy={setSortBy}
         />
 
-        {/* Job Cards */}
         <div
           className={clsx(
             "gap-4",
             viewMode === "grid"
-              ? "grid grid-cols-1 md:grid-cols-2"
+              ? "grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3"
               : "space-y-4",
           )}
         >
@@ -150,22 +177,167 @@ function JobLists() {
 
                     <Separator className="my-4" />
 
-                    <div className="flex justify-between items-center">
+                    <div className="flex  flex-col gap-5 3xl:flex-row sm:items-start sm:justify-between">
                       <p className="text-slate-600 line-clamp-2 max-w-2xl">
                         {job.jobDescription}
                       </p>
-                      <Button className="bg-blue-600 hover:bg-blue-700 ml-4 whitespace-nowrap">
-                        Apply Now
-                      </Button>
+
+                      {/* Buttons section */}
+                      <div className="w-full sm:w-auto flex gap-2 self-end sm:self-auto sm:ml-auto">
+                        <Button
+                          variant="outline"
+                          onClick={() => handleViewDetails(job)}
+                          className="whitespace-nowrap sm:w-auto"
+                        >
+                          <Eye className="w-4 h-4 mr-2 sm:mr-0" />
+                          View Details
+                        </Button>
+                        <Button
+                          onClick={() =>
+                            router.push("/candidate/apply/" + job.id)
+                          }
+                          className="bg-blue-600 hover:bg-blue-700 whitespace-nowrap sm:w-auto"
+                        >
+                          Apply Now
+                        </Button>
+                      </div>
                     </div>
                   </div>
                 </div>
-              </CardContent>
+              </CardContent>{" "}
             </Card>
           ))}
         </div>
       </div>
+
+      <Sheet open={isDetailsOpen} onOpenChange={setIsDetailsOpen}>
+        <SheetContent className="w-full sm:max-w-xl overflow-y-auto">
+          <SheetHeader>
+            <SheetTitle className="text-xl text-blue-600">
+              Job Details
+            </SheetTitle>
+          </SheetHeader>
+          {selectedJob && (
+            <div className="mt-6 space-y-6">
+              <div className="flex items-start gap-4">
+                <div className="w-16 h-16 rounded-lg overflow-hidden bg-slate-100">
+                  <img
+                    src={selectedJob.image}
+                    alt={selectedJob.title}
+                    className="w-full h-full object-cover"
+                  />
+                </div>
+                <div>
+                  <h2 className="text-xl font-semibold text-slate-900">
+                    {selectedJob.title}
+                  </h2>
+                  <div className="flex items-center gap-2 text-blue-600 mt-1">
+                    <Building2 className="w-4 h-4" />
+                    <span className="font-medium">
+                      {selectedJob.employer?.companyName}
+                    </span>
+                  </div>
+                </div>
+              </div>
+
+              <Card className="bg-white/50 backdrop-blur-sm border-blue-100">
+                <CardContent className="grid grid-cols-1 sm:grid-cols-2 gap-6 p-6">
+                  <div className="flex items-center gap-3 group">
+                    <div className="p-2 rounded-lg bg-blue-50 text-blue-600 group-hover:bg-blue-100 transition-colors">
+                      <MapPin className="w-5 h-5" />
+                    </div>
+                    <div className="space-y-0.5">
+                      <p className="text-sm text-slate-500">Location</p>
+                      <p className="text-sm font-medium text-slate-700">
+                        {selectedJob.location}
+                      </p>
+                    </div>
+                  </div>
+
+                  <div className="flex items-center gap-3 group">
+                    <div className="p-2 rounded-lg bg-blue-50 text-blue-600 group-hover:bg-blue-100 transition-colors">
+                      <Clock className="w-5 h-5" />
+                    </div>
+                    <div className="space-y-0.5">
+                      <p className="text-sm text-slate-500">Job Type</p>
+                      <p className="text-sm font-medium text-slate-700 capitalize">
+                        {selectedJob.type}
+                      </p>
+                    </div>
+                  </div>
+
+                  <div className="flex items-center gap-3 group">
+                    <div className="p-2 rounded-lg bg-blue-50 text-blue-600 group-hover:bg-blue-100 transition-colors">
+                      <DollarSign className="w-5 h-5" />
+                    </div>
+                    <div className="space-y-0.5">
+                      <p className="text-sm text-slate-500">Salary Range</p>
+                      <p className="text-sm font-medium text-slate-700">
+                        ${selectedJob.salaryMin.toLocaleString()} - $
+                        {selectedJob.salaryMax.toLocaleString()}
+                      </p>
+                    </div>
+                  </div>
+
+                  <div className="flex items-center gap-3 group">
+                    <div className="p-2 rounded-lg bg-blue-50 text-blue-600 group-hover:bg-blue-100 transition-colors">
+                      <Users className="w-5 h-5" />
+                    </div>
+                    <div className="space-y-0.5">
+                      <p className="text-sm text-slate-500">Company Size</p>
+                      <p className="text-sm font-medium text-slate-700">
+                        {selectedJob.employer?.companySize}+ Employees
+                      </p>
+                    </div>
+                  </div>
+                </CardContent>
+              </Card>
+
+              <Separator />
+
+              <div className="space-y-4">
+                <h3 className="font-semibold text-slate-900">
+                  Job Description
+                </h3>
+                <p className="text-slate-600 whitespace-pre-wrap">
+                  {selectedJob.jobDescription}
+                </p>
+              </div>
+
+              <div className="space-y-4">
+                <h3 className="font-semibold text-slate-900">Requirements</h3>
+                <p className="text-slate-600 whitespace-pre-wrap">
+                  <div dangerouslySetInnerHTML={sanitizedData()} />
+                </p>
+              </div>
+
+              <Button
+                onClick={() => {
+                  setIsDetailsOpen(false);
+                  router.push("/candidate/apply/" + selectedJob.id);
+                }}
+                className="w-full bg-blue-600 hover:bg-blue-700"
+              >
+                Apply for this Position
+              </Button>
+            </div>
+          )}
+        </SheetContent>
+      </Sheet>
+
+      {/* Job Application Sheet */}
+      <Sheet open={isApplyOpen} onOpenChange={setIsApplyOpen}>
+        <SheetContent className="w-full sm:max-w-xl overflow-y-auto">
+          <SheetHeader>
+            <SheetTitle className="text-xl text-blue-600">
+              Apply for {selectedJob?.title}
+            </SheetTitle>
+          </SheetHeader>
+          <JobApplicationForm jobId={selectedJob?.id} />
+        </SheetContent>
+      </Sheet>
     </div>
   );
 }
+
 export default JobLists;

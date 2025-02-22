@@ -92,6 +92,27 @@ export const getJobs = async () => {
   return job;
 };
 
+export const getJobByIdPublic = async (jobId) => {
+  const job = await db.job.findFirst({
+    where: { id: jobId },
+    include: {
+      employer: {
+        select: {
+          companyName: true,
+          companySize: true,
+          profile: true,
+          industry: true,
+          location: true,
+        },
+      },
+    },
+  });
+  if (!job) {
+    throw new ApiError(404, "Requested Job not found");
+  }
+  return job;
+};
+
 export const getJobById = async (jobId) => {
   const job = await db.job.findFirst({
     where: { id: jobId },

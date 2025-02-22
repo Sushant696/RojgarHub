@@ -1,12 +1,14 @@
 import { Router } from "express";
 import isAuthenticated from "../../middlewares/isAuthenticated.js";
 import { applicationController } from "./application.controller.js";
+import upload from "../../utils/multer.js";
 
 const applicationRouter = Router();
 
 applicationRouter.post(
-  "/:jobId",
+  "/create/:jobId",
   isAuthenticated,
+  upload.any(),
   applicationController.createJobApplication,
 );
 

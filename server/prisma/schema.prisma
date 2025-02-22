@@ -110,6 +110,7 @@ model Job {
   salaryMin       Int?  
   salaryMax       Int? 
   status          JobStatus @default(OPEN)
+  skills         Json?     
   
   applications    JobApplication[] @relation("JobToApplications")
 
@@ -144,7 +145,6 @@ model JobApplication {
   fullName       String
   phone          String?
   profilePicture String?
-  bio            String?   @db.Text
   skills         Json?     
   location       String?
   education      Json?     

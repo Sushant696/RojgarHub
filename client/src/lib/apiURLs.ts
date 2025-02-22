@@ -13,6 +13,7 @@ export const apiURLs = {
     editJob: "/api/job/",
     get: "/api/job",
     getById: "/api/job/",
+    getByIdPublic: "/api/job/public",
     toggleJob: "/api/job/toogle",
     candidates: "/api/job/candidates",
     applications: "/api/job/applications",
@@ -31,6 +32,7 @@ export const apiURLs = {
     update: "/api/candidate",
   },
   Application: {
+    createApplication: "/api/application/create",
     applicationStatus: "/api/application/status",
     applicationById: "/api/application",
     interviewSchedule: "/api/application/interview",

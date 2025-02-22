@@ -40,6 +40,7 @@ export const register = async (registerData) => {
     await db.candidateProfile.create({
       data: {
         userId: createdUser.id,
+        phone: createdUser.contact,
         fullName: registerData.username,
       },
     });
