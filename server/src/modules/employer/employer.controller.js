@@ -103,10 +103,23 @@ const getAllApplicationsByEmployer = asyncHandler(async (req, res) => {
   );
 });
 
+const getVisulizationData = asyncHandler(async (req, res) => {
+  const { userId } = req.user;
+  const data = await EmployerServices.vizData(userId);
+  return res.json(
+    new ApiResponse(
+      StatusCodes.OK,
+      { ...data },
+      "Visulization data retrived Successfully",
+    ),
+  );
+});
+
 export const employerController = {
+  updateEmployer,
   getEmployerById,
   getEmployerJobs,
-  updateEmployer,
+  getVisulizationData,
   getCandidatesByEmployer,
   getAllApplicationsByEmployer,
   getApplicationsByEmployersJob,

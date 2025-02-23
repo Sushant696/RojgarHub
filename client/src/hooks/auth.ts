@@ -22,8 +22,8 @@ export const useLogin = () => {
 
       queryClient.invalidateQueries({ queryKey: ["verify"] });
       role === "EMPLOYER"
-        ? router.push("/employer")
-        : router.push("/candidate");
+        ? router.push("/employer/dashboard")
+        : router.push("/candidate/dashboard");
       showNotification("success", response.data.message);
     },
     onError: (error: any) => {

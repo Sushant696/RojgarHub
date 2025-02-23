@@ -77,3 +77,10 @@ export const useUpdateUser = () => {
     retry: false,
   });
 };
+
+export const useGetVizData = () => {
+  return useQuery({
+    queryKey: ["vizData"],
+    queryFn: employerApi.getVizData,
+  });
+};

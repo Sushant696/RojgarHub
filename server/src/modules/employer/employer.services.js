@@ -176,3 +176,111 @@ export const employerApplication = async (userId) => {
   }
   return applications;
 };
+
+export const vizData = async (userId) => {
+  const employer = await db.employerProfile.findUnique({
+    where: { userId },
+    select: { id: true },
+  });
+
+  if (!employer) {
+    throw new ApiError(StatusCodes.NOT_FOUND, "Employer not found");
+  }
+
+  const employerId = employer.id;
+
+  const jobPostingsByMonth = await db.$queryRaw`
+    WITH RECURSIVE months AS (
+      SELECT 
+        DATE_TRUNC('month', CURRENT_DATE - INTERVAL '11 months') as month_date
+      UNION ALL
+      SELECT 
+        DATE_TRUNC('month', month_date + INTERVAL '1 month')
+      FROM months
+      WHERE month_date < DATE_TRUNC('month', CURRENT_DATE)
+    ),
+    monthly_posts AS (
+      SELECT 
+        DATE_TRUNC('month', "createdAt") as post_month,
+        COUNT(*)::integer as post_count
+      FROM "Job"
+      WHERE "employerId" = ${employerId}
+      AND "createdAt" >= CURRENT_DATE - INTERVAL '12 months'
+      GROUP BY DATE_TRUNC('month', "createdAt")
+    )
+    SELECT 
+      TO_CHAR(m.month_date, 'Mon YYYY') as month,
+      COALESCE(mp.post_count, 0) as count
+    FROM months m
+    LEFT JOIN monthly_posts mp ON m.month_date = mp.post_month
+    ORDER BY m.month_date ASC
+  `;
+
+  const [
+    applicationStatusDistribution,
+    applicationsPerJob,
+    interviewStatusDistribution,
+  ] = await Promise.all([
+    db.$queryRaw`
+      SELECT 
+        a.status::text as status,
+        COUNT(*)::integer as count
+      FROM "JobApplication" a
+      JOIN "Job" j ON j."id" = a."jobId"
+      WHERE j."employerId" = ${employerId}
+      GROUP BY a.status
+    `,
+
+    db.$queryRaw`
+      SELECT 
+        j.title::text as title,
+        COUNT(a.id)::integer as "applicationCount"
+      FROM "Job" j
+      LEFT JOIN "JobApplication" a ON j."id" = a."jobId"
+      WHERE j."employerId" = ${employerId}
+      GROUP BY j.title
+    `,
+
+    db.$queryRaw`
+      SELECT 
+        i.status::text as status,
+        COUNT(*)::integer as count
+      FROM "Interview" i
+      JOIN "JobApplication" a ON a."id" = i."jobApplicationId"
+      JOIN "Job" j ON j."id" = a."jobId"
+      WHERE j."employerId" = ${employerId}
+      GROUP BY i.status
+    `,
+  ]);
+
+  const jobs = await db.job.findMany({
+    where: {
+      employerId,
+    },
+    select: {
+      requirements: true,
+    },
+  });
+
+  const skillCounts = {};
+  jobs.forEach((job) => {
+    if (Array.isArray(job.requirements)) {
+      job.requirements.forEach((skill) => {
+        skillCounts[skill] = (skillCounts[skill] || 0) + 1;
+      });
+    }
+  });
+
+  const topSkills = Object.entries(skillCounts)
+    .map(([skill, count]) => ({ skill, count }))
+    .sort((a, b) => b.count - a.count)
+    .slice(0, 10);
+
+  return {
+    jobPostingsByMonth,
+    applicationStatusDistribution,
+    applicationsPerJob,
+    interviewStatusDistribution,
+    topSkills,
+  };
+};

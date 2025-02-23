@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useFormik } from "formik";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -8,9 +8,9 @@ import useAuthStore from "@/stores/authStore";
 import EducationForm from "./educationForm";
 import ExperienceForm from "./experienceForm";
 import SingleDropzone from "../singleDropzone";
-import { useCreateApplication } from "@/hooks/application";
 import Loading from "../isLoading";
 import { SingleDropzonePdf } from "../SingleDropzonePdf";
+import { useEditCandidate } from "@/hooks/candidate";
 
 interface EducationEntry {
   institution: string;
@@ -28,21 +28,22 @@ interface ExperienceEntry {
   endDate: string;
 }
 
-interface JobApplicationFormTypes {
+interface CandidateProfileFormTypes {
   fullName: string;
-  phone: string;
-  profilePicture?: string;
-  skills: string[];
-  location: string;
-  education: EducationEntry[];
-  experience: ExperienceEntry[];
+  phone?: string;
+  profile?: string;
+  bio?: string;
+  skills?: string[];
+  location?: string;
+  education?: EducationEntry[];
+  experience?: ExperienceEntry[];
   resumeUrl?: string;
   websiteLink?: string;
 }
 
 const EditProfileForm = () => {
   const { authenticatedUser } = useAuthStore();
-  const applicationMutation = useCreateApplication();
+  const candidateMutation = useEditCandidate();
 
   const [skill, setSkill] = useState<string>("");
   const [preview, setPreview] = useState<string | null>(null);
@@ -50,51 +51,76 @@ const EditProfileForm = () => {
   const [showEducationForm, setShowEducationForm] = useState(false);
   const [showExperienceForm, setShowExperienceForm] = useState(false);
 
-  const formik = useFormik<JobApplicationFormTypes>({
+  const formik = useFormik<CandidateProfileFormTypes>({
     initialValues: {
       fullName: authenticatedUser?.fullName || "",
       phone: authenticatedUser?.phone || "",
-      profilePicture: authenticatedUser?.profile || null,
+      profile: authenticatedUser?.profile || "",
+      bio: authenticatedUser?.bio || "",
       skills: authenticatedUser?.skills || [],
       location: authenticatedUser?.location || "",
       education: authenticatedUser?.education || [],
       experience: authenticatedUser?.experience || [],
-      resumeUrl: authenticatedUser?.resumeUrl || null,
-      websiteLink: authenticatedUser?.websiteLink || null,
+      resumeUrl: authenticatedUser?.resumeUrl || "",
+      websiteLink: authenticatedUser?.websiteLink || "",
     },
     onSubmit: (values) => {
+      candidateMutation.mutate({ candidateData: values });
       formik.resetForm();
       setPreview(null);
     },
   });
 
+  useEffect(() => {
+    // update the formik state with updated values
+    if (authenticatedUser) {
+      formik.setValues({
+        fullName: authenticatedUser.fullName || "",
+        phone: authenticatedUser.phone || "",
+        profile: authenticatedUser.profile || "",
+        bio: authenticatedUser.bio || "",
+        skills: authenticatedUser.skills || [],
+        location: authenticatedUser.location || "",
+        education: authenticatedUser.education || [],
+        experience: authenticatedUser.experience || [],
+        resumeUrl: authenticatedUser.resumeUrl || "",
+        websiteLink: authenticatedUser.websiteLink || "",
+      });
+    }
+  }, [authenticatedUser]);
+
   const handleAddSkill = () => {
     if (skill?.trim()) {
-      formik.setFieldValue("skills", [...formik.values.skills, skill.trim()]);
+      const currentSkills = formik.values.skills || [];
+      formik.setFieldValue("skills", [...currentSkills, skill.trim()]);
       setSkill("");
     }
   };
 
   const handleRemoveSkill = (skillToRemove: string) => {
-    const filteredSkills = formik.values.skills.filter(
+    const filteredSkills = formik.values.skills?.filter(
       (curr) => curr !== skillToRemove,
     );
     formik.setFieldValue("skills", filteredSkills);
   };
 
   const handleImageUpload = (file: File | null) => {
-    formik.setFieldValue("profilePicture", file);
+    formik.setFieldValue("profile", file);
   };
+
   const handlePdfUpload = (file: File | null) => {
     formik.setFieldValue("resumeUrl", file);
   };
 
-  if (applicationMutation.isPending) {
+  if (candidateMutation.isPending) {
     return <Loading />;
   }
 
   return (
-    <form onSubmit={formik.handleSubmit} className="space-y-8">
+    <form
+      onSubmit={formik.handleSubmit}
+      className="space-y-8 sm:p-6 space-y-8 bg-gradient-to-b from-blue-50 to-white min-h-screen rounded-lg"
+    >
       {/* Profile Picture Section */}
       <div className="space-y-4">
         <Label className="text-sm font-medium text-gray-600">
@@ -111,7 +137,7 @@ const EditProfileForm = () => {
           {authenticatedUser.profile && !preview && (
             <div className="w-48">
               <img
-                src={formik.values.profilePicture}
+                src={formik.values.profile}
                 alt={authenticatedUser.fullName}
                 className="w-full h-48 object-cover rounded-lg border border-gray-200"
               />
@@ -157,6 +183,16 @@ const EditProfileForm = () => {
               onChange={formik.handleChange}
             />
           </div>
+          <div className="space-y-2">
+            <Label htmlFor="bio">Bio</Label>
+            <Input
+              id="bio"
+              name="bio"
+              placeholder="Write a short bio"
+              value={formik.values.bio}
+              onChange={formik.handleChange}
+            />
+          </div>
         </div>
       </div>
 
@@ -185,7 +221,7 @@ const EditProfileForm = () => {
               <Plus className="h-4 w-4" />
             </Button>
           </div>
-          {formik.values.skills.length > 0 && (
+          {formik.values.skills && formik.values.skills.length > 0 && (
             <div className="flex flex-wrap gap-2">
               {formik.values.skills.map((currSkill, index) => (
                 <div
@@ -249,6 +285,7 @@ const EditProfileForm = () => {
         </div>
       </div>
 
+      {/* Website Link Section */}
       <div className="space-y-2">
         <Label htmlFor="websiteLink">Portfolio/Personal Website</Label>
         <Input
@@ -262,8 +299,12 @@ const EditProfileForm = () => {
 
       {/* Submit Button */}
       <div className="w-full flex justify-end">
-        <Button type="submit" className="bg-blue-600 hover:bg-blue-700">
-          Submit Application
+        <Button
+          disabled={candidateMutation.isPending}
+          type="submit"
+          className="bg-blue-600 hover:bg-blue-700"
+        >
+          {candidateMutation.isPending ? "Submitting" : "Submit Application"}
         </Button>
       </div>
     </form>

@@ -28,7 +28,34 @@ const getApplicationByCandidates = asyncHandler(async (req, res) => {
   );
 });
 
+const editCandidate = asyncHandler(async (req, res) => {
+  const { userId } = req.user;
+  const candidateData = req.body;
+  const profilePath =
+    candidateData.profile ||
+    req.files.find((file) => file.fieldname === "profile")?.path;
+
+  const resumePath =
+    candidateData.resumeUrl ||
+    req.files.find((file) => file.fieldname === "resumeUrl")?.path;
+
+  const updatedCandidate = await candidateServices.editCandidate(
+    candidateData,
+    userId,
+    { profilePath, resumePath },
+  );
+
+  return res.json(
+    new ApiResponse(
+      StatusCodes.OK,
+      { candidate: updatedCandidate },
+      "Candidate profile updated successfully",
+    ),
+  );
+});
+
 export const candidateController = {
+  editCandidate,
   getCandidateById,
   getApplicationByCandidates,
 };
