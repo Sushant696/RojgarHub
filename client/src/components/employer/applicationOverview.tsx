@@ -260,7 +260,6 @@ const ApplicationsOverview = ({
   const [Filter, setFilter] = useState<string>("all");
   const [isSelectOpen, setIsSelectOpen] = useState(false);
   const [view, setView] = useState<boolean>(false);
-  console.log(applications);
   const filteredApplications = applications.filter((application) =>
     Filter === "all" ? application : application.status === Filter,
   );

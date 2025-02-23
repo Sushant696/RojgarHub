@@ -1,240 +1,255 @@
 import { Link } from "@tanstack/react-router";
-import { ArrowRight } from "iconsax-react";
-import {
-  FaFacebook,
-  FaGithub,
-  FaUser,
-  FaChartLine,
-  FaShieldAlt,
-  FaSync,
-} from "react-icons/fa";
-import { RiLockPasswordFill } from "react-icons/ri";
 import { useFormik } from "formik";
+import { motion } from "motion/react";
+import {
+  Building2,
+  Briefcase,
+  ArrowRight,
+  Search,
+  UserCircle2,
+  KeyRound,
+} from "lucide-react";
+import { useLogin } from "@/hooks/auth";
 
-import { userLoginSchema } from "./schemas";
-import { useLogin } from "../../hooks/auth";
-import Loading from "@/components/isLoading";
-
-interface LoginProps {
-  onSwitch: () => void;
-}
-
-interface FormDataTypes {
-  phoneNo: string;
-  password: string;
-}
-
-function Login({ onSwitch }: LoginProps) {
+const Login = ({ onSwitch }: { onSwitch: () => void }) => {
   const loginMutation = useLogin();
-
   const formik = useFormik({
     initialValues: {
       phoneNo: "",
       password: "",
     },
-    validationSchema: userLoginSchema,
-    onSubmit: (values: FormDataTypes) => {
-      formik.resetForm();
+    onSubmit: (values) => {
       loginMutation.mutate(values);
+      console.log(values);
     },
   });
 
-  if (loginMutation.isPending) {
-    return (
-      <h1>
-        <Loading />
-      </h1>
-    );
-  }
-
   return (
-    <div className="flex">
-      <div className="justify-self-start flex-grow flex items-center justify-center ">
-        <div className="w-full">
-          {/* left section*/}
-          <div className="flex flex-col lg:flex-row w-full bg-white rounded-2xl shadow-lg overflow-hidden">
-            <div className="lg:w-1/2 bg-indigo-600  flex flex-col justify-between text-white py-24 lg:py-10 px-10">
-              <div>
-                <h2 className="subtitle-text font-bold mb-6">
-                  Welcome to rojgarHub!
-                </h2>
-                <p className="regular-text text-indigo-100 mb-8">
-                  Log in to access your dashboard and continue your journey with
-                  us.
-                </p>
+    <div className="min-h-[85vh] md:min-h-[85vh]  w-full bg-[#f0f6ff] flex items-center justify-center p-4">
+      <div className="absolute top-0 left-0 w-full h-52 md:h-64 bg-gradient-to-b from-blue-600 to-blue-500" />
 
-                {/* Feature List */}
-                <div className="space-y-6 mb-8">
-                  <div className="flex items-center space-x-4">
-                    <div className="bg-indigo-500 p-3 rounded-lg">
-                      <FaChartLine className="text-xl" />
-                    </div>
-                    <p className="text-lg">Real-time Job Tracking</p>
-                  </div>
-                  <div className="flex items-center space-x-4">
-                    <div className="bg-indigo-500 p-3 rounded-lg">
-                      <FaShieldAlt className="text-xl" />
-                    </div>
-                    <p className="text-lg">Secure Application Process</p>
-                  </div>
-                  <div className="flex items-center space-x-4">
-                    <div className="bg-indigo-500 p-3 rounded-lg">
-                      <FaSync className="text-xl" />
-                    </div>
-                    <p className="text-lg">Automatic Profile Updates</p>
-                  </div>
-                </div>
-              </div>
-
-              <div className="bg-indigo-700 p-6 rounded-xl">
-                <p className="italic text-indigo-100 mb-4">
-                  "Rojgar hub is a great platform it helped me find my dream
-                  job."
-                </p>
-
-                <div className="mt-4 flex items-center">
-                  <div className="w-10 h-10 bg-indigo-500 rounded-full flex items-center justify-center">
-                    <FaUser className="text-lg" />
-                  </div>
-                  <div className="ml-4">
-                    <p className="font-semibold">Bibek Pandey</p>
-                    <p className="text-sm text-indigo-200">
-                      Full stack developer
-                    </p>
-                  </div>
-                </div>
-              </div>
-
-              <div className="flex justify-center gap-4 mt-8">
-                <div className="p-1 bg-blue-300 rounded-xl w-6 h-[2px]"></div>
-                <div className="p-1 bg-white rounded-xl w-6 h-[2px]"></div>
-                <div className="p-1 bg-white rounded-xl w-6 h-[2px]"></div>
-                <div className="p-1 bg-white rounded-xl w-6 h-[2px]"></div>
-              </div>
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        className="w-full sm:max-w-6xl relative bottom-20"
+      >
+        <motion.div
+          initial={{ opacity: 0, x: -100 }}
+          animate={{ opacity: 1, x: 0 }}
+          transition={{ delay: 0.3 }}
+          className="absolute -left-20 top-20 w-72 bg-white rounded-2xl p-4 shadow-xl transform -rotate-6 z-0 hidden lg:block"
+        >
+          <div className="flex items-center gap-3 mb-3">
+            <div className="w-10 h-10 bg-blue-100 rounded-lg flex items-center justify-center">
+              <Building2 className="w-5 h-5 text-blue-600" />
             </div>
+            <div>
+              <h3 className="font-semibold text-gray-800">Senior Developer</h3>
+              <p className="text-sm text-gray-500">Google Inc.</p>
+            </div>
+          </div>
+          <div className="flex items-center gap-2 text-sm text-gray-600">
+            <Briefcase className="w-4 h-4" />
+            <span>Remote • Full-time</span>
+          </div>
+        </motion.div>
 
-            <div className="lg:w-1/2 p-12 lg:p-20">
+        <motion.div
+          initial={{ opacity: 0, x: 100 }}
+          animate={{ opacity: 1, x: 0 }}
+          transition={{ delay: 0.4 }}
+          className="absolute -right-16 bottom-20 w-72 bg-white rounded-2xl p-4 shadow-xl transform rotate-6 hidden lg:block"
+        >
+          <div className="flex items-center gap-3 mb-3">
+            <div className="w-10 h-10 bg-purple-100 rounded-lg flex items-center justify-center">
+              <Building2 className="w-5 h-5 text-purple-600" />
+            </div>
+            <div>
+              <h3 className="font-semibold text-gray-800">UI/UX Designer</h3>
+              <p className="text-sm text-gray-500">Apple Inc.</p>
+            </div>
+          </div>
+          <div className="flex items-center gap-2 text-sm text-gray-600">
+            <Briefcase className="w-4 h-4" />
+            <span>On-site • Full-time</span>
+          </div>
+        </motion.div>
+
+        {/* Main Login Container */}
+        <div className="bg-white rounded-3xl shadow-2xl overflow-hidden relative z-10">
+          <div className="grid md:grid-cols-2 gap-0">
+            {/* Left Side - Form */}
+            <div className="p-6 md:p-8 lg:p-12">
               <div className="max-w-md mx-auto">
-                <div className="text-center mb-8">
-                  <h3 className="text-3xl font-bold text-gray-800">
-                    Login to Your Account
-                  </h3>
-                  <p className="text-gray-500 mt-2">
-                    Please enter your credentials to continue
+                <div className="mb-6 md:mb-8">
+                  <h2 className="text-2xl md:text-3xl font-bold text-gray-900">
+                    Welcome back
+                  </h2>
+                  <p className="mt-2 text-gray-600">
+                    Your next career move starts here
                   </p>
                 </div>
 
-                <form onSubmit={formik.handleSubmit} className="space-y-6">
-                  <div>
-                    <label
-                      htmlFor="phoneNo"
-                      className="block small-text font-medium text-gray-700 mb-2"
-                    >
-                      UserID
-                    </label>
+                <form
+                  onSubmit={formik.handleSubmit}
+                  className="space-y-4 md:space-y-6"
+                >
+                  <div className="space-y-4">
                     <div className="relative">
-                      <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                        <FaUser className="text-gray-600" size={18} />
-                      </div>
+                      <UserCircle2 className="absolute left-4 top-1/2 transform -translate-y-1/2 w-5 h-5 text-gray-400" />
                       <input
                         type="text"
                         id="phoneNo"
+                        className="w-full pl-12 pr-4 py-3 md:py-4 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200"
+                        placeholder="Enter your phone number"
                         onChange={formik.handleChange}
                         value={formik.values.phoneNo}
-                        className="block w-full pl-10 pr-3 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-600 focus:border-transparent"
-                        placeholder="Enter your mobile number"
                       />
                     </div>
-                    {formik.touched.phoneNo && formik.errors.phoneNo && (
-                      <div className="text-red-500 text-sm mt-1">
-                        Phone number must be 10 digits
-                      </div>
-                    )}
-                  </div>
 
-                  <div>
-                    <label
-                      htmlFor="password"
-                      className="block small-text font-medium text-gray-700 mb-2"
-                    >
-                      Password
-                    </label>
                     <div className="relative">
-                      <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                        <RiLockPasswordFill
-                          className="text-gray-600"
-                          size={18}
-                        />
-                      </div>
+                      <KeyRound className="absolute left-4 top-1/2 transform -translate-y-1/2 w-5 h-5 text-gray-400" />
                       <input
                         type="password"
                         id="password"
+                        className="w-full pl-12 pr-4 py-3 md:py-4 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200"
+                        placeholder="Enter your password"
                         onChange={formik.handleChange}
                         value={formik.values.password}
-                        className="block w-full pl-10 pr-3 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-600 focus:border-transparent"
-                        placeholder="Enter your password"
                       />
                     </div>
-                    {formik.touched.password && formik.errors.password && (
-                      <div className="text-red-500 text-sm mt-1">
-                        {formik.errors.password}
-                      </div>
-                    )}
                   </div>
 
-                  <div className="flex items-center justify-between">
-                    <a
-                      href="#"
-                      className="text-sm font-medium text-indigo-600 hover:text-indigo-500"
+                  <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
+                    <label className="flex items-center gap-2">
+                      <input
+                        type="checkbox"
+                        className="w-4 h-4 rounded border-gray-300 text-blue-600 focus:ring-blue-500"
+                      />
+                      <span className="text-gray-600">Remember me</span>
+                    </label>
+                    <button
+                      type="button"
+                      className="text-blue-600 hover:text-blue-700 font-medium"
                     >
                       Forgot password?
-                    </a>
+                    </button>
                   </div>
 
-                  <button className="w-full bg-indigo-600 text-white py-3 px-4 rounded-lg hover:bg-indigo-700 transition duration-150 ease-in-out">
-                    {loginMutation.isPending ? "Signing in" : "Sign in"}
-                  </button>
+                  <motion.button
+                    whileHover={{ scale: 1.01 }}
+                    whileTap={{ scale: 0.99 }}
+                    type="submit"
+                    className="w-full bg-blue-600 text-white py-3 md:py-4 rounded-xl font-medium hover:bg-blue-700 transition-all duration-200"
+                  >
+                    Sign in to your account
+                  </motion.button>
+
+                  <div className="text-center">
+                    <Link
+                      to="/register"
+                      onClick={onSwitch}
+                      className="inline-flex items-center gap-2 text-blue-600 hover:text-blue-700 font-medium group"
+                    >
+                      New to JobHub? Create an account
+                      <ArrowRight
+                        className="group-hover:translate-x-1 transition-transform"
+                        size={20}
+                      />
+                    </Link>
+                  </div>
                 </form>
+              </div>
+            </div>
 
-                <div className="mt-6">
-                  <div className="relative">
-                    <div className="absolute inset-0 flex items-center">
-                      <div className="w-full border-t border-gray-300"></div>
-                    </div>
-                    <div className="relative flex justify-center small-text">
-                      <span className="px-2 bg-white text-gray-500">
-                        Or continue with
-                      </span>
-                    </div>
+            {/* Right Side - Job Search Preview - Hidden on mobile */}
+            <div className="relative bg-gradient-to-br from-blue-600 to-blue-500 p-8 lg:p-12 text-white overflow-hidden hidden md:block">
+              <div className="relative z-10">
+                <h3 className="text-3xl font-bold mb-6">Find your dream job</h3>
+
+                <div className="bg-white/10 backdrop-blur-md rounded-xl p-4 mb-8">
+                  <div className="relative mb-4">
+                    <Search className="absolute left-4 top-1/2 transform -translate-y-1/2 w-5 h-5 text-white/70" />
+                    <input
+                      type="text"
+                      className="w-full pl-12 pr-4 py-3 bg-white/10 border border-white/20 rounded-lg text-white placeholder-white/70"
+                      placeholder="Search jobs..."
+                    />
                   </div>
-
-                  <div className="mt-6 grid grid-cols-2 gap-3">
-                    <button className="flex items-center justify-center gap-2 py-2 border border-gray-300 rounded-lg small-text hover:bg-gray-50 transition duration-150 ease-in-out">
-                      <FaFacebook color="#1877F2" size={24} />
-                      Facebook
-                    </button>
-                    <button className="flex items-center justify-center gap-2 py-2 border border-gray-300 rounded-lg small-text hover:bg-gray-50 transition duration-150 ease-in-out">
-                      <FaGithub size={24} />
-                      GitHub
-                    </button>
+                  <div className="grid grid-cols-2 gap-3">
+                    <input
+                      type="text"
+                      className="w-full px-4 py-3 bg-white/10 border border-white/20 rounded-lg text-white placeholder-white/70"
+                      placeholder="Location"
+                    />
+                    <select className="w-full px-4 py-3 bg-white/10 border border-white/20 rounded-lg text-white/70">
+                      <option>Job Type</option>
+                    </select>
                   </div>
                 </div>
+
+                <div className="space-y-4">
+                  <div className="flex items-center gap-4">
+                    <div className="w-12 h-12 bg-white/10 rounded-xl flex items-center justify-center">
+                      <Building2 className="w-6 h-6" />
+                    </div>
+                    <div>
+                      <h4 className="font-semibold">10,000+ Companies</h4>
+                      <p className="text-blue-100">
+                        Find opportunities from startups to tech giants
+                      </p>
+                    </div>
+                  </div>
+                  <div className="flex items-center gap-4">
+                    <div className="w-12 h-12 bg-white/10 rounded-xl flex items-center justify-center">
+                      <Briefcase className="w-6 h-6" />
+                    </div>
+                    <div>
+                      <h4 className="font-semibold">Remote Jobs</h4>
+                      <p className="text-blue-100">
+                        Work from anywhere in the world
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div className="absolute inset-0 opacity-10">
+                <svg
+                  className="w-full h-full"
+                  viewBox="0 0 100 100"
+                  preserveAspectRatio="none"
+                >
+                  <pattern
+                    id="grid"
+                    x="0"
+                    y="0"
+                    width="10"
+                    height="10"
+                    patternUnits="userSpaceOnUse"
+                  >
+                    <path
+                      d="M 10 0 L 0 0 0 10"
+                      fill="none"
+                      stroke="white"
+                      strokeWidth="0.5"
+                    />
+                  </pattern>
+                  <rect
+                    x="0"
+                    y="0"
+                    width="100"
+                    height="100"
+                    fill="url(#grid)"
+                  />
+                </svg>
               </div>
             </div>
           </div>
         </div>
-      </div>
-      <div className="w-1/4 flex justify-center items-center">
-        <Link
-          onClick={onSwitch}
-          href="/register"
-          className="flex items-center gap-4"
-        >
-          Create new account <ArrowRight variant="Bulk" size={32} />
-        </Link>
-      </div>
+      </motion.div>
     </div>
   );
-}
+};
 
 export default Login;

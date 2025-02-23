@@ -13,4 +13,16 @@ async function getCandidateById() {
   }
 }
 
-export const candidateAction = { getCandidateById };
+async function getCandidateApplications() {
+  try {
+    const response = await api.get(`${apiURLs.Candidate.applications}`, {
+      withCredentials: true,
+    });
+    return response.data?.data;
+  } catch (error: any) {
+    console.error("Error fetching job:", error.response?.data || error.message);
+    throw new Error(error.response?.data?.message || "Something went wrong!");
+  }
+}
+
+export const candidateAction = { getCandidateById, getCandidateApplications };

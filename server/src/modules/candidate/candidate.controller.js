@@ -16,17 +16,19 @@ const getCandidateById = asyncHandler(async (req, res) => {
   );
 });
 
-const getJobsByCandidate = asyncHandler(async (req, res) => {
-  const { jobId } = req.params;
+const getApplicationByCandidates = asyncHandler(async (req, res) => {
   const userId = req.user.userId;
-  const jobs = candidateServices.jobsByCandidate(jobId, userId);
-
+  const applications = await candidateServices.applicationByCandidates(userId);
   return res.json(
-    new ApiResponse(StatusCodes.OK, { jobs }, "User Registered Successfully"),
+    new ApiResponse(
+      StatusCodes.OK,
+      { applications },
+      "Application retrived Successfully",
+    ),
   );
 });
 
 export const candidateController = {
   getCandidateById,
-  getJobsByCandidate,
+  getApplicationByCandidates,
 };

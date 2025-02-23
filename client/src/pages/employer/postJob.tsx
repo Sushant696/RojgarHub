@@ -38,7 +38,6 @@ function PostJob() {
     },
     validationSchema: jobPostingSchema,
     onSubmit: (values) => {
-      console.log(values);
       postJob.mutate(values);
       setPreview(null);
       formik.resetForm();

@@ -40,7 +40,6 @@ export function SingleDropzone({
     setPreview(null);
     onFileSelect(null);
   };
-  console.log(preview);
 
   return (
     <div className="flex flex-col w-full gap-2">

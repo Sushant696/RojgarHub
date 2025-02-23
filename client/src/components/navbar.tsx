@@ -1,46 +1,19 @@
-import { Button } from "@mui/material";
-import { Link } from "@tanstack/react-router";
 import useAuthStore from "../stores/authStore";
-import Profile from "./candidate/profile";
+import CandidateNavbar from "./candidate/candidateNavbar";
+import PublicNavbar from "./PublicNavbar";
 
 function Navbar() {
   const { isAuthenticated, user } = useAuthStore();
-  return (
-    <div className="bg-blue-200/20 backdrop-blur-xl py-1">
-      <div className="flex container justify-between items-center">
-        <div className="flex items-center gap-2">
-          <img src="/tempLogo.png" className="w-20 h-20" alt="temp logo" />
-        </div>
-        <div className="flex gap-20">
-          <Link to="/" className="[&.active]:font-bold  regular-text ">
-            Home
-          </Link>{" "}
-          <Link to="/apply" className="[&.active]:font-bold  regular-text">
-            Apply
-          </Link>
-          <Link to="/pricing" className="[&.active]:font-bold  regular-text">
-            Pricing
-          </Link>
-          <Link to="/contact" className="[&.active]:font-bold  regular-text">
-            Contact
-          </Link>
-        </div>
-        {isAuthenticated || user?.role === "CANDIDATE" ? (
-          <Profile />
-        ) : (
-          <div className="flex gap-4 items-center">
-            <Link to="/register" className="[&.active]:font-bold">
-              Register
-            </Link>
-            |
-            <Link to="/login" className="[&.active]:font-bold">
-              <Button variant="contained">Login</Button>
-            </Link>
-          </div>
-        )}
-      </div>
-    </div>
-  );
+
+  if (!isAuthenticated) {
+    return <PublicNavbar />;
+  }
+
+  if (user?.role === "CANDIDATE") {
+    return <CandidateNavbar />;
+  }
+
+  return null;
 }
 
 export default Navbar;

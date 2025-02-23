@@ -1,29 +1,36 @@
-export interface CandidateProfile {
+import { Job } from "./job";
+
+type Skill = string;
+
+export type CandidateProfile = {
   id: string;
-  userId: string;
+  jobId: string;
+  candidateId: string;
   fullName: string;
-  phone?: string | null;
-  profile?: string | null;
-  bio?: string | null;
-  skills?: string[] | null;
-  location?: string | null;
-  education?: EducationEntry[] | null;
-  experience?: ExperienceEntry[] | null;
+  phone: string;
+  profilePicture?: string;
+  skills?: Skill[];
+  location?: string;
+  education?: Education[];
+  experience?: Experience[];
   resumeUrl?: string | null;
-  websiteLink?: string | null;
+  websiteLink?: string;
   createdAt: string;
   updatedAt: string;
-}
+  job?: Job;
+};
 
-export interface EducationEntry {
-  year: number;
+export type Education = {
   degree: string;
   institution: string;
-}
+  year: number;
+};
 
-export interface ExperienceEntry {
+export type Experience = {
+  title: string;
   company: string;
-  duration: string;
+  startDate: string;
   position: string;
+  endDate: string | null;
   description: string;
-}
+};
