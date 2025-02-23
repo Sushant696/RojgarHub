@@ -73,6 +73,7 @@ model CandidateProfile {
   websiteLink String?
 
   applications JobApplication[]
+  notifications Notification[]
 
   createdAt   DateTime  @default(now())
   updatedAt   DateTime  @updatedAt
@@ -161,3 +162,14 @@ model JobApplication {
 
   @@unique([jobId, candidateId])  
 }
+
+model Notification {
+  id        String   @id @default(uuid())
+  candidateId String @unique
+  candidate  CandidateProfile @relation(fields: [candidateId], references: [id], onDelete: Cascade)
+  message   String
+  createdAt DateTime @default(now())
+  read      Boolean  @default(false)
+}
+
+

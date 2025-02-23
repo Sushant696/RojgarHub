@@ -1,8 +1,6 @@
+import Setting from "@/components/settings";
 import { createFileRoute } from "@tanstack/react-router";
 
 export const Route = createFileRoute("/candidate/settings")({
-  component: RouteComponent,
+  component: Setting,
 });
-function RouteComponent() {
-  return <div> setting </div>;
-}
