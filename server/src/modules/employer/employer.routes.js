@@ -40,5 +40,11 @@ employerRouter.patch(
   employerController.updateEmployer,
 );
 
+employerRouter.get(
+  "/visulizationData",
+  isAuthenticated,
+  employerController.getVisulizationData,
+);
+
 employerRouter.get("/", isAuthenticated, employerController.getEmployerById);
 export default employerRouter;

@@ -1,10 +1,13 @@
 import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
-import { MapPin, Phone, Globe, FileText } from "lucide-react";
+import { MapPin, Phone, Globe, FileText, Edit } from "lucide-react";
 import useAuthStore from "@/stores/authStore";
+import { Button } from "@/components/ui/button";
+import useRouter from "@/lib/router";
 
 function Profile() {
   const { authenticatedUser } = useAuthStore();
+  const router = useRouter();
 
   if (!authenticatedUser) {
     return (
@@ -15,7 +18,7 @@ function Profile() {
   }
 
   return (
-    <div className="mx-auto p-6 space-y-8 bg-gradient-to-b from-blue-50 to-white min-h-screen">
+    <div className="p-2 sm:p-6 space-y-8 bg-gradient-to-b from-blue-50 to-white min-h-screen">
       <div className="bg-gradient-to-r from-blue-600 to-blue-400 rounded-2xl shadow-xl p-8 text-white">
         <div className="flex flex-col md:flex-row items-center md:items-start gap-8">
           <Avatar className="w-32 h-32 border-4 border-white shadow-lg">
@@ -27,7 +30,6 @@ function Profile() {
               {authenticatedUser.fullName.charAt(0)}
             </AvatarFallback>
           </Avatar>
-
           <div className="flex-1 text-center md:text-left">
             <h1 className="text-3xl font-bold">{authenticatedUser.fullName}</h1>
             <p className="text-blue-100 mt-2 text-lg italic">
@@ -56,6 +58,15 @@ function Profile() {
               </div>
             </div>
           </div>
+          <Button
+            onClick={() => {
+              router.push("editCandidate");
+            }}
+            className="bg-blue-700 hover:bg-blue-700/80"
+          >
+            <Edit />
+            Edit
+          </Button>
         </div>
       </div>
 
@@ -64,7 +75,7 @@ function Profile() {
         <div className="bg-white rounded-2xl shadow-lg p-6 border border-blue-100 hover:shadow-xl transition-shadow">
           <h2 className="text-2xl font-bold text-blue-600 mb-4">Skills</h2>
           <div className="flex flex-wrap gap-2">
-            {authenticatedUser.skills.map((skill, index) => (
+            {authenticatedUser.skills.map((skill: string[], index: number) => (
               <Badge
                 key={index}
                 className="bg-blue-100 text-blue-700 hover:bg-blue-200 px-4 py-2 text-sm"
@@ -79,7 +90,7 @@ function Profile() {
         <div className="bg-white rounded-2xl shadow-lg p-6 border border-blue-100 hover:shadow-xl transition-shadow">
           <div className="flex flex-col h-full justify-between">
             <h2 className="text-2xl font-bold text-blue-600 mb-4">Resume</h2>
-            <div className="flex items-center justify-between mt-4">
+            <div className="flex flex-col gap-2  sm:flex-row  sm:items-center sm:justify-between mt-4">
               <div className="flex items-center gap-2">
                 <FileText className="w-6 h-6 text-blue-600" />
                 <span className="font-semibold">View Full Resume</span>
@@ -88,7 +99,7 @@ function Profile() {
                 href={authenticatedUser.resumeUrl}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="bg-blue-600 text-white px-6 py-3 rounded-full hover:bg-blue-700 transition-colors shadow-md hover:shadow-lg"
+                className="bg-blue-600 w-fit text-white px-6 py-3 rounded-full hover:bg-blue-700 transition-colors shadow-md hover:shadow-lg"
               >
                 Download CV
               </a>
@@ -102,7 +113,7 @@ function Profile() {
             Professional Experience
           </h2>
           <div className="space-y-6">
-            {authenticatedUser.experience.map((exp, index) => (
+            {authenticatedUser.experience.map((exp: any, index: number) => (
               <div key={index} className="relative pl-6">
                 <div className="absolute left-0 top-2 w-2 h-2 rounded-full bg-blue-600"></div>
                 <div className="border-l-2 border-blue-200 pl-6 pb-6">
@@ -121,7 +132,7 @@ function Profile() {
         <div className="bg-white rounded-2xl shadow-lg p-6 border border-blue-100 hover:shadow-xl transition-shadow">
           <h2 className="text-2xl font-bold text-blue-600 mb-6">Education</h2>
           <div className="space-y-6">
-            {authenticatedUser.education.map((edu, index) => (
+            {authenticatedUser.education.map((edu: any, index: number) => (
               <div key={index} className="relative pl-6">
                 <div className="absolute left-0 top-2 w-2 h-2 rounded-full bg-blue-600"></div>
                 <div className="border-l-2 border-blue-200 pl-6 pb-6">

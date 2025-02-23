@@ -24,12 +24,13 @@ export const apiURLs = {
     candidates: "/api/employer/candidates", // all candidates
     applications: "/api/employer/applications", // all applications
     update: "/api/employer",
+    visualization: "/api/employer/visulizationData",
   },
   Candidate: {
     getById: "/api/candidate/",
     jobs: "/api/candidate/jobs", // candidate specific jobs
     applications: "/api/candidate/applications", // all candidate applications
-    update: "/api/candidate",
+    update: "/api/candidate/update",
   },
   Application: {
     createApplication: "/api/application/create",

@@ -71,8 +71,23 @@ async function updateEmployer(employerId: string, updateData: any) {
     throw new Error(error.response?.data?.message || "Something went wrong!");
   }
 }
+async function getVizData() {
+  try {
+    const response = await api.get(`${apiURLs.Employer.visualization}`, {
+      withCredentials: true,
+    });
+    return response.data?.data;
+  } catch (error: any) {
+    console.error(
+      "Error visualization data:",
+      error.response?.data || error.message,
+    );
+    throw new Error(error.response?.data?.message || "Something went wrong!");
+  }
+}
 
 export const employerApi = {
+  getVizData,
   getAllJobs,
   getEmployerById,
   updateEmployer,

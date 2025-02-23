@@ -19,7 +19,6 @@ const applicationSchema = yup.object().shape({
           .integer("Year must be an integer")
           .min(1900, "Year must be valid")
           .max(new Date().getFullYear(), "Year cannot be in the future")
-          .required("Year is required"),
       }),
     )
     .nullable(),

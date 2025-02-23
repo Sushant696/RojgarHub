@@ -21,14 +21,10 @@ enum InterviewStatus {
   CANCELLED
 }
 
-
-
-
 enum JobStatus {
   OPEN
   CLOSED
 }
-
 
 enum ApplicationStatus {
   PENDING

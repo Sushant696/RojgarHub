@@ -9,7 +9,7 @@ import { useEffect } from "react";
 export const CandidateLayout = () => {
   const { setAuthenticatedUser } = useAuthStore();
   const { data, isLoading } = useGetCandidateById();
-
+  console.log(data, "data");
   useEffect(() => {
     if (data?.candidate) {
       setAuthenticatedUser(data?.candidate);
@@ -24,8 +24,8 @@ export const CandidateLayout = () => {
 
   return (
     <div className="min-h-screen">
-      <div className="flex-1 py-8 border">
-        <main className="lg:container mx-6 lg:mx-auto">
+      <div className="flex-1 py-8">
+        <main className="lg:container mx-3 lg:mx-auto">
           <Outlet />
         </main>
       </div>
