@@ -1,7 +1,8 @@
 import { Router } from "express";
-import { jobController } from "./job.controller.js";
+
 import isAuthenticated from "../../middlewares/isAuthenticated.js";
 import upload from "../../utils/multer.js";
+import { jobController } from "./job.controller.js";
 
 const jobRouter = Router();
 

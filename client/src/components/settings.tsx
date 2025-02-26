@@ -1,13 +1,13 @@
+import { Bell, Eye, UserCog, Briefcase, Trash2, Download } from "lucide-react";
+
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Switch } from "@/components/ui/switch";
-import { Bell, Eye, UserCog, Briefcase, Trash2, Download } from "lucide-react";
 
 function Setting() {
   return (
     <div className="space-y-6">
       <h1 className="text-3xl font-bold text-blue-900">Settings</h1>
 
-      {/* Profile Visibility */}
       <Card className="border border-blue-100 shadow-lg hover:shadow-xl transition-all">
         <CardHeader>
           <div className="flex items-center gap-3">
@@ -37,7 +37,7 @@ function Setting() {
         </CardContent>
       </Card>
 
-      {/* Job Preferences */}
+      
       <Card className="border border-blue-100 shadow-lg hover:shadow-xl transition-all">
         <CardHeader>
           <div className="flex items-center gap-3">
@@ -67,7 +67,6 @@ function Setting() {
         </CardContent>
       </Card>
 
-      {/* Notifications */}
       <Card className="border border-blue-100 shadow-lg hover:shadow-xl transition-all">
         <CardHeader>
           <div className="flex items-center gap-3">

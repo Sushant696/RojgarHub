@@ -17,7 +17,6 @@ import {
 import Filter from "./filter";
 import Loading from "./isLoading";
 import useRouter from "@/lib/router";
-import useAuthStore from "@/stores/authStore";
 import JobApplicationForm from "./candidate/jobApplicationForm";
 
 interface Job {
@@ -25,7 +24,7 @@ interface Job {
   title: string;
   location: string;
   type: string;
-  salaryMin: number;
+  salaryMin: number | 0;
   salaryMax: number;
   jobDescription: string;
   image: string;
@@ -47,7 +46,6 @@ function JobLists() {
   const [selectedJob, setSelectedJob] = useState<Job | null>(null);
   const [isDetailsOpen, setIsDetailsOpen] = useState(false);
   const [isApplyOpen, setIsApplyOpen] = useState(false);
-  const { isAuthenticated } = useAuthStore();
   const router = useRouter();
 
   if (isLoading) return <Loading />;
@@ -70,7 +68,7 @@ function JobLists() {
       if (salaryRange === "all" || !salaryRange) return true;
       const [min, max] = salaryRange.split("-").map(Number);
       return (
-        (job.salaryMin >= min && job.salaryMin <= max) ||
+        (job.salaryMin >= min && job?.salaryMin <= max) ||
         (job.salaryMax >= min && job.salaryMax <= max)
       );
     };
@@ -80,15 +78,6 @@ function JobLists() {
   const handleViewDetails = (job: Job) => {
     setSelectedJob(job);
     setIsDetailsOpen(true);
-  };
-
-  const handleApplyJob = (job: Job) => {
-    if (!isAuthenticated) {
-      router.push("/login");
-      return;
-    }
-    setSelectedJob(job);
-    setIsApplyOpen(true);
   };
 
   const sanitizedData = () => ({
@@ -168,7 +157,7 @@ function JobLists() {
                           <div className="flex items-center gap-1.5">
                             <DollarSign className="w-4 h-4" />
                             <span className="font-medium text-slate-700">
-                              {`${job.salaryMin.toLocaleString()} - ${job.salaryMax.toLocaleString()}`}
+                              {`${job?.salaryMin?.toLocaleString()} - ${job?.salaryMax?.toLocaleString()}`}
                             </span>
                           </div>
                         </div>

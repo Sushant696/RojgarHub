@@ -7,6 +7,7 @@ import { JobValidatorSchema } from "./job.validator.js";
 import db from "../../db/db.js";
 
 const PostJob = asyncHandler(async (req, res) => {
+  console.log(req.body);
   const validatedPostJobData = await JobValidatorSchema.postJobSchema.validate(
     req.body,
   );

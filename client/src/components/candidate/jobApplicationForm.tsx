@@ -40,7 +40,7 @@ interface JobApplicationFormTypes {
   websiteLink?: string;
 }
 
-const JobApplicationForm = ({ jobId }: { jobId: string }) => {
+const JobApplicationForm = ({ jobId }: { jobId: string | undefined }) => {
   const { authenticatedUser } = useAuthStore();
   const applicationMutation = useCreateApplication();
 

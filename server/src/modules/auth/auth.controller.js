@@ -99,7 +99,7 @@ const refreshAccessToken = asyncHandler(async (req, res) => {
 
   return res.json(
     new ApiResponse(
-      201,
+      StatusCodes.OK,
       { ...user, accessToken: tokens.accessToken },
       "Tokens refreshed successfully",
     ),

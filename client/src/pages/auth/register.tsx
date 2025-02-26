@@ -109,14 +109,24 @@ function Register({ onSwitch }: RegisterProps) {
                       id="username"
                       name="username"
                       onChange={formik.handleChange}
+                      onBlur={formik.handleBlur}
                       value={formik.values.username}
-                      className="w-full pl-12 pr-4 py-3 md:py-4 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200"
+                      className={`w-full pl-12 pr-4 py-3 md:py-4 bg-gray-50 border ${
+                        formik.touched.username && formik.errors.username
+                          ? "border-red-500 ring-1 ring-red-500"
+                          : "border-gray-200"
+                      } rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200`}
                       placeholder={
                         currentUser === "candidate"
                           ? "Enter your Full Name"
                           : "Enter Your Company Name"
                       }
                     />
+                    {formik.touched.username && formik.errors.username && (
+                      <p className="mt-2 text-red-500 text-sm">
+                        {formik.errors.username}
+                      </p>
+                    )}
                   </div>
 
                   {/* Email and Contact Inputs */}
@@ -126,11 +136,22 @@ function Register({ onSwitch }: RegisterProps) {
                       <input
                         type="email"
                         id="email"
+                        name="email"
                         onChange={formik.handleChange}
+                        onBlur={formik.handleBlur}
                         value={formik.values.email}
-                        className="w-full pl-12 pr-4 py-3 md:py-4 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200"
+                        className={`w-full pl-12 pr-4 py-3 md:py-4 bg-gray-50 border ${
+                          formik.touched.email && formik.errors.email
+                            ? "border-red-500 ring-1 ring-red-500"
+                            : "border-gray-200"
+                        } rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200`}
                         placeholder="Enter your email"
                       />
+                      {formik.touched.email && formik.errors.email && (
+                        <p className="mt-2 text-red-500 text-sm">
+                          {formik.errors.email}
+                        </p>
+                      )}
                     </div>
 
                     <div className="w-full md:w-1/2 relative">
@@ -138,11 +159,22 @@ function Register({ onSwitch }: RegisterProps) {
                       <input
                         type="text"
                         id="contact"
+                        name="contact"
                         onChange={formik.handleChange}
+                        onBlur={formik.handleBlur}
                         value={formik.values.contact}
-                        className="w-full pl-12 pr-4 py-3 md:py-4 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200"
+                        className={`w-full pl-12 pr-4 py-3 md:py-4 bg-gray-50 border ${
+                          formik.touched.contact && formik.errors.contact
+                            ? "border-red-500 ring-1 ring-red-500"
+                            : "border-gray-200"
+                        } rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200`}
                         placeholder="Enter your Mobile number"
                       />
+                      {formik.touched.contact && formik.errors.contact && (
+                        <p className="mt-2 text-red-500 text-sm">
+                          {formik.errors.contact}
+                        </p>
+                      )}
                     </div>
                   </div>
 
@@ -154,9 +186,15 @@ function Register({ onSwitch }: RegisterProps) {
                         <input
                           type={showPassword ? "text" : "password"}
                           id="password"
+                          name="password"
                           onChange={formik.handleChange}
+                          onBlur={formik.handleBlur}
                           value={formik.values.password}
-                          className="w-full pl-12 pr-4 py-3 md:py-4 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200"
+                          className={`w-full pl-12 pr-4 py-3 md:py-4 bg-gray-50 border ${
+                            formik.touched.password && formik.errors.password
+                              ? "border-red-500 ring-1 ring-red-500"
+                              : "border-gray-200"
+                          } rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200`}
                           placeholder="Create your password"
                         />
                         <button
@@ -171,6 +209,11 @@ function Register({ onSwitch }: RegisterProps) {
                           )}
                         </button>
                       </div>
+                      {formik.touched.password && formik.errors.password && (
+                        <p className="mt-2 text-red-500 text-sm">
+                          {formik.errors.password}
+                        </p>
+                      )}
                     </div>
 
                     <div className="relative">
@@ -183,7 +226,12 @@ function Register({ onSwitch }: RegisterProps) {
                           onChange={formik.handleChange}
                           onBlur={formik.handleBlur}
                           value={formik.values.confirmPassword}
-                          className="w-full pl-12 pr-4 py-3 md:py-4 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200"
+                          className={`w-full pl-12 pr-4 py-3 md:py-4 bg-gray-50 border ${
+                            formik.touched.confirmPassword &&
+                            formik.errors.confirmPassword
+                              ? "border-red-500 ring-1 ring-red-500"
+                              : "border-gray-200"
+                          } rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200`}
                           placeholder="Confirm your password"
                         />
                         <button
@@ -206,6 +254,23 @@ function Register({ onSwitch }: RegisterProps) {
                         )}
                     </div>
                   </div>
+
+                  {/* Form Error Summary (optional) */}
+                  {Object.keys(formik.errors).length > 0 &&
+                    formik.submitCount > 0 && (
+                      <div className="p-4 bg-red-50 border border-red-200 rounded-lg">
+                        <p className="text-red-600 font-medium mb-2">
+                          Please fix the following errors:
+                        </p>
+                        <ul className="list-disc pl-5 text-red-500 text-sm">
+                          {Object.entries(formik.errors).map(
+                            ([field, error]) => (
+                              <li key={field}>{error as string}</li>
+                            ),
+                          )}
+                        </ul>
+                      </div>
+                    )}
 
                   {/* Submit Button */}
                   <motion.button

@@ -72,10 +72,9 @@ const JobDetails = ({ job }: any) => {
             <h3 className="font-semibold regular-text text-slate-900">
               Required Skills
             </h3>
-
-            {job.skills.length > 0 && (
+            {job.skills && job?.skills?.length > 0 && (
               <div className="flex flex-wrap gap-2 mt-2">
-                {job.skills.map((currSkill: string, index: number) => (
+                {job?.skills?.map((currSkill: string, index: number) => (
                   <div
                     key={index}
                     className="flex items-center gap-1 px-3 py-1.5 bg-blue-50 text-blue-700 rounded-lg"
