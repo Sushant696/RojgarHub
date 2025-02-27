@@ -1,7 +1,7 @@
 import clsx from "clsx";
 import { useState } from "react";
 import DOMPurify from "dompurify";
-import { MapPin, Clock, DollarSign, Building2, Users, Eye } from "lucide-react";
+import { MapPin, Clock, Building2, Users, Eye } from "lucide-react";
 
 import { useGetAllJobs } from "@/hooks/jobs";
 import { Button } from "@/components/ui/button";
@@ -18,6 +18,7 @@ import Filter from "./filter";
 import Loading from "./isLoading";
 import useRouter from "@/lib/router";
 import JobApplicationForm from "./candidate/jobApplicationForm";
+import { Money } from "iconsax-react";
 
 interface Job {
   id: string;
@@ -155,7 +156,7 @@ function JobLists() {
                             <span>{job.type}</span>
                           </div>
                           <div className="flex items-center gap-1.5">
-                            <DollarSign className="w-4 h-4" />
+                            <Money className="w-4 h-4" />
                             <span className="font-medium text-slate-700">
                               {`${job?.salaryMin?.toLocaleString()} - ${job?.salaryMax?.toLocaleString()}`}
                             </span>
@@ -257,12 +258,12 @@ function JobLists() {
 
                   <div className="flex items-center gap-3 group">
                     <div className="p-2 rounded-lg bg-blue-50 text-blue-600 group-hover:bg-blue-100 transition-colors">
-                      <DollarSign className="w-5 h-5" />
+                      <Money className="w-5 h-5" />
                     </div>
                     <div className="space-y-0.5">
                       <p className="text-sm text-slate-500">Salary Range</p>
                       <p className="text-sm font-medium text-slate-700">
-                        ${selectedJob.salaryMin.toLocaleString()} - $
+                         {selectedJob.salaryMin.toLocaleString()} -  
                         {selectedJob.salaryMax.toLocaleString()}
                       </p>
                     </div>

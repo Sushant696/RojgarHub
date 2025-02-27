@@ -2,7 +2,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
-import { X } from "lucide-react";
+import { Plus, X } from "lucide-react";
 import { Textarea } from "@/components/ui/textarea";
 
 interface ExperienceEntry {
@@ -94,16 +94,6 @@ function ExperienceForm({
 
       {showExperienceForm && (
         <>
-          <Button
-            type="button"
-            variant="outline"
-            size="sm"
-            onClick={handleAddExperience}
-            className="text-blue-600 border-blue-600 hover:bg-blue-50"
-          >
-            Add New Entry
-          </Button>
-
           {formik.values.experience.length > 0 && (
             <div className="space-y-6">
               {formik.values.experience.map(
@@ -133,7 +123,7 @@ function ExperienceForm({
                               e.target.value,
                             )
                           }
-                          className="bg-white text-blue-600"
+                          className="bg-white "
                         />
                       </div>
 
@@ -149,7 +139,7 @@ function ExperienceForm({
                               e.target.value,
                             )
                           }
-                          className="bg-white text-blue-600"
+                          className="bg-white "
                         />
                       </div>
                     </div>
@@ -167,7 +157,7 @@ function ExperienceForm({
                             e.target.value,
                           )
                         }
-                        className="resize-none bg-white text-blue-600"
+                        className="resize-none bg-white"
                       />
                     </div>
 
@@ -184,7 +174,7 @@ function ExperienceForm({
                               e.target.value,
                             )
                           }
-                          className="bg-white text-blue-600"
+                          className="bg-white "
                         />
                       </div>
 
@@ -201,7 +191,7 @@ function ExperienceForm({
                             )
                           }
                           disabled={exp.currentJob}
-                          className="bg-white text-blue-600"
+                          className="bg-white "
                         />
                       </div>
                     </div>
@@ -232,6 +222,17 @@ function ExperienceForm({
           )}
         </>
       )}
+      <div className="flex justify-center">
+        <Button
+          type="button"
+          variant="outline"
+          size="sm"
+          onClick={handleAddExperience}
+          className="text-blue-600 border-blue-600 hover:bg-blue-50 "
+        >
+          <Plus className="h-4 w-4 mr-2" /> Add Experience
+        </Button>
+      </div>
     </div>
   );
 }

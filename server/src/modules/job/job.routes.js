@@ -8,6 +8,8 @@ const jobRouter = Router();
 
 jobRouter.get("/public/:jobId", jobController.getJobByIdpublic);
 
+jobRouter.get("/search/", jobController.getSearchedJob);
+
 jobRouter.get("/:jobId", isAuthenticated, jobController.getJobById);
 
 jobRouter.post(

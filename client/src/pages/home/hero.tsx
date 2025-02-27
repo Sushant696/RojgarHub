@@ -1,26 +1,18 @@
-import JobsOfTheDay from "../../components/JobsOfTheDay";
+import { useState } from "react";
 import SearchComponent from "../../components/SearchComponent";
-import TrustedBy from "../../components/TrustedBy";
 import SearchComponentMobile from "../../components/mobileSearch";
-import useAuthStore from "../../stores/authStore";
-import Stats from "../../components/stats";
-
-const popularSearches = [
-  "software Developer",
-  "Receptionist",
-  "UI/UX Designer",
-  "Devops Engineer",
-];
+import SearchResults from "@/components/searchResults";
 
 function Hero() {
-  const user = useAuthStore((state) => state.user);
+  const [searchResults, setSearchResults] = useState<any[]>([]);
+  const hasResults = searchResults && searchResults.length > 0;
 
   return (
     <>
-      <div className=" w-full main-color-hero ">
+      <div className="w-full main-color-hero border border-white">
         <div className="container">
           <div className="text-center pt-20">
-            <h1 className="title-text  leading:!leading-5 lg:!leading-[70px] tracking-wide">
+            <h1 className="title-text leading:!leading-5 lg:!leading-[70px] tracking-wide">
               There are
               <span className="text-blue-500"> 109,282 </span>
               Postings
@@ -32,29 +24,26 @@ function Hero() {
             </h2>
           </div>
           <div className="block lg:hidden section-margin">
-            <SearchComponentMobile bgColor={"bg-[#F4F7FD]"} />
+            <SearchComponentMobile
+              setSearchResults={setSearchResults}
+              bgColor={"bg-[#F4F7FD]"}
+            />
           </div>
           <div className="hidden lg:block section-margin">
-            <SearchComponent bgColor={"bg-[#F4F7FD]"} />
-            <div className="flex justify-center my-6 gap-2">
-              {popularSearches.map((item, index) => (
-                <h1 key={index} className="underline">
-                  {item}
-                  {popularSearches.length - 1 > index && ","}
-                </h1>
-              ))}
-            </div>
+            <SearchComponent
+              setSearchResults={setSearchResults}
+              bgColor={"bg-[#F4F7FD]"}
+            />
           </div>
-        </div>
-        <Stats />
-        <div className="z-50">
-          <TrustedBy />
+
+          {/* Display search results if there are any */}
+          {hasResults && (
+            <div className="mt-8 pb-12">
+              <SearchResults jobs={searchResults} />
+            </div>
+          )}
         </div>
       </div>
-      <JobsOfTheDay />
-      <h1 className="subtitle-text">
-        Hello {user?.role} welcome to your dashboard
-      </h1>
     </>
   );
 }

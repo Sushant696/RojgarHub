@@ -120,7 +120,6 @@ function Candidates() {
               key={candidate.id}
               className="bg-white rounded-xl p-6 shadow-sm border border-blue-100 hover:shadow-md hover:border-blue-200 transition-all flex flex-col h-[280px]"
             >
-              {/* Header Section - Fixed Height */}
               <div className="flex items-start justify-between mb-4">
                 <div className="flex items-center space-x-3">
                   <div className="bg-blue-100 p-3 rounded-full">

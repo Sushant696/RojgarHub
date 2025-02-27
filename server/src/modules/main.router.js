@@ -12,4 +12,4 @@ mainRouter.use("/employer", employerRouter);
 mainRouter.use("/candidate", candidateRouter);
 mainRouter.use("/application", applicationRouter);
 
-export default mainRouter;
+export default mainRouter

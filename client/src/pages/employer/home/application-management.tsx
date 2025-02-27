@@ -76,26 +76,6 @@ const ApplicationManagement = () => {
 
   return (
     <div className="mx-auto px-6 py-8 space-y-8">
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-        {stats.map((stat, index) => (
-          <div
-            key={index}
-            className="bg-white rounded-xl shadow-sm border border-gray-100 p-6 
-                     transition-all duration-200 hover:shadow-md"
-          >
-            <div className="flex items-start gap-6">
-              <div className={`${getColorClasses(stat.color)} p-3 rounded-lg`}>
-                {stat.icon}
-              </div>
-              <div className="space-y-2">
-                <h3 className="emphasized-text">{stat.value}+</h3>
-                <p className="small-text text-gray-500">{stat.title}</p>
-                <p className="caption-text text-gray-400">{stat.change}</p>
-              </div>
-            </div>
-          </div>
-        ))}
-      </div>
       <div className="">
         <div className="flex flex-col md:flex-row justify-end items-start md:items-center gap-6">
           <div className="w-full md:w-96">

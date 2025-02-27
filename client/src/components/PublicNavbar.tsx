@@ -3,7 +3,6 @@ import {
   Menu,
   Home,
   Briefcase,
-  DollarSign,
   Mail,
   LogIn,
   UserPlus,
@@ -82,7 +81,6 @@ function PublicNavbar() {
             </span>
           </div>
 
-          {/* Mobile Sheet */}
           <div className="md:hidden">
             <Sheet>
               <SheetTrigger asChild>
@@ -113,9 +111,6 @@ function PublicNavbar() {
                   </NavLink>
                   <NavLink to="/apply" icon={Briefcase}>
                     Apply
-                  </NavLink>
-                  <NavLink to="/pricing" icon={DollarSign}>
-                    Pricing
                   </NavLink>
                   <NavLink to="/contact" icon={Mail}>
                     Contact
@@ -158,13 +153,7 @@ function PublicNavbar() {
                 <Briefcase className="h-4 w-4" />
                 Apply
               </Link>
-              <Link
-                to="/pricing"
-                className="flex items-center gap-2 text-slate-700 hover:text-blue-900 transition-colors [&.active]:text-blue-600 [&.active]:font-medium"
-              >
-                <DollarSign className="h-4 w-4" />
-                Pricing
-              </Link>
+
               <Link
                 to="/contact"
                 className="flex items-center gap-2 text-slate-700 hover:text-blue-900 transition-colors [&.active]:text-blue-600 [&.active]:font-medium"

@@ -146,7 +146,6 @@ const EditProfileForm = () => {
         </div>
       </div>
 
-      {/* Personal Information Section */}
       <div className="space-y-6">
         <h3 className="text-lg font-semibold text-gray-800">
           Personal Information

@@ -35,8 +35,8 @@ const CandidateApplications = () => {
     filterStatus === "all"
       ? data?.applications
       : data?.applications.filter(
-        (app: Application) => app.status === filterStatus,
-      );
+          (app: Application) => app.status === filterStatus,
+        );
 
   const sortedApplications = useMemo(() => {
     const priorityOrder: any = {
@@ -116,10 +116,11 @@ const CandidateApplications = () => {
                   (status) => (
                     <button
                       key={status}
-                      className={`w-full px-4 py-2 text-left text-sm hover:bg-gray-50 transition-colors ${filterStatus === status
+                      className={`w-full px-4 py-2 text-left text-sm hover:bg-gray-50 transition-colors ${
+                        filterStatus === status
                           ? "bg-blue-50 text-blue-600"
                           : "text-gray-700"
-                        }`}
+                      }`}
                       onClick={() => {
                         setFilterStatus(status);
                         setIsFilterOpen(false);
@@ -138,10 +139,11 @@ const CandidateApplications = () => {
               variant={viewType === "grid" ? "default" : "outline"}
               size="icon"
               onClick={() => setViewType("grid")}
-              className={`h-9 w-9 ${viewType === "grid"
+              className={`h-9 w-9 ${
+                viewType === "grid"
                   ? "bg-blue-600/90 hover:bg-blue-500 text-white"
                   : "bg-transparent hover:bg-gray-100 text-gray-500"
-                }`}
+              }`}
             >
               <Grid className="w-4 h-4" />
             </Button>
@@ -151,10 +153,11 @@ const CandidateApplications = () => {
               variant={viewType === "list" ? "default" : "outline"}
               size="icon"
               onClick={() => setViewType("list")}
-              className={`h-9 w-9 ml-2 ${viewType === "list"
+              className={`h-9 w-9 ml-2 ${
+                viewType === "list"
                   ? "bg-blue-600/90 hover:bg-blue-500 text-white"
                   : "bg-transparent hover:bg-gray-100 text-gray-500"
-                }`}
+              }`}
             >
               <Menu className="w-4 h-4" />
             </Button>

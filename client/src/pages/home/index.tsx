@@ -1,16 +1,27 @@
+import TopRecruiters from "@/components/TopRecruiters";
 import Hero from "./hero";
 import { Helmet } from "react-helmet";
+import IncrementingStatistics from "@/components/IncrementingStatistics";
+import Newsletter from "@/components/Newsletter";
 
 function Home() {
   return (
     <div>
       <Helmet>
         <title>Home | RojgarHub</title>
+        <meta
+          name="description"
+          content="Find your dream job with RojgarHub - the leading job portal with over 100,000 job opportunities across industries."
+        />
       </Helmet>
+
       <Hero />
-      hello Jobs of the day
-      <h1>top recruiters</h1>
-      incrementing statistics news and blogs subscribe to our newsletter
+
+      <TopRecruiters />
+
+      <IncrementingStatistics />
+
+      <Newsletter />
     </div>
   );
 }

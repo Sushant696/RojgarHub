@@ -240,7 +240,6 @@ const DashboardEmployer: React.FC = () => {
       (item: any) => item.status === "ACCEPTED",
     )?.count || 0;
 
-  console.log(data?.applicationsPerJob, "total");
   const pendingApplications =
     data?.applicationStatusDistribution?.find(
       (item: any) => item.status === "PENDING",

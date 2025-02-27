@@ -47,7 +47,6 @@ describe("Job Module", () => {
     });
 
     employerAccessToken = loginRes.body.data.accessToken;
-    console.log("Employer Access Token:", employerAccessToken);
 
     const jobData = {
       employerId: employerProfile.id,

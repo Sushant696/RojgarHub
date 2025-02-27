@@ -111,11 +111,10 @@ function Register({ onSwitch }: RegisterProps) {
                       onChange={formik.handleChange}
                       onBlur={formik.handleBlur}
                       value={formik.values.username}
-                      className={`w-full pl-12 pr-4 py-3 md:py-4 bg-gray-50 border ${
-                        formik.touched.username && formik.errors.username
+                      className={`w-full pl-12 pr-4 py-3 md:py-4 bg-gray-50 border ${formik.touched.username && formik.errors.username
                           ? "border-red-500 ring-1 ring-red-500"
                           : "border-gray-200"
-                      } rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200`}
+                        } rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200`}
                       placeholder={
                         currentUser === "candidate"
                           ? "Enter your Full Name"
@@ -140,11 +139,10 @@ function Register({ onSwitch }: RegisterProps) {
                         onChange={formik.handleChange}
                         onBlur={formik.handleBlur}
                         value={formik.values.email}
-                        className={`w-full pl-12 pr-4 py-3 md:py-4 bg-gray-50 border ${
-                          formik.touched.email && formik.errors.email
+                        className={`w-full pl-12 pr-4 py-3 md:py-4 bg-gray-50 border ${formik.touched.email && formik.errors.email
                             ? "border-red-500 ring-1 ring-red-500"
                             : "border-gray-200"
-                        } rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200`}
+                          } rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200`}
                         placeholder="Enter your email"
                       />
                       {formik.touched.email && formik.errors.email && (
@@ -163,11 +161,10 @@ function Register({ onSwitch }: RegisterProps) {
                         onChange={formik.handleChange}
                         onBlur={formik.handleBlur}
                         value={formik.values.contact}
-                        className={`w-full pl-12 pr-4 py-3 md:py-4 bg-gray-50 border ${
-                          formik.touched.contact && formik.errors.contact
+                        className={`w-full pl-12 pr-4 py-3 md:py-4 bg-gray-50 border ${formik.touched.contact && formik.errors.contact
                             ? "border-red-500 ring-1 ring-red-500"
                             : "border-gray-200"
-                        } rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200`}
+                          } rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200`}
                         placeholder="Enter your Mobile number"
                       />
                       {formik.touched.contact && formik.errors.contact && (
@@ -190,11 +187,10 @@ function Register({ onSwitch }: RegisterProps) {
                           onChange={formik.handleChange}
                           onBlur={formik.handleBlur}
                           value={formik.values.password}
-                          className={`w-full pl-12 pr-4 py-3 md:py-4 bg-gray-50 border ${
-                            formik.touched.password && formik.errors.password
+                          className={`w-full pl-12 pr-4 py-3 md:py-4 bg-gray-50 border ${formik.touched.password && formik.errors.password
                               ? "border-red-500 ring-1 ring-red-500"
                               : "border-gray-200"
-                          } rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200`}
+                            } rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200`}
                           placeholder="Create your password"
                         />
                         <button
@@ -226,12 +222,11 @@ function Register({ onSwitch }: RegisterProps) {
                           onChange={formik.handleChange}
                           onBlur={formik.handleBlur}
                           value={formik.values.confirmPassword}
-                          className={`w-full pl-12 pr-4 py-3 md:py-4 bg-gray-50 border ${
-                            formik.touched.confirmPassword &&
-                            formik.errors.confirmPassword
+                          className={`w-full pl-12 pr-4 py-3 md:py-4 bg-gray-50 border ${formik.touched.confirmPassword &&
+                              formik.errors.confirmPassword
                               ? "border-red-500 ring-1 ring-red-500"
                               : "border-gray-200"
-                          } rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200`}
+                            } rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200`}
                           placeholder="Confirm your password"
                         />
                         <button
@@ -254,23 +249,6 @@ function Register({ onSwitch }: RegisterProps) {
                         )}
                     </div>
                   </div>
-
-                  {/* Form Error Summary (optional) */}
-                  {Object.keys(formik.errors).length > 0 &&
-                    formik.submitCount > 0 && (
-                      <div className="p-4 bg-red-50 border border-red-200 rounded-lg">
-                        <p className="text-red-600 font-medium mb-2">
-                          Please fix the following errors:
-                        </p>
-                        <ul className="list-disc pl-5 text-red-500 text-sm">
-                          {Object.entries(formik.errors).map(
-                            ([field, error]) => (
-                              <li key={field}>{error as string}</li>
-                            ),
-                          )}
-                        </ul>
-                      </div>
-                    )}
 
                   {/* Submit Button */}
                   <motion.button

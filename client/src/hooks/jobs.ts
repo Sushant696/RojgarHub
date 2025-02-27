@@ -100,3 +100,20 @@ export const useGetAllJobs = () => {
     queryFn: jobAction.getAllJobs,
   });
 };
+
+export const useJobsSearch = (
+  searchParams: {
+    keywords?: string;
+    industry?: string;
+    location?: string;
+  } | null,
+) => {
+  return useQuery({
+    queryKey: ["jobs", "search", searchParams],
+    queryFn: () => jobAction.getSearchedJob(searchParams || {}),
+    enabled: !!searchParams,
+    refetchOnMount: false,
+    refetchOnWindowFocus: false,
+    retry: false,
+  });
+};

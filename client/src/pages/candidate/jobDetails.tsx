@@ -1,4 +1,5 @@
-import { Clock, MapPin, DollarSign, Users } from "lucide-react";
+import { Money } from "iconsax-react";
+import { Clock, MapPin, Users } from "lucide-react";
 
 const JobDetails = ({ job }: any) => {
   return (
@@ -21,12 +22,12 @@ const JobDetails = ({ job }: any) => {
 
           <div className="flex items-center gap-3">
             <span className="bg-blue-50 p-2 rounded-full flex items-center justify-center">
-              <DollarSign className="h-5 w-5 text-blue-600" />
+              <Money className="h-5 w-5 text-blue-600" />
             </span>
             <div>
               <p className="text-sm text-gray-500">Salary Range</p>
               <p className="font-medium">
-                ${job.salaryMin.toLocaleString()} - $
+                {job.salaryMin.toLocaleString()} -
                 {job.salaryMax.toLocaleString()}
               </p>
             </div>

@@ -269,14 +269,13 @@ const ApplicationsOverview = ({
     setIsSelectOpen(false);
   }
 
-  // Helper function to format status text
   const formatStatus = (status: string) => {
     if (status === "all") return "All";
     return status.charAt(0).toUpperCase() + status.slice(1).toLowerCase();
   };
 
   return (
-    <div className="lg:col-span-full space-y-6">
+    <div className="lg:col-span-full space-y-6 ">
       <Card>
         <CardHeader className="flex sm:flex-row items-center justify-between border-b border-gray-200 px-6 py-4">
           <CardTitle className="flex items-center gap-2">
@@ -356,7 +355,7 @@ const ApplicationsOverview = ({
             className={`transition-all duration-300 ${
               view
                 ? "flex flex-col space-y-4"
-                : "grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4"
+                : "grid grid-cols-1 lg:grid-cols-2 lg:grid-cols-3 gap-4"
             }`}
           >
             {filteredApplications.length > 0 ? (

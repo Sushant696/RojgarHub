@@ -14,6 +14,21 @@ async function getCandidateById() {
   }
 }
 
+async function getCandidateDashboardData(candidateId: string) {
+  try {
+    const response = await api.get(
+      `${apiURLs.Candidate.dashboardData}/${candidateId}`,
+      {
+        withCredentials: true,
+      },
+    );
+    return response.data?.data;
+  } catch (error: any) {
+    console.error("Error fetching job:", error.response?.data || error.message);
+    throw new Error(error.response?.data?.message || "Something went wrong!");
+  }
+}
+
 async function editCandidateProfile(candidateData: any) {
   try {
     const response = await api.patch(
@@ -45,7 +60,8 @@ async function getCandidateApplications() {
 }
 
 export const candidateAction = {
-  editCandidateProfile,
   getCandidateById,
+  editCandidateProfile,
   getCandidateApplications,
+  getCandidateDashboardData,
 };

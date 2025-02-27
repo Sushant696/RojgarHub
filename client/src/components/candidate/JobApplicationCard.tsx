@@ -1,5 +1,5 @@
 const JobApplicationCard = ({ application }: any) => {
-  const { job, fullName, status, createdAt } = application;
+  const { job, status, createdAt } = application;
 
   return (
     <div className="border border-gray-200 rounded-lg shadow-sm p-6 bg-white hover:shadow-md transition-shadow">
@@ -19,7 +19,7 @@ const JobApplicationCard = ({ application }: any) => {
           <strong>Location:</strong> {job.location}
         </p>
         <p>
-          <strong>Salary:</strong> ${job.salaryMin} - ${job.salaryMax}
+          <strong>Salary:</strong> {job.salaryMin} - {job.salaryMax}
         </p>
         <p>
           <strong>Applied On:</strong>{" "}
