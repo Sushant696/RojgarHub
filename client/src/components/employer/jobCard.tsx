@@ -1,7 +1,6 @@
 import {
   MapPin,
   BriefcaseIcon,
-  DollarSign,
   Users,
   ArrowRight,
   MoreVertical,
@@ -23,6 +22,7 @@ import {
 } from "@/components/ui/dropdown-menu";
 import useRouter from "@/lib/router";
 import { useDeleteJob, useJobStatusToggle } from "@/hooks/jobs";
+import { Money } from "iconsax-react";
 
 interface JobCardProps {
   job: {
@@ -164,9 +164,9 @@ const JobCard = ({ job }: JobCardProps) => {
             </div>
 
             <div className="flex items-center text-gray-600">
-              <DollarSign className="w-4 h-4 mr-2 text-blue-500" />
+              <Money className="w-4 h-4 mr-2 text-blue-500" />
               <span className="text-sm">
-                ${job?.salaryMin?.toLocaleString()} - $
+                 {job?.salaryMin?.toLocaleString()} -  
                 {job.salaryMax.toLocaleString()}
               </span>
             </div>

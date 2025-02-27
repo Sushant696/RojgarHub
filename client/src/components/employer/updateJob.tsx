@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useFormik } from "formik";
-import { MapPin, DollarSign, Plus, X } from "lucide-react";
+import { MapPin,   Plus, X } from "lucide-react";
 import { useParams } from "@tanstack/react-router";
 
 import { Button } from "@/components/ui/button";
@@ -20,6 +20,7 @@ import Loading from "../isLoading";
 import SingleDropzone from "../singleDropzone";
 import { UpdatePostSchema } from "@/validators/jobValidators";
 import { useGetJobById, useUpdateJob } from "@/hooks/jobs";
+import { Money } from "iconsax-react";
 
 interface JobFormValues {
   image: File | null;
@@ -182,7 +183,7 @@ function UpdateJob() {
             </Label>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div className="relative">
-                <DollarSign className="absolute left-3 top-2.5 h-5 w-5 text-gray-400" />
+                <Money className="absolute left-3 top-2.5 h-5 w-5 text-gray-400" />
                 <Input
                   id="salaryMin"
                   placeholder="Minimum"
@@ -198,7 +199,7 @@ function UpdateJob() {
                 )}
               </div>
               <div className="relative">
-                <DollarSign className="absolute left-3 top-2.5 h-5 w-5 text-gray-400" />
+                <Money className="absolute left-3 top-2.5 h-5 w-5 text-gray-400" />
                 <Input
                   id="salaryMax"
                   placeholder="Maximum"

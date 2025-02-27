@@ -5,8 +5,6 @@ import { JobPostingTypes } from "@/validators/jobValidators";
 import DisplayErrorToast from "@/utils/displayErrorMessage";
 import showNotification from "@/utils/toastify";
 
-// public api call actions
-
 async function getAllJobs() {
   try {
     const response = await api.get(apiURLs.Jobs.get, {
@@ -16,6 +14,37 @@ async function getAllJobs() {
   } catch (error: any) {
     console.error("Error fetching job:", error.response?.data || error.message);
     throw new Error(error.response?.data?.message || "Something went wrong!");
+  }
+}
+
+async function getSearchedJob(searchParams: {
+  keywords?: string;
+  industry?: string;
+  location?: string;
+}) {
+  try {
+    const params = new URLSearchParams();
+
+    // Only append non-empty values
+    if (searchParams.keywords?.trim())
+      params.append("keywords", searchParams.keywords.trim());
+    if (searchParams.industry?.trim())
+      params.append("industry", searchParams.industry.trim());
+    if (searchParams.location?.trim())
+      params.append("location", searchParams.location.trim());
+
+    const response = await api.get(
+      `${apiURLs.Jobs.search}?${params.toString()}`,
+      { withCredentials: true },
+    );
+
+    return response.data?.data?.jobs || [];
+  } catch (error: any) {
+    console.error(
+      "Error searching jobs:",
+      error.response?.data || error.message,
+    );
+    throw new Error(error.response?.data?.message || "Failed to search jobs!");
   }
 }
 
@@ -130,6 +159,7 @@ export const jobAction = {
   updateJob,
   getJobById,
   toogleJobStatus,
+  getSearchedJob,
   deleteJob,
   getJobApplication,
   getJobCandidates,

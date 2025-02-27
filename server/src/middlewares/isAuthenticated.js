@@ -8,7 +8,7 @@ import config from "../../src/config/index.js";
 const isAuthenticated = asyncHandler(async (req, _, next) => {
   const token =
     req.cookies.accessToken ||
-    req.header("Authorization")?.replace("Bearer", "");
+    req.header("Authorization")?.replace("Bearer ", "");
 
   if (!token) {
     throw new ApiError(StatusCodes.UNAUTHORIZED, "Unauthorized access");

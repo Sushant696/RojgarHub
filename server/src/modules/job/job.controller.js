@@ -122,12 +122,53 @@ const getCandidatesByJob = asyncHandler(async (req, res) => {
   );
 });
 
+const getSearchedJob = asyncHandler(async (req, res) => {
+  try {
+    const { keywords, industry, location } = req.query;
+
+    if (!keywords?.trim() && !industry?.trim() && !location?.trim()) {
+      return res
+        .status(StatusCodes.BAD_REQUEST)
+        .json(
+          new ApiResponse(
+            StatusCodes.BAD_REQUEST,
+            null,
+            "Please provide search criteria",
+          ),
+        );
+    }
+
+    const jobs = await jobServices.searchedJob({
+      keywords: keywords?.trim(),
+      industry: industry?.trim(),
+      location: location?.trim(),
+    });
+
+    return res
+      .status(StatusCodes.OK)
+      .json(
+        new ApiResponse(StatusCodes.OK, { jobs }, "Jobs fetched successfully"),
+      );
+  } catch (error) {
+    console.error("Error in getSearchedJob:", error);
+    return res
+      .status(StatusCodes.INTERNAL_SERVER_ERROR)
+      .json(
+        new ApiResponse(
+          StatusCodes.INTERNAL_SERVER_ERROR,
+          null,
+          "Internal server error",
+        ),
+      );
+  }
+});
 export const jobController = {
   editJob,
   PostJob,
   deleteJob,
   getJobById,
   getAllJobs,
+  getSearchedJob,
   toggleJobStatus,
   getJobByIdpublic,
   getCandidatesByJob,

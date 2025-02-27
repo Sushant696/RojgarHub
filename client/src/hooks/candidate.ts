@@ -19,6 +19,14 @@ export const useGetCandidateApplications = () => {
   });
 };
 
+export const useGetDashboardData = (candidateId: string) => {
+  return useQuery({
+    queryKey: ["candidate"],
+    queryFn: () => candidateAction.getCandidateDashboardData(candidateId),
+    retry: 1,
+  });
+};
+
 export const useEditCandidate = () => {
   const queryClient = useQueryClient();
   const { setAuthenticatedUser } = useAuthStore();

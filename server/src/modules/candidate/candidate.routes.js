@@ -8,6 +8,12 @@ const candidateRouter = Router();
 
 candidateRouter.get("/", isAuthenticated, candidateController.getCandidateById);
 
+candidateRouter.get(
+  "/vizData/:candidateId",
+  isAuthenticated,
+  candidateController.getUserVizData,
+);
+
 candidateRouter.patch(
   "/update",
   isAuthenticated,

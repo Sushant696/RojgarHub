@@ -20,7 +20,6 @@ const Login = ({ onSwitch }: { onSwitch: () => void }) => {
     },
     onSubmit: (values) => {
       loginMutation.mutate(values);
-      console.log(values);
     },
   });
 

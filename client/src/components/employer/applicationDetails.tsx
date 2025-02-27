@@ -277,7 +277,7 @@ function ApplicationDetails() {
                   {application.job.type} • {application.job.location}
                 </p>
                 <p className="text-gray-600 mt-2">
-                  ${application.job.salaryMin.toLocaleString()} - $
+                  NPR {application.job.salaryMin.toLocaleString()} -
                   {application.job.salaryMax.toLocaleString()}
                 </p>
               </div>

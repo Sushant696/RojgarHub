@@ -1,9 +1,8 @@
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
-
-import { X } from "lucide-react";
-
+import { Checkbox } from "@/components/ui/checkbox";
+import { Plus, X } from "lucide-react";
 import { Textarea } from "@/components/ui/textarea";
 
 interface ExperienceEntry {
@@ -12,7 +11,9 @@ interface ExperienceEntry {
   description: string;
   startDate: string;
   endDate: string;
+  currentJob: boolean;
 }
+
 function ExperienceForm({
   formik,
   showExperienceForm,
@@ -25,6 +26,7 @@ function ExperienceForm({
       description: "",
       startDate: "",
       endDate: "",
+      currentJob: false,
     };
     formik.setFieldValue("experience", [
       ...formik.values.experience,
@@ -36,10 +38,15 @@ function ExperienceForm({
   const handleUpdateExperience = (
     index: number,
     field: keyof ExperienceEntry,
-    value: string,
+    value: string | boolean,
   ) => {
     const updatedExperience = [...formik.values.experience];
     updatedExperience[index][field] = value;
+
+    if (field === "currentJob" && value === true) {
+      updatedExperience[index].endDate = "";
+    }
+
     formik.setFieldValue("experience", updatedExperience);
   };
 
@@ -75,7 +82,8 @@ function ExperienceForm({
               >
                 <h3 className="text-lg font-semibold">{exp.company}</h3>
                 <p className="text-sm text-gray-600">
-                  {exp.position} • {exp.startDate} - {exp.endDate}
+                  {exp.position} • {exp.startDate} -{" "}
+                  {exp.currentJob ? "Present" : exp.endDate}
                 </p>
                 <p className="text-sm text-gray-600">{exp.description}</p>
               </div>
@@ -86,16 +94,6 @@ function ExperienceForm({
 
       {showExperienceForm && (
         <>
-          <Button
-            type="button"
-            variant="outline"
-            size="sm"
-            onClick={handleAddExperience}
-            className="text-blue-600 border-blue-600 hover:bg-blue-50"
-          >
-            Add New Entry
-          </Button>
-
           {formik.values.experience.length > 0 && (
             <div className="space-y-6">
               {formik.values.experience.map(
@@ -125,6 +123,7 @@ function ExperienceForm({
                               e.target.value,
                             )
                           }
+                          className="bg-white "
                         />
                       </div>
 
@@ -140,6 +139,7 @@ function ExperienceForm({
                               e.target.value,
                             )
                           }
+                          className="bg-white "
                         />
                       </div>
                     </div>
@@ -157,7 +157,7 @@ function ExperienceForm({
                             e.target.value,
                           )
                         }
-                        className="resize-none"
+                        className="resize-none bg-white"
                       />
                     </div>
 
@@ -174,6 +174,7 @@ function ExperienceForm({
                               e.target.value,
                             )
                           }
+                          className="bg-white "
                         />
                       </div>
 
@@ -189,8 +190,30 @@ function ExperienceForm({
                               e.target.value,
                             )
                           }
+                          disabled={exp.currentJob}
+                          className="bg-white "
                         />
                       </div>
+                    </div>
+
+                    <div className="mt-4 flex items-center space-x-2">
+                      <Checkbox
+                        id={`current-job-${index}`}
+                        checked={exp.currentJob}
+                        onCheckedChange={(checked: boolean) =>
+                          handleUpdateExperience(
+                            index,
+                            "currentJob",
+                            checked === true,
+                          )
+                        }
+                      />
+                      <Label
+                        htmlFor={`current-job-${index}`}
+                        className="text-sm font-medium cursor-pointer"
+                      >
+                        This is my current job
+                      </Label>
                     </div>
                   </div>
                 ),
@@ -199,6 +222,17 @@ function ExperienceForm({
           )}
         </>
       )}
+      <div className="flex justify-center">
+        <Button
+          type="button"
+          variant="outline"
+          size="sm"
+          onClick={handleAddExperience}
+          className="text-blue-600 border-blue-600 hover:bg-blue-50 "
+        >
+          <Plus className="h-4 w-4 mr-2" /> Add Experience
+        </Button>
+      </div>
     </div>
   );
 }

@@ -1,11 +1,13 @@
 import { useState } from "react";
 import { useFormik } from "formik";
-import { MapPin, DollarSign, Plus, X } from "lucide-react";
+import { MapPin, Plus, X } from "lucide-react";
+import { Money } from "iconsax-react";
 
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
+
 import {
   Select,
   SelectContent,
@@ -150,7 +152,7 @@ function PostJob() {
             </Label>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div className="relative">
-                <DollarSign className="absolute left-3 top-2.5 h-5 w-5 text-gray-400" />
+                <Money className="absolute left-3 top-2.5 h-5 w-5 text-gray-400" />
                 <Input
                   id="salaryMin"
                   placeholder="Minimum"
@@ -166,7 +168,7 @@ function PostJob() {
                 </div>
               )}{" "}
               <div className="relative">
-                <DollarSign className="absolute left-3 top-2.5 h-5 w-5 text-gray-400" />
+                <Money className="absolute left-3 top-2.5 h-5 w-5 text-gray-400" />
                 <Input
                   id="salaryMax"
                   placeholder="Maximum"

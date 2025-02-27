@@ -1,7 +1,7 @@
 import clsx from "clsx";
 import { useState } from "react";
 import DOMPurify from "dompurify";
-import { MapPin, Clock, DollarSign, Building2, Users, Eye } from "lucide-react";
+import { MapPin, Clock, Building2, Users, Eye } from "lucide-react";
 
 import { useGetAllJobs } from "@/hooks/jobs";
 import { Button } from "@/components/ui/button";
@@ -17,15 +17,15 @@ import {
 import Filter from "./filter";
 import Loading from "./isLoading";
 import useRouter from "@/lib/router";
-import useAuthStore from "@/stores/authStore";
 import JobApplicationForm from "./candidate/jobApplicationForm";
+import { Money } from "iconsax-react";
 
 interface Job {
   id: string;
   title: string;
   location: string;
   type: string;
-  salaryMin: number;
+  salaryMin: number | 0;
   salaryMax: number;
   jobDescription: string;
   image: string;
@@ -47,7 +47,6 @@ function JobLists() {
   const [selectedJob, setSelectedJob] = useState<Job | null>(null);
   const [isDetailsOpen, setIsDetailsOpen] = useState(false);
   const [isApplyOpen, setIsApplyOpen] = useState(false);
-  const { isAuthenticated } = useAuthStore();
   const router = useRouter();
 
   if (isLoading) return <Loading />;
@@ -70,7 +69,7 @@ function JobLists() {
       if (salaryRange === "all" || !salaryRange) return true;
       const [min, max] = salaryRange.split("-").map(Number);
       return (
-        (job.salaryMin >= min && job.salaryMin <= max) ||
+        (job.salaryMin >= min && job?.salaryMin <= max) ||
         (job.salaryMax >= min && job.salaryMax <= max)
       );
     };
@@ -80,15 +79,6 @@ function JobLists() {
   const handleViewDetails = (job: Job) => {
     setSelectedJob(job);
     setIsDetailsOpen(true);
-  };
-
-  const handleApplyJob = (job: Job) => {
-    if (!isAuthenticated) {
-      router.push("/login");
-      return;
-    }
-    setSelectedJob(job);
-    setIsApplyOpen(true);
   };
 
   const sanitizedData = () => ({
@@ -166,9 +156,9 @@ function JobLists() {
                             <span>{job.type}</span>
                           </div>
                           <div className="flex items-center gap-1.5">
-                            <DollarSign className="w-4 h-4" />
+                            <Money className="w-4 h-4" />
                             <span className="font-medium text-slate-700">
-                              {`${job.salaryMin.toLocaleString()} - ${job.salaryMax.toLocaleString()}`}
+                              {`${job?.salaryMin?.toLocaleString()} - ${job?.salaryMax?.toLocaleString()}`}
                             </span>
                           </div>
                         </div>
@@ -268,12 +258,12 @@ function JobLists() {
 
                   <div className="flex items-center gap-3 group">
                     <div className="p-2 rounded-lg bg-blue-50 text-blue-600 group-hover:bg-blue-100 transition-colors">
-                      <DollarSign className="w-5 h-5" />
+                      <Money className="w-5 h-5" />
                     </div>
                     <div className="space-y-0.5">
                       <p className="text-sm text-slate-500">Salary Range</p>
                       <p className="text-sm font-medium text-slate-700">
-                        ${selectedJob.salaryMin.toLocaleString()} - $
+                         {selectedJob.salaryMin.toLocaleString()} -  
                         {selectedJob.salaryMax.toLocaleString()}
                       </p>
                     </div>

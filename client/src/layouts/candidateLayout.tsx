@@ -9,7 +9,6 @@ import { useEffect } from "react";
 export const CandidateLayout = () => {
   const { setAuthenticatedUser } = useAuthStore();
   const { data, isLoading } = useGetCandidateById();
-  console.log(data, "data");
   useEffect(() => {
     if (data?.candidate) {
       setAuthenticatedUser(data?.candidate);

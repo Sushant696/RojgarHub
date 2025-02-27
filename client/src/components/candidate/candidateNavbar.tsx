@@ -4,7 +4,6 @@ import {
   LayoutDashboard,
   Briefcase,
   ClipboardList,
-  Bell,
   Settings,
   LogOut,
 } from "lucide-react";
@@ -101,9 +100,6 @@ function CandidateNavbar() {
                 <Separator className="my-4 bg-blue-100" />
 
                 <div className="flex flex-col gap-1">
-                  <NavLink to="/candidate/notifications" icon={Bell}>
-                    Notifications
-                  </NavLink>
                   <NavLink to="/candidate/settings" icon={Settings}>
                     Settings
                   </NavLink>
@@ -170,13 +166,6 @@ function CandidateNavbar() {
               </Link>
             </nav>
             <Separator orientation="vertical" className="h-6 bg-blue-100" />
-            <Button
-              variant="ghost"
-              size="icon"
-              className="text-blue-600 hover:text-blue-700 hover:bg-blue-50"
-            >
-              <Bell className="h-5 w-5" />
-            </Button>
             <ProfileModal />
           </div>
         </div>

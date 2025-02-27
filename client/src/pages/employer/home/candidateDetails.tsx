@@ -51,7 +51,6 @@ function CandidateDetailsModal({
           {/* Basic Info */}
           <div className="rounded-lg space-y-4">
             <div className="flex flex-col sm:flex-row sm:items-center gap-4 sm:gap-6">
-              {/* Profile Image or Initials Placeholder */}
               {candidate.profile ? (
                 <img
                   src={candidate.profile}
@@ -124,7 +123,7 @@ function CandidateDetailsModal({
                         {exp.company}
                       </div>
                       <div className="text-xs sm:text-sm text-gray-500">
-                        {exp.duration}
+                        {exp.startDate}
                       </div>
                     </div>
                   ))}
@@ -182,12 +181,16 @@ function CandidateDetailsModal({
               </Button>
             )}
             {candidate.resumeUrl && (
-              <Button
-                variant="outline"
-                className="text-gray-800 border-blue-200 hover:bg-blue-50 text-xs sm:text-sm w-full sm:w-auto"
-              >
-                <LinkIcon className="w-4 h-4 mr-2 text-blue-600" />
-                Resume
+              <Button variant={"outline"}>
+                <a
+                  href={candidate.resumeUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="flex items-center text-gray-800 border-blue-200 hover:bg-blue-50 text-xs sm:text-sm w-full sm:w-auto"
+                >
+                  <LinkIcon className="w-4 h-4 mr-2 text-blue-600" />
+                  Resume
+                </a>
               </Button>
             )}
           </div>

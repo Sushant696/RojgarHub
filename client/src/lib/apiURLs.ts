@@ -17,6 +17,7 @@ export const apiURLs = {
     toggleJob: "/api/job/toogle",
     candidates: "/api/job/candidates",
     applications: "/api/job/applications",
+    search: "/api/job/search",
   },
   Employer: {
     getById: "/api/employer/",
@@ -31,6 +32,7 @@ export const apiURLs = {
     jobs: "/api/candidate/jobs", // candidate specific jobs
     applications: "/api/candidate/applications", // all candidate applications
     update: "/api/candidate/update",
+    dashboardData: "/api/candidate/vizData",
   },
   Application: {
     createApplication: "/api/application/create",

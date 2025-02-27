@@ -5,7 +5,7 @@
   "type": "module",
   "scripts": {
     "start": "nodemon src/index.js",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "NODE_OPTIONS=--experimental-vm-modules jest"
   },
   "dependencies": {
     "@prisma/client": "^6.3.1",
@@ -32,6 +32,8 @@
   "license": "ISC",
   "description": "Server for Rojgarhub",
   "devDependencies": {
-    "prisma": "^6.3.1"
+    "jest": "^29.7.0",
+    "prisma": "^6.3.1",
+    "supertest": "^7.0.0"
   }
 }

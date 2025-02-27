@@ -6,9 +6,10 @@ export type CandidateProfile = {
   id: string;
   jobId: string;
   candidateId: string;
+  bio?: string;
   fullName: string;
   phone: string;
-  profilePicture?: string;
+  profile?: string;
   skills?: Skill[];
   location?: string;
   education?: Education[];
@@ -23,6 +24,7 @@ export type CandidateProfile = {
 export type Education = {
   degree: string;
   institution: string;
+  duration: Date;
   year: number;
 };
 

@@ -17,8 +17,7 @@ function ApplyJob() {
 
   return (
     <div className="min-h-screen bg-gray-50 py-6">
-      <div className="container mx-auto">
-        {/* Job header - shared between both sections */}
+      <div className="">
         <div className="bg-white rounded-lg shadow-sm p-6 mb-6">
           <div className="flex items-start gap-4">
             <img

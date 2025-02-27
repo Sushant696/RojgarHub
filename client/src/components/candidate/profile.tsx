@@ -79,14 +79,6 @@ function ProfileModal() {
             <Settings className="w-4 h-4" />
             <span>Settings</span>
           </DropdownMenuItem>
-
-          <DropdownMenuItem
-            onClick={() => router.push("/candidate/notifications")}
-            className="flex items-center gap-2 py-2 px-3 text-sm cursor-pointer"
-          >
-            <Bell className="w-4 h-4" />
-            <span>Notifications</span>
-          </DropdownMenuItem>
         </div>
 
         <DropdownMenuSeparator />

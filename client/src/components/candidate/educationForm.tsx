@@ -209,7 +209,7 @@ function EducationForm({
                   onClick={handleAddEducation}
                   className="text-blue-600 border-blue-600 hover:bg-blue-50 flex items-center"
                 >
-                  <Plus className="h-4 w-4 mr-2" /> Add New Entry
+                  <Plus className="h-4 w-4 mr-2" /> Add Education
                 </Button>
               </div>
             </>
