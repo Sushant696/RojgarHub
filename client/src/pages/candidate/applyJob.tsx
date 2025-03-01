@@ -16,7 +16,7 @@ function ApplyJob() {
   const { job } = data?.data || {};
 
   return (
-    <div className="min-h-screen bg-gray-50 py-6">
+    <div className="min-h-screen bg-gray-50 py-6 px-4">
       <div className="">
         <div className="bg-white rounded-lg shadow-sm p-6 mb-6">
           <div className="flex items-start gap-4">

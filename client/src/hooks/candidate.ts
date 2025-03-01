@@ -21,7 +21,7 @@ export const useGetCandidateApplications = () => {
 
 export const useGetDashboardData = (candidateId: string) => {
   return useQuery({
-    queryKey: ["candidate"],
+    queryKey: ["candidateDashboard"],
     queryFn: () => candidateAction.getCandidateDashboardData(candidateId),
     retry: 1,
   });

@@ -3,6 +3,7 @@ import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { applicationActions } from "@/api/application";
 import { ApplicationStatus } from "@/types/job";
 import showNotification from "@/utils/toastify";
+import DisplayErrorToast from "@/utils/displayErrorMessage";
 
 interface InterviewSchedulerProps {
   applicationId: string;
@@ -32,7 +33,6 @@ export const useCreateApplication = () => {
       });
     },
     onError: (error) => {
-
       console.error("Mutation failed:", error);
     },
   });
@@ -88,7 +88,7 @@ export const useInterviewScheduler = () => {
     mutationFn: ({ applicationId, interviewObj }: InterviewSchedulerProps) =>
       applicationActions.scheduleInterview({ applicationId, interviewObj }),
     retry: false,
-    onSuccess: (response: any) => {
+    onSuccess: (response) => {
       showNotification("success", response?.message);
       queryClient.invalidateQueries({ queryKey: ["interviews"] });
       queryClient.invalidateQueries({ queryKey: ["application"] });
@@ -108,7 +108,8 @@ export const useUpdateInterview = () => {
 
   return useMutation({
     mutationFn: applicationActions.updateInterview,
-    onSuccess: () => {
+    onSuccess: (response) => {
+      showNotification("success", response?.message);
       queryClient.invalidateQueries({ queryKey: ["interviews"] });
       queryClient.invalidateQueries({ queryKey: ["application"] });
     },
@@ -126,11 +127,13 @@ export const useDeleteInterview = () => {
 
   return useMutation({
     mutationFn: applicationActions.deleteInterview,
-    onSuccess: () => {
+    onSuccess: (response: any) => {
+      showNotification("success", response?.message);
       queryClient.invalidateQueries({ queryKey: ["interviews"] });
       queryClient.invalidateQueries({ queryKey: ["application"] });
     },
     onError: (error: any) => {
+      showNotification("error", error?.message);
       console.error(
         "Error deleting interview:",
         error.response?.data || error.message,

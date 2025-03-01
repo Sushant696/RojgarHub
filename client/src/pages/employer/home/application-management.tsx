@@ -11,47 +11,6 @@ const ApplicationManagement = () => {
   const [searchedData, setSearchedData] = useState(null);
   const [query, setQuery] = useState("");
 
-  const stats = [
-    {
-      title: "Total Applications",
-      value: "128",
-      change: "+12% this month",
-      icon: <Users className="h-10 w-10" />,
-      color: "blue",
-    },
-    {
-      title: "Pending Review",
-      value: "45",
-      change: "8 new today",
-      icon: <Clock className="h-10 w-10" />,
-      color: "yellow",
-    },
-    {
-      title: "Interview Scheduled",
-      value: "32",
-      change: "4 this week",
-      icon: <CheckCircle className="h-10 w-10" />,
-      color: "green",
-    },
-    {
-      title: "Rejected",
-      value: "12",
-      change: "Last 30 days",
-      icon: <XCircle className="h-10 w-10" />,
-      color: "red",
-    },
-  ];
-
-  const getColorClasses = (color: string) => {
-    const colorMap = {
-      blue: "bg-blue-50 text-blue-600",
-      yellow: "bg-yellow-50 text-yellow-600",
-      green: "bg-green-50 text-green-600",
-      red: "bg-red-50 text-red-600",
-    };
-    return colorMap[color as keyof typeof colorMap] || "";
-  };
-
   const handleSubmit = (e: any) => {
     e.preventDefault();
     if (!query.trim()) {
@@ -77,7 +36,10 @@ const ApplicationManagement = () => {
   return (
     <div className="mx-auto px-6 py-8 space-y-8">
       <div className="">
-        <div className="flex flex-col md:flex-row justify-end items-start md:items-center gap-6">
+        <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-6">
+          <div>
+            <h1 className="medium-text">Application Overview</h1>
+          </div>
           <div className="w-full md:w-96">
             <form
               onSubmit={handleSubmit}

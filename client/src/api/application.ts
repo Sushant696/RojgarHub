@@ -85,7 +85,7 @@ async function scheduleInterview({
       { interviewObj },
       { withCredentials: true },
     );
-    return response.data?.data;
+    return response.data;
   } catch (error: any) {
     console.error(
       "Error fetching application:",
@@ -116,9 +116,13 @@ async function updateInterview({ id, data }: { id: string; data: any }) {
 
 async function deleteInterview(id: string) {
   try {
-    await api.delete(`${apiURLs.Application.deleteInterview}/${id}`, {
-      withCredentials: true,
-    });
+    const response = await api.delete(
+      `${apiURLs.Application.deleteInterview}/${id}`,
+      {
+        withCredentials: true,
+      },
+    );
+    return response.data;
   } catch (error: any) {
     console.error(
       "Error deleting interview:",

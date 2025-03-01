@@ -14,7 +14,7 @@ function Hero() {
           <div className="text-center pt-20">
             <h1 className="title-text leading:!leading-5 lg:!leading-[70px] tracking-wide">
               There are
-              <span className="text-blue-500"> 109,282 </span>
+              <span className="text-blue-500"> 110,282 </span>
               Postings
               <br />
               <h1>Here for you</h1>

@@ -102,7 +102,7 @@ const scheduleApplicationInterview = asyncHandler(async (req, res) => {
   return res.json(
     new ApiResponse(
       StatusCodes.OK,
-      { interview },
+      { interview, message: "helo" },
       "Interview schdeuled successfully",
     ),
   );
