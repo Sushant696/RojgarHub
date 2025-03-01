@@ -383,8 +383,8 @@ function Profile() {
                   <div key={index} className="relative pl-6">
                     <div className="absolute left-0 top-2 w-2 h-2 rounded-full bg-blue-600"></div>
                     <div className="border-l-2 border-blue-200 pl-6 pb-6">
-                      <h3 className="font-bold text-lg text-gray-800">
-                        {exp.title}
+                      <h3 className="font-bold text-lg text-gray-800 lowercase capitalize">
+                        {exp.position}
                       </h3>
                       <p className="text-blue-600 font-medium">{exp.company}</p>
                       <p className="text-gray-600 text-sm mt-1">

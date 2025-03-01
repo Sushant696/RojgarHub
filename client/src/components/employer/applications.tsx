@@ -336,7 +336,7 @@ const ApplicationsSection = ({
           <div
             className={`transition-all duration-300 ${view
                 ? "flex flex-col space-y-4"
-                : "grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4"
+                : "grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-2"
               }`}
           >
             {filteredApplications.length > 0 ? (
